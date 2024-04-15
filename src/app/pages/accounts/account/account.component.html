@@ -1,0 +1,21 @@
+<div class="d-flex flex-column w-100 h-100 bg-light text-dark">
+  <ion-header class="sticky-top" [translucent]="true">
+    <ion-toolbar>
+      <div class="d-flex flex-row justify-content-between align-items-center p-2">
+        @if(miniPhone()){
+          <ion-buttons slot="start">
+            <ion-menu-button menu="chat-menu"></ion-menu-button>
+          </ion-buttons>
+        }
+        <div>{{'account.self' | translate}}</div>
+        <button nz-button [routerLink]="'/chat'">
+          <span nz-icon nzType="rollback" nzTheme="outline"></span>
+        </button>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+  <div class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

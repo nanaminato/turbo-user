@@ -1,0 +1,10 @@
+<div *ngIf="chatModel===undefined">
+  <nz-spin nzSimple></nz-spin>
+</div>
+<div *ngIf="chatModel!==undefined">
+  <textarea nz-input
+            [(ngModel)]="chatModel!.content"
+            rows="10" cols="20"
+            class="p-0 m-0 overflow-y-scroll">
+  </textarea>
+</div>

@@ -1,0 +1,18 @@
+<div class="w-100 d-flex flex-row justify-content-evenly flex-wrap overflow-y-scroll"
+  >
+  @if(novitaModels.length===0){
+    没有数据哦
+  }@else{
+    @for(model of novitaModels; track model){
+      <div class="position-relative m-1" (click)="triggerSelect(model)"
+           style="width: 200px; height: 200px;">
+        <img [src]="(model.cover===undefined||model.cover==='')? 'assets/placeholders/nopic.gif':model.cover!"
+             width="200" height="200"
+             style="position: absolute; width: 100%; height: 100%;">
+        <div class="w-100 bg-dark position-absolute z-1 h-40 bottom-0 bg-opacity-75">
+          <span class="text-break text-white">{{model.model}}</span>
+        </div>
+      </div>
+    }
+  }
+</div>

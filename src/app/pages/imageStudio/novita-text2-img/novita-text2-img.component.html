@@ -1,0 +1,88 @@
+<div class="w-100 h-100 d-flex flex-row">
+  <div class="w-100 d-flex flex-row">
+    <div class="h-100 bg-light flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 316px;">
+      <div class="sticky-top px-3">
+        <button nz-button class="m-2" (click)="showImageMenu()">
+          <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
+        </button>
+        <app-image-model [model]="model" (ngModelChange)="modelChange($event)"></app-image-model>
+      </div>
+      <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
+        <ion-label>Prompt</ion-label>
+        <ion-textarea
+          auto-grow="true" fill="outline" [(ngModel)]="prompt"
+        ></ion-textarea>
+        <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">Negative Prompt</ion-label>
+        <ion-textarea auto-grow="true" fill="outline" [(ngModel)]="negative_prompt">
+
+        </ion-textarea>
+        <ion-row>
+          <ion-col>
+            <ion-label>Width(128-1024)</ion-label>
+            <ion-input fill="outline" [(ngModel)]="width"></ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-label>Height(128-1024)</ion-label>
+            <ion-input fill="outline" [(ngModel)]="height"></ion-input>
+          </ion-col>
+        </ion-row>
+        <app-lora-list [min]="-10" [max]="10" [step]="0.1" [default]="1" [loras]="loras"></app-lora-list>
+        <app-embedding-list [embeddings]="embeddings"></app-embedding-list>
+        <ion-label>Sampler</ion-label>
+        <ion-select [(ngModel)]="sampler" interface="popover" fill="outline">
+          @for(sampler of samplerChoice; track sampler){
+            <ion-select-option>{{sampler}}</ion-select-option>
+          }
+        </ion-select>
+        <ion-label>Guidance Scale</ion-label>
+        <ion-row>
+          <ion-col>
+            <nz-slider [nzMin]="1" [nzMax]="30" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
+          </ion-col>
+          <ion-col class="d-flex flex-row-reverse">
+            <nz-input-number [nzMin]="1" [nzMax]="30" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-input-number>
+          </ion-col>
+        </ion-row>
+        <ion-label>Steps</ion-label>
+        <ion-row>
+          <ion-col>
+            <nz-slider [nzMin]="1" [nzMax]="100" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
+          </ion-col>
+          <ion-col class="d-flex flex-row-reverse">
+            <nz-input-number [nzMin]="1" [nzMax]="100" [nzStep]="1" [(ngModel)]="steps"></nz-input-number>
+          </ion-col>
+        </ion-row>
+        <ion-label>Image Num</ion-label>
+        <ion-row>
+          <ion-col>
+            <nz-slider [nzMin]="1" [nzMax]="8" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
+          </ion-col>
+          <ion-col class="d-flex flex-row-reverse">
+            <nz-input-number [nzMin]="1" [nzMax]="8" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
+          </ion-col>
+        </ion-row>
+        <ion-label>Seed</ion-label>
+        <ion-label>
+          <nz-input-number class="w-100" [(ngModel)]="seeds"></nz-input-number>
+        </ion-label>
+        <ion-label>
+          ClipSkip
+        </ion-label>
+        <ion-row>
+          <ion-col>
+            <nz-slider [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-slider>
+          </ion-col>
+          <ion-col class="d-flex flex-row-reverse">
+            <nz-input-number [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-input-number>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div class="sticky-bottom">
+        <ion-button expand="block" (click)="generateImages()">Generate</ion-button>
+      </div>
+    </div>
+    <div class="h-100 d-flex flex-grow-1 overflow-y-scroll overflow-x-scroll">
+      <app-gallery class="w-100" #gallery [loading]="loading" [images]="images"></app-gallery>
+    </div>
+  </div>
+</div>

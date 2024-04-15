@@ -1,0 +1,40 @@
+.active{
+  width: 10px;
+  height: 10px;
+  background: #79c0ff;
+}
+.mini-button{
+  width: 25px;
+}
+ion-grid {
+  --ion-grid-width-sm: 288px;
+  --ion-grid-width-md: 606px;
+  --ion-grid-width-lg: 800px;
+  --ion-grid-width-xl: 570px;
+}
+.chat-box {
+  display: flex;
+  align-items: center;
+  /*box-sizing: content-box;*/
+  padding: 8px;
+}
+
+.chat-content {
+  flex: 1;
+  margin-left: 16px; /* 适当的间距 */
+}
+
+.centered {
+  max-width: 800px !important;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+@media screen and (max-width: 800px) {
+  .centered {
+    max-width: unset;
+    margin: unset;
+  }
+}
+
+

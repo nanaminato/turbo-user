@@ -1,0 +1,15 @@
+<div class="d-flex flex-row-reverse">
+  <nz-col class="d-flex align-items-center">
+    {{'settings.encrypt' | translate}}: <input class="mx-1" type="checkbox" [(ngModel)]="lock">
+  </nz-col>
+</div>
+<div>
+  <textarea
+    ngxClipboard
+    #textAreaElement
+    class="w-100" rows="10" [ngModel]="getJson()"  readonly>
+  </textarea>
+</div>
+<button nz-button (click)="copyConfig()" >
+  {{'settings.copyToClipboard' | translate}}
+</button>

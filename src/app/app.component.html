@@ -1,0 +1,99 @@
+<ion-app>
+  <ion-split-pane contentId="main-content" when="(min-width: 606px)">
+    <ion-menu menuId="chat-menu" [disabled]="menuAble.chatDisable" contentId="main-content" type="overlay">
+      <ion-content>
+        <div class="p-0 m-0 d-flex flex-column h-100 z-2">
+          <div class="bg-theme overflow-y-scroll scrollbar-y-none flex-grow-1">
+            <!-- 历史记录标记 -->
+            @defer (on immediate) {
+              <app-chat-history  [chatHistoryTitle]="historyTitles"
+                                 (chatHistoryChangeEvent)="handleChatHistoryAction($event)"></app-chat-history>
+            } @placeholder {
+              <nz-skeleton></nz-skeleton>
+            }
+          </div>
+          <div class="bg-theme sticky-bottom z-0">
+            <ng-template #studios>
+              <div class="w-100 d-flex flex-column">
+                <button nz-button class="bg-light text-dark mx-2 my-1" routerLink="/chat">文本生成</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1" routerLink="/image-studio">图像工作室</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1" routerLink="/video-studio">视频工作室</button>
+              </div>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="studios"></ng-container>
+            <div class="w-100">
+              <div class="d-flex flex-row">
+                <button class="rounded-5 m-2 bg-theme text-theme" nz-button
+                        (click)="openSettingPage()"
+                >
+                  {{ 'chat-history.settings' | translate}}<span nz-icon nzType="setting" nzTheme="outline"></span>
+                </button>
+                <button class="rounded-5 m-2 d-flex flex-row align-items-center bg-theme text-theme" nz-button
+                        (click)="openPromptPage()"
+                >
+                  {{ 'chat-history.prompts' | translate}}<span nz-icon nzType="appstore" nzTheme="outline"></span>
+                </button>
+              </div>
+              @defer (on viewport) {
+                <app-account-label></app-account-label>
+              } @placeholder {
+                <nz-skeleton></nz-skeleton>
+              }
+            </div>
+          </div>
+        </div>
+      </ion-content>
+    </ion-menu>
+    <ion-menu menuId="image-menu" [disabled]="menuAble.imageDisable" contentId="main-content" type="overlay"
+      >
+      <div class="p-0 m-0 d-flex flex-column h-100 z-2">
+        <ion-chip color="primary" class="mt-4 mx-2">
+          <ion-avatar>
+            <img src="assets/icon/image-studio.png">
+          </ion-avatar>
+          <ion-label>Image Studio</ion-label>
+        </ion-chip>
+
+        <div class="d-flex flex-column p-3">
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-lcm-txt2img']">Novita文字生成图片LCM</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-lcm-img2img']">Novita图片生成图片LCM</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-txt2img']">Novita文字生成图片</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-img2img']">Novita图片生成图片</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/task-lib']">仓库</button>
+        </div>
+      </div>
+      <div class="bg-theme sticky-bottom z-0">
+        <ng-container *ngTemplateOutlet="studios"></ng-container>
+        @defer (on viewport) {
+          <app-account-label></app-account-label>
+        } @placeholder {
+          <nz-skeleton></nz-skeleton>
+        }
+      </div>
+    </ion-menu>
+    <ion-menu menuId="video-menu" [disabled]="menuAble.videoDisable" contentId="main-content" type="overlay"
+    >
+      <div class="p-0 m-0 d-flex flex-column h-100 z-2">
+        <ion-chip color="primary" class="mt-4 mx-2">
+          <ion-avatar>
+            <img src="assets/icon/image-studio.png">
+          </ion-avatar>
+          <ion-label>Video Studio</ion-label>
+        </ion-chip>
+        <div class="d-flex flex-column p-3">
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/novita-text2video']">Novita文字生成视频</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/task-lib']">仓库</button>
+        </div>
+      </div>
+      <div class="bg-theme sticky-bottom z-0">
+        <ng-container *ngTemplateOutlet="studios"></ng-container>
+        @defer (on viewport) {
+          <app-account-label></app-account-label>
+        } @placeholder {
+          <nz-skeleton></nz-skeleton>
+        }
+      </div>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

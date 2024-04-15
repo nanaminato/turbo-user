@@ -1,0 +1,43 @@
+<div>
+  <div class="d-flex flex-row flex-wrap">
+    <nz-col class="mx-2">
+      <div>task_id</div>
+      <div>{{task?.task_id}}</div>
+    </nz-col>
+    <nz-col class="mx-2">
+      <div>task_type</div>
+      <div>{{task?.task_type}}</div>
+    </nz-col>
+    <nz-col class="mx-2">
+      <div>date</div>
+      <div>{{task?.date}}</div>
+    </nz-col>
+    <nz-col class="mx-2">
+      <div>account_id</div>
+      <div>{{task?.account_id}}</div>
+    </nz-col>
+  </div>
+  <div class="d-flex flex-row-reverse">
+    <button nz-button nz-popconfirm
+            class="mx-2"
+            [nzPopconfirmTitle]="'Are you sure delete this task? task_id='+task?.task_id"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="deleteItem(task!)">删除</button>
+    <button nz-button (click)="recheck_task_status(task!.task_id!)">获取任务结果</button>
+  </div>
+  <div class="w-100 d-flex flex-wrap flex-row">
+    @if(task?.taskResult!==undefined){
+      @if(task?.task_type==='image'){
+        @for(image of task!.taskResult?.images; track image){
+          <img nz-image width="200" height="200" [nzSrc]="present(image)"/>
+        }
+      }
+      @else if(task?.task_type==='video'){
+        <video controls>
+          <source [src]="task!.taskResult!.videos[0].video_url!" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,38 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FramePrompt} from "../../../models/videos";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {IonicModule} from "@ionic/angular";
+import {FormsModule} from "@angular/forms";
+import {NzPopoverDirective} from "ng-zorro-antd/popover";
+import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+
+@Component({
+  selector: 'app-section',
+  templateUrl: './section.component.html',
+  styleUrls: ['./section.component.scss'],
+  standalone: true,
+  imports: [
+    NzIconDirective,
+    IonicModule,
+    FormsModule,
+    NzPopoverDirective,
+    NzTooltipDirective
+  ]
+})
+export class SectionComponent  implements OnInit {
+  @Input()
+  section: FramePrompt | undefined;
+  @Input()
+  id: number|undefined;
+  @Output()
+  delete = new EventEmitter<number>();
+  constructor() { }
+
+  ngOnInit() {
+    console.log()
+  }
+
+  emitDelete() {
+    this.delete.emit(this.id);
+  }
+}

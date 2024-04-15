@@ -1,0 +1,10 @@
+<div class="w-100">
+  <ion-label>Embeddings</ion-label>
+  @for(embedding of embeddings; track embedding){
+    <app-embedding-section [embedding]="embedding" [index]="$index" (delete)="awareDelete($event)"></app-embedding-section>
+  }
+  <div class="d-flex justify-content-center my-1">
+    <button style="width: 100px;" (click)="addNewEmbedding()"
+            class="bg-light border-1-standard d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
+  </div>
+</div>

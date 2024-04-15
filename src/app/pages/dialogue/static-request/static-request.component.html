@@ -1,0 +1,38 @@
+<div class="w-100 my-2">
+@for(file of chatModel?.fileList;track file){
+  @if(!file.fileType!.startsWith("image")){
+    <nz-card  class="rounded-4">
+      <div class="d-flex flex-column">
+        <nz-row>
+          <nz-col class="mx-2">
+            <img width="40" height="40" nz-image [nzSrc]="getIcon(file.fileType!,file.fileName!)" [nzFallback]="'assets/svgs/file.svg'" alt="图标">
+          </nz-col>
+          <nz-col>
+            <nz-row>
+              <nz-col class="mx-2">
+                <div>文件: </div>
+              </nz-col>
+              <nz-col class="mx-2">
+                <div>类型: {{file.fileType}}</div>
+              </nz-col>
+              <nz-col class="mx-2">
+                <div>大小: {{file.fileSize}}</div>
+              </nz-col>
+            </nz-row>
+            <nz-row>
+              <nz-col class="mx-2">
+                <div>{{file.fileName}}</div>
+              </nz-col>
+            </nz-row>
+          </nz-col>
+        </nz-row>
+      </div>
+    </nz-card>
+  }@else{
+    <img nz-image class="show"
+         [nzFallback]="fallback"
+         [nzSrc]="file.fileContent!" alt="图片"/>
+  }
+}
+</div>
+<app-markdown-root [content]="chatModel?.content"></app-markdown-root>

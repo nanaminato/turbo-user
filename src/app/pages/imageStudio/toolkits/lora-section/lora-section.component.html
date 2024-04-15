@@ -1,0 +1,24 @@
+<nz-modal [(nzVisible)]="loraModalVisible"
+          [nzTitle]="'图像Lora模型选择'"
+          [nzFooter]="[]"
+          [nzWidth]="windowWidth!*0.6"
+          (nzOnOk)="loraModalVisible=false"
+          (nzOnCancel)="loraModalVisible=false"
+>
+  <ng-container *nzModalContent>
+    <app-novita-model-selector [modelType]="'lora'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
+  </ng-container>
+</nz-modal>
+<div
+  class="my-1 border-1-standard d-flex flex-row justify-content-between p-2 rounded-3">
+  <div class="d-flex flex-column">
+    <ion-label class="ion-color-light">ModelName</ion-label>
+    <span class="text-break fs-6 bold border-1-standard rounded-3 px-1" style="min-height: 30px;width: 100%;" (click)="loraModalVisible = true">{{lora!.model_name}}</span>
+  </div>
+  <div class="m-1 d-flex flex-column">
+    <ion-label  nz-tooltip [nzTooltipTitle]="'有效值区间['+min+','+max+'],float'">Strength</ion-label>
+    <nz-input-number [nzMin]="min" [nzMax]="max" [nzStep]="step"
+      [(ngModel)]="lora!.strength"></nz-input-number>
+  </div>
+  <button class="bg-light" (click)="emitDelete()"><span nz-icon nzType="close" nzTheme="outline"></span></button>
+</div>

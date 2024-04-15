@@ -1,0 +1,11 @@
+@media (max-width: 576px) {
+  .mini{
+    height: 60px;
+    border: 1px solid;
+  }
+}
+@media (min-width: 576px) {
+  .mini{
+    border: 0;
+  }
+}

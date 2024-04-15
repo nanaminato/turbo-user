@@ -1,0 +1,29 @@
+<div class="d-flex flex-row-reverse">
+  <nz-modal [(nzVisible)]="customAddVisible"
+            [nzTitle]="'模型管理器'"
+            [nzFooter]="[]"
+            (nzOnOk)="customAddVisible=false"
+            (nzOnCancel)="customAddVisible=false"
+  >
+    <ng-container *nzModalContent>
+      <app-model-custom-add
+        (displayModel)="newDisplayModelAction($event)"></app-model-custom-add>
+    </ng-container>
+  </nz-modal>
+  <button nz-button (click)="customAddVisible = true">添加可选模型</button>
+</div>
+@for (selected of selectedModels; track selected){
+  <button class="bg-info mx-2 my-1  p-1 rounded-2"
+    (click)="addOrRemove(selected)">{{selected.modelValue}}</button>
+}
+@for (selectable of selectableModels; track selectable){
+  @if (notSelected(selectable.modelValue)){
+    <button class="c-dark mx-2 my-1  p-1 rounded-2"
+            (click)="addOrRemove(selectable)">{{selectable.modelValue}}</button>
+  }@else{
+
+  }
+}
+<div class="d-flex flex-row-reverse">
+  <button nz-button class="rounded-2" (click)="save()">保存</button>
+</div>

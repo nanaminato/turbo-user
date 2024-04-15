@@ -1,0 +1,22 @@
+<div
+  class="my-1 border-1-standard d-flex flex-row justify-content-between p-2 rounded-3">
+  <div class="" style="width: 120px;">
+    <div nz-popover nzPopoverTitle="片段的帧数" nzPopoverContent="片段的帧数需要在8-64之间">Frames:</div>
+    <ion-input fill="outline" style="" [min]="8" [max]="64" [(ngModel)]="section!.frames"></ion-input>
+    <ion-select class="my-1" interface="popover" fill="outline" [(ngModel)]="section!.frames">
+      <ion-select-option [value]="8">8</ion-select-option>
+      <ion-select-option [value]="16">16</ion-select-option>
+      <ion-select-option [value]="24">24</ion-select-option>
+      <ion-select-option [value]="32">32</ion-select-option>
+      <ion-select-option [value]="40">40</ion-select-option>
+      <ion-select-option [value]="48">48</ion-select-option>
+      <ion-select-option [value]="56">56</ion-select-option>
+      <ion-select-option [value]="64">64</ion-select-option>
+    </ion-select>
+  </div>
+  <div style="width: 200px;">
+    <div>Prompt:</div>
+    <ion-textarea [rows]="4" fill="outline" [(ngModel)]="section!.prompt"></ion-textarea>
+  </div>
+  <button class="bg-light" (click)="emitDelete()"><span nz-icon nzType="close" nzTheme="outline"></span></button>
+</div>
