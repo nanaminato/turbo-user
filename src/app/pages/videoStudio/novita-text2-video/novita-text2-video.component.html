@@ -5,9 +5,13 @@
         <button nz-button class="m-2" (click)="showVideoMenu()">
           <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
         </button>
+        <div class="m-2">
+          <span>{{ 'universal.nsfw'|translate }}</span>
+          <nz-switch [(ngModel)]="nsfw"></nz-switch>
+        </div>
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
-        <ion-label>Video Model</ion-label>
+        <ion-label>{{'video.video-model' | translate}}</ion-label>
         <div class="d-flex mb-2">
           <ion-select interface="popover" fill="outline" [(ngModel)]="model">
             @for(videoModel of videoModelChoice; track videoModel){
@@ -15,7 +19,7 @@
             }
           </ion-select>
         </div>
-        <ion-label  nz-tooltip nzTooltipTitle="支持的帧数合计最大为128帧">Prompts</ion-label>
+        <ion-label  nz-tooltip nzTooltipTitle="支持的帧数合计最大为128帧">{{'video.prompt'|translate}}</ion-label>
         @for(section of framePrompts; track section){
           <app-section [section]="section" [id]="$index" (delete)="awareDelete($event)"></app-section>
         }
@@ -24,9 +28,9 @@
                   (click)="addNewSection()"
                   class="bg-light border-1-standard d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
         </div>
-        <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">Negative Prompt</ion-label>
+        <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'video.negative-prompt'|translate}}</ion-label>
         <ion-textarea auto-grow="true" fill="outline" [(ngModel)]="negative_prompt"></ion-textarea>
-        <ion-label>Width(256-1024)</ion-label>
+        <ion-label>{{'video.width'|translate}}(256-1024)</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-slider>
@@ -36,7 +40,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-label>Height(256-1024)</ion-label>
+        <ion-label>{{'video.height'|translate}}(256-1024)</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-slider>
@@ -45,9 +49,9 @@
             <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-input-number>
           </ion-col>
         </ion-row>
-        <app-lora-list [min]="0" [max]="1" [step]="0.1" [default]="0.5" [loras]="loras"></app-lora-list>
-        <app-embedding-list [embeddings]="embeddings"></app-embedding-list>
-        <ion-label>Guidance Scale</ion-label>
+        <app-lora-list [nsfw]="nsfw" [min]="0" [max]="1" [step]="0.1" [default]="0.5" [loras]="loras"></app-lora-list>
+        <app-embedding-list [nsfw]="nsfw" [embeddings]="embeddings"></app-embedding-list>
+        <ion-label>{{'video.guidance-scale'|translate}}</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
@@ -56,7 +60,7 @@
             <nz-input-number [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-input-number>
           </ion-col>
         </ion-row>
-        <ion-label>Steps</ion-label>
+        <ion-label>{{'video.steps'|translate}}</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
@@ -65,12 +69,12 @@
             <nz-input-number [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-input-number>
           </ion-col>
         </ion-row>
-        <ion-label>Seed</ion-label>
+        <ion-label>{{'video.seed'|translate}}</ion-label>
         <ion-label>
           <nz-input-number class="w-100" [(ngModel)]="seeds"></nz-input-number>
         </ion-label>
         <ion-label>
-          ClipSkip
+          {{'video.clip-skip'|translate}}
         </ion-label>
         <ion-row>
           <ion-col>
@@ -82,14 +86,14 @@
         </ion-row>
       </div>
       <div class="sticky-bottom">
-        <ion-button expand="block" (click)="generateVideo()">Generate</ion-button>
+        <ion-button expand="block" (click)="generateVideo()">{{'video.generate'|translate}}</ion-button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 flex-column overflow-y-scroll overflow-x-scroll">
       <div class="w-100 d-flex justify-content-center m-3">
         @if(loading){
           <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
-          视频正在生成中
+          {{'video.running' | translate}}
         }
       </div>
       <nz-card class="w-100 d-flex justify-content-center">

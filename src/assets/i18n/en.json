@@ -2,14 +2,27 @@
   "universal": {
     "save": "Save",
     "add": "Add",
+    "delete": "Delete",
+    "reload": "ReLoad",
     "aiChat": "AI Chat",
     "aiPainting": "AI Painting Studio",
     "aiVideo": "AI Video Studio",
     "storeHouse": "Store House",
     "generate": "Generate",
-    "noData": "No Data..."
+    "noData": "No Data...",
+    "image-studio": "Image Studio",
+    "video-studio": "Video Studio",
+    "nsfw": "nsfw"
+  },
+  "storeHouse": {
+    "task-id": "task id",
+    "task-type": "task type",
+    "date": "date",
+    "account-id": "account id",
+    "get-task-result": "Get Task Result"
   },
   "image": {
+    "running": "The picture is being generated, please wait...",
     "novita-text2img-lcm": "Novita Text to Image Lcm",
     "novita-img2img-lcm": "Novita Image to Image Lcm",
     "novita-text2img": "Novita Text to Image",
@@ -28,6 +41,27 @@
     "clip-skip": "clipSkip",
     "initial-image": "Initial Image",
     "sampler": "Sampler",
+    "loraSelector": "Lora Selector",
+    "modelSelector": "Model Selector",
+    "embeddingSelector": "Embedding Selector"
+  },
+
+  "video": {
+    "running": "Video is being generated....",
+    "novita-text2video": "Novita Text to Video",
+    "video-model": "video model",
+    "frames": "Frames",
+    "prompt": "prompt",
+    "negative-prompt": "negative prompt",
+    "width": "width",
+    "height": "height",
+    "loras": "Loras",
+    "embeddings": "embeddings",
+    "guidance-scale": "Guidance Scale",
+    "steps": "Steps",
+    "image-num": "Image Number",
+    "seed": "seed",
+    "clip-skip": "clipSkip",
     "loraSelector": "Lora Selector",
     "modelSelector": "Model Selector",
     "embeddingSelector": "Embedding Selector"

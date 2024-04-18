@@ -25,6 +25,7 @@ export class LoraListComponent {
   @Input() max!: number;
   @Input() step!: number;
   @Input() default!: number;
+  @Input() nsfw: boolean = false;
   constructor() { }
 
   addNewLora() {

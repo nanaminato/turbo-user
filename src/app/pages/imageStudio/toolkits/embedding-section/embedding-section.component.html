@@ -6,7 +6,7 @@
           (nzOnCancel)="embeddingModalVisible=false"
 >
   <ng-container *nzModalContent>
-    <app-novita-model-selector [modelType]="'embedding'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
+    <app-novita-model-selector [nsfw]="nsfw" [modelType]="'embedding'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
   </ng-container>
 </nz-modal>
 <div

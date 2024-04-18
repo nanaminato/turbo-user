@@ -71,6 +71,7 @@ export class SettingsComponent {
     this.loadProperties();
     this.configurationObserver.subscribe((configuration) => {
       this.configuration = configuration;
+      this.loadProperties();
       console.log("aware change");
       console.log(this.dynamicConfig);
     });

@@ -45,6 +45,7 @@ export class LoraSectionComponent  implements OnInit {
   @Input() min!: number;
   @Input() max!: number;
   @Input() step!: number;
+  @Input() nsfw: boolean = false;
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.windowWidth = event.target.innerWidth;

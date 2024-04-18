@@ -5,6 +5,7 @@ import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {NzPopoverDirective} from "ng-zorro-antd/popover";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-section',
@@ -16,7 +17,8 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     IonicModule,
     FormsModule,
     NzPopoverDirective,
-    NzTooltipDirective
+    NzTooltipDirective,
+    TranslateModule
   ]
 })
 export class SectionComponent  implements OnInit {

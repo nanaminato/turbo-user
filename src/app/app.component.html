@@ -15,9 +15,9 @@
           <div class="bg-theme sticky-bottom z-0">
             <ng-template #studios>
               <div class="w-100 d-flex flex-column">
-                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/chat"><img height="25" width="25" src="assets/icon/aichat.png">{{'universal.aiChat' | translate}}</button>
-                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/image-studio"><img height="25" width="25" src="assets/icon/aipainting.png">{{'universal.aiPainting' | translate}}</button>
-                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/video-studio"><img height="25" width="25" src="assets/icon/aivideo.png">{{'universal.aiVideo' | translate}}</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/chat"><img height="25" width="25" src="assets/icon/aichat_11zon.jpg">{{'universal.aiChat' | translate}}</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/image-studio"><img height="25" width="25" src="assets/icon/aipainting_11zon.jpg">{{'universal.aiPainting' | translate}}</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/video-studio"><img height="25" width="25" src="assets/icon/aivideo_11zon.jpg">{{'universal.aiVideo' | translate}}</button>
               </div>
             </ng-template>
             <ng-container *ngTemplateOutlet="studios"></ng-container>
@@ -46,12 +46,12 @@
     </ion-menu>
     <ion-menu menuId="image-menu" [disabled]="menuAble.imageDisable" contentId="main-content" type="overlay"
       >
-      <div class="p-0 m-0 d-flex flex-column h-100 z-2">
+      <div class="bg-theme p-0 m-0 d-flex flex-column h-100 z-2">
         <ion-chip color="primary" class="mt-4 mx-2">
           <ion-avatar>
-            <img src="assets/icon/image-studio.png">
+            <img src="assets/icon/image-studio_11zon.jpg">
           </ion-avatar>
-          <ion-label>Image Studio</ion-label>
+          <ion-label>{{'universal.image-studio' | translate}}</ion-label>
         </ion-chip>
 
         <div class="d-flex flex-column p-3">
@@ -73,15 +73,15 @@
     </ion-menu>
     <ion-menu menuId="video-menu" [disabled]="menuAble.videoDisable" contentId="main-content" type="overlay"
     >
-      <div class="p-0 m-0 d-flex flex-column h-100 z-2">
+      <div class="bg-theme p-0 m-0 d-flex flex-column h-100 z-2">
         <ion-chip color="primary" class="mt-4 mx-2">
           <ion-avatar>
-            <img src="assets/icon/image-studio.png">
+            <img src="assets/icon/image-studio_11zon.jpg">
           </ion-avatar>
-          <ion-label>Video Studio</ion-label>
+          <ion-label>{{'universal.video-studio' | translate}}</ion-label>
         </ion-chip>
         <div class="d-flex flex-column p-3">
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/novita-text2video']">Novita文字生成视频</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/novita-text2video']">{{'video.novita-text2video'|translate}}</button>
           <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/task-lib']">{{'universal.storeHouse'| translate}}</button>
         </div>
       </div>

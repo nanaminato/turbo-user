@@ -1,7 +1,7 @@
 <div class="image-gallery w-100 h-100 overflow-y-scroll overflow-x-scroll">
   @if(loading){
     <div class="rounded-3 m-2 d-flex flex-row border-1 p-2">
-      图片正在生成中，请稍后
+      {{'image.running' | translate}}
       <nz-spin nzSimple></nz-spin>
     </div>
   }

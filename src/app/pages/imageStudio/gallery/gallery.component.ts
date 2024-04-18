@@ -5,6 +5,7 @@ import {NgClass, NgForOf} from "@angular/common";
 import {IonicModule} from "@ionic/angular";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-gallery',
@@ -17,7 +18,8 @@ import {NzSpinComponent} from "ng-zorro-antd/spin";
     NgForOf,
     IonicModule,
     NzCardComponent,
-    NzSpinComponent
+    NzSpinComponent,
+    TranslateModule
   ]
 })
 export class GalleryComponent  implements OnInit {

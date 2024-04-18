@@ -10,9 +10,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {GalleryComponent} from "../gallery/gallery.component";
 import {Embedding, Lora, NovitaText2LcmResponse, TaskImage, UrlImage} from "../../../models/images";
 import {NovitaService} from "../../../services/fetch_services/novita.service";
-import {NzMessageService} from "ng-zorro-antd/message";
 import {CheckParameter, NovitaInit} from "../toolkits";
-import {NzModalModule} from "ng-zorro-antd/modal";
 import {ImageModelComponent} from "../toolkits/image-model/image-model.component";
 import {LoraListComponent} from "../toolkits/lora-list/lora-list.component";
 import {EmbeddingListComponent} from "../toolkits/embedding-list/embedding-list.component";
@@ -21,6 +19,7 @@ import {UniversalService} from "../../../services/db-services/universal.service"
 import {AuthService} from "../../../auth_module";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
   selector: 'app-image-main',
@@ -40,7 +39,8 @@ import {TranslateModule} from "@ngx-translate/core";
     ImageModelComponent,
     LoraListComponent,
     EmbeddingListComponent,
-    TranslateModule
+    TranslateModule,
+    NzSwitchComponent
   ]
 })
 export class NovitaText2ImageLcmComponent implements OnInit, DoCheck,NovitaInit,CheckParameter {
@@ -61,6 +61,7 @@ export class NovitaText2ImageLcmComponent implements OnInit, DoCheck,NovitaInit,
   embeddings: Embedding[] = [];
 
   loading: boolean = false;
+  nsfw: boolean = false;
 
   constructor(private menuAbleService: MenuAbleService,
               private menuCtrl: MenuController,

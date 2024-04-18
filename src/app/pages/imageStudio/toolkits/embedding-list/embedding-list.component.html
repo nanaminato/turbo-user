@@ -1,7 +1,7 @@
 <div class="w-100">
   <ion-label>Embeddings</ion-label>
   @for(embedding of embeddings; track embedding){
-    <app-embedding-section [embedding]="embedding" [index]="$index" (delete)="awareDelete($event)"></app-embedding-section>
+    <app-embedding-section [nsfw]="nsfw" [embedding]="embedding" [index]="$index" (delete)="awareDelete($event)"></app-embedding-section>
   }
   <div class="d-flex justify-content-center my-1">
     <button style="width: 100px;" (click)="addNewEmbedding()"

@@ -9,7 +9,7 @@
           (nzOnCancel)="modelSelectorVisible=false"
 >
   <ng-container *nzModalContent>
-    <app-novita-model-selector [modelType]="'image'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
+    <app-novita-model-selector [nsfw]="nsfw" [modelType]="'image'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
   </ng-container>
 </nz-modal>
 <div class="d-flex mb-2">

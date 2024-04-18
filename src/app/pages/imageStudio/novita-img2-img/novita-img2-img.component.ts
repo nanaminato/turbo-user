@@ -25,6 +25,7 @@ import {GenerateTask} from "../../../models/media/generateTask";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
   selector: 'app-novita-img2-img',
@@ -49,7 +50,8 @@ import {TranslateModule} from "@ngx-translate/core";
     EmbeddingListComponent,
     LoraListComponent,
     NzTooltipDirective,
-    TranslateModule
+    TranslateModule,
+    NzSwitchComponent
   ]
 })
 export class NovitaImg2ImgComponent  implements OnInit, DoCheck, NovitaInit, CheckParameter  {
@@ -251,6 +253,7 @@ export class NovitaImg2ImgComponent  implements OnInit, DoCheck, NovitaInit, Che
     return "";
   }
   selectedImage: string | undefined = "assets/placeholders/no.png";
+  nsfw: boolean = false;
 
   selectImage() {
     this.fileInput!.nativeElement.click();

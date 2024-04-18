@@ -14,19 +14,24 @@ export class NumerService{
   getChatModels(){
     return this.http.get<DisplayModel[]>(`${this.provider.apiUrl}api/ai/models`);
   }
-  getLoraModels(){
-    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${this.safe}media/lora`);
+  getLoraModels(nsfw: boolean = false){
+    let safe = nsfw?'':this.safe;
+    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${safe}media/lora`);
   }
-  getEmbeddingModels(){
-    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${this.safe}media/embedding`);
+  getEmbeddingModels(nsfw: boolean = false){
+    let safe = nsfw?'':this.safe;
+    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${safe}media/embedding`);
   }
-  getImageModels(){
-    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${this.safe}media/image`);
+  getImageModels(nsfw: boolean = false){
+    let safe = nsfw?'':this.safe;
+    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${safe}media/image`);
   }
-  getVaeModels(){
-    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${this.safe}media/vae`);
+  getVaeModels(nsfw: boolean = false){
+    let safe = nsfw?'':this.safe;
+    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${safe}media/vae`);
   }
-  getVideoModels(){
-    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${this.safe}media/video`);
+  getVideoModels(nsfw: boolean = false){
+    let safe = nsfw?'':this.safe;
+    return this.http.get<NovitaModel[]>(`${this.provider.apiUrl}api/${safe}media/video`);
   }
 }

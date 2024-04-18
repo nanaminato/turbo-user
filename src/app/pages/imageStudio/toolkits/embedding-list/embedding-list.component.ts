@@ -19,6 +19,7 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 })
 export class EmbeddingListComponent  implements OnInit {
   @Input() embeddings: Embedding[] | undefined;
+  @Input() nsfw: boolean = false;
 
   constructor() { }
 

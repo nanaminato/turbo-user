@@ -24,6 +24,8 @@ import {NovitaInit} from "../../imageStudio/toolkits";
 import {GenerateTask} from "../../../models/media/generateTask";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
+import {TranslateModule} from "@ngx-translate/core";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
   selector: 'app-novita-text2-video',
@@ -44,6 +46,8 @@ import {NzSpinComponent} from "ng-zorro-antd/spin";
     NzTooltipDirective,
     NzCardComponent,
     NzSpinComponent,
+    TranslateModule,
+    NzSwitchComponent,
   ]
 })
 export class NovitaText2VideoComponent implements DoCheck, NovitaInit {
@@ -230,6 +234,7 @@ export class NovitaText2VideoComponent implements DoCheck, NovitaInit {
     });
   }
   showVideo: boolean = true;
+  nsfw: boolean = false;
   showVideoMenu() {
     this.menuCtrl.open("video-menu");
   }

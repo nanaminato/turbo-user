@@ -6,7 +6,7 @@
           (nzOnCancel)="loraModalVisible=false"
 >
   <ng-container *nzModalContent>
-    <app-novita-model-selector [modelType]="'lora'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
+    <app-novita-model-selector [nsfw]="nsfw" [modelType]="'lora'" (selection)="selectImageModelAction($event)"></app-novita-model-selector>
   </ng-container>
 </nz-modal>
 <div

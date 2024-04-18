@@ -23,6 +23,7 @@ import {AuthService} from "../../../auth_module";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
   selector: 'app-novita-img2-image-lcm',
@@ -47,7 +48,8 @@ import {TranslateModule} from "@ngx-translate/core";
     EmbeddingListComponent,
     LoraListComponent,
     NzTooltipDirective,
-    TranslateModule
+    TranslateModule,
+    NzSwitchComponent
   ]
 })
 export class NovitaImg2ImageLcmComponent  implements OnInit, DoCheck, NovitaInit,CheckParameter{
@@ -221,6 +223,7 @@ export class NovitaImg2ImageLcmComponent  implements OnInit, DoCheck, NovitaInit
     fileInput: ElementRef | undefined;
 
   selectedImage: string | undefined = "assets/placeholders/no.png";
+  nsfw: boolean = false;
   get trimImage(){
     if(this.selectedImage?.startsWith("data")){
       return this.selectedImage?.substring(this.selectedImage!.indexOf(",")+1);

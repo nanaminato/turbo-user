@@ -5,6 +5,8 @@ import {AuthService} from "../../../auth_module";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {TaskItemComponent} from "./task-item/task-item.component";
 import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzNotificationService} from "ng-zorro-antd/notification";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-task-lib',
@@ -14,25 +16,27 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
   imports: [
     NzCardComponent,
     TaskItemComponent,
-    NzButtonComponent
+    NzButtonComponent,
+    TranslateModule
 
   ]
 })
 export class TaskLibComponent  implements OnInit {
   generateTasks: GenerateTask[] = [];
   constructor(private universalService: UniversalService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private notification: NzNotificationService) {
 
   }
   loadGenerateTasks(){
     this.universalService.getAllGenerateTaskOfUser(this.authService.user!.id).then(tasks=>{
       this.generateTasks.length = 0;
       this.generateTasks.push(...(tasks as GenerateTask[]));
+      this.notification.success("加载成功","");
     })
   }
   ngOnInit() {
     this.loadGenerateTasks();
-
   }
 
   awareDeleteItem($event: number) {

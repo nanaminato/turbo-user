@@ -2,14 +2,27 @@
   "universal": {
     "save": "保存",
     "add":"添加",
+    "delete": "删除",
+    "reload": "重新加载",
     "aiChat": "AI对话",
     "aiPainting": "AI绘图工作室",
     "aiVideo": "AI视频工作室",
     "storeHouse": "仓库",
     "generate": "生成",
-    "noData": "没有数据哦"
+    "noData": "没有数据哦",
+    "image-studio": "图像工作室",
+    "video-studio": "视频工作室",
+    "nsfw": "无内容审查"
+  },
+  "storeHouse": {
+    "task-id": "生成任务Id",
+    "task-type": "生成类型",
+    "date": "生成日期",
+    "account-id": "账户Id",
+    "get-task-result": "获取任务结果"
   },
   "image": {
+    "running": "图片正在生成中，请稍后...",
     "novita-text2img-lcm": "Novita文字生成图片Lcm",
     "novita-img2img-lcm": "Novita图片生成图片Lcm",
     "novita-text2img": "Novita文字生成图片",
@@ -28,6 +41,26 @@
     "clip-skip": "clipSkip",
     "initial-image": "初始图片",
     "sampler": "采样器",
+    "loraSelector": "图像Lora模型选择器",
+    "modelSelector": "图像生成模型选择器",
+    "embeddingSelector": "图像嵌入模型选择器"
+  },
+  "video": {
+    "running": "视频正在生成中...",
+    "novita-text2video": "Novita文字生成视频",
+    "video-model": "视频模型",
+    "frames": "帧数",
+    "prompt": "提示词",
+    "negative-prompt": "反向提示词",
+    "width": "宽度",
+    "height": "高度",
+    "loras": "Loras",
+    "embeddings": "嵌入",
+    "guidance-scale": "Guidance Scale",
+    "steps": "Steps",
+    "image-num": "生成数量",
+    "seed": "种子值",
+    "clip-skip": "clipSkip",
     "loraSelector": "图像Lora模型选择器",
     "modelSelector": "图像生成模型选择器",
     "embeddingSelector": "图像嵌入模型选择器"

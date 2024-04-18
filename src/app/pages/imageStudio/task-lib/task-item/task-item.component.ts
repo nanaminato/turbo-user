@@ -8,6 +8,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {UniversalService} from "../../../../services/db-services/universal.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-task-item',
@@ -19,7 +20,8 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
     NzImageDirective,
     NzImageModule,
     NzButtonComponent,
-    NzPopconfirmDirective
+    NzPopconfirmDirective,
+    TranslateModule
   ]
 })
 export class TaskItemComponent {

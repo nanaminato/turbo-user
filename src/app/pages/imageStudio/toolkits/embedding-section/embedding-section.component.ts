@@ -47,6 +47,7 @@ export class EmbeddingSectionComponent  implements OnInit {
     this.windowWidth = window.innerWidth;
   }
   windowWidth: number | undefined;
+  @Input() nsfw:boolean = false;
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.windowWidth = event.target.innerWidth;

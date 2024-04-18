@@ -11,7 +11,6 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {GalleryComponent} from "../gallery/gallery.component";
 import {samplers} from "../../../models/images/fields/samplers";
-import {NzMessageService} from "ng-zorro-antd/message";
 import {TaskResult} from "../../../models/images";
 import {CheckParameter, NovitaInit} from "../toolkits";
 import {ModelCenterComponent} from "../../settings/model-center/model-center.component";
@@ -27,6 +26,7 @@ import {UniversalService} from "../../../services/db-services/universal.service"
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
   selector: 'app-novita-text2-img',
@@ -50,7 +50,8 @@ import {TranslateModule} from "@ngx-translate/core";
     EmbeddingListComponent,
     LoraListComponent,
     NzTooltipDirective,
-    TranslateModule
+    TranslateModule,
+    NzSwitchComponent
   ]
 })
 export class NovitaText2ImgComponent  implements OnInit,DoCheck,
@@ -72,6 +73,7 @@ export class NovitaText2ImgComponent  implements OnInit,DoCheck,
   loras: Lora[] = [];
   embeddings: Embedding[] = [];
   loading: boolean = false;
+  nsfw: boolean = false;
   constructor(private menuAbleService: MenuAbleService,
               private menuCtrl: MenuController,
               private novitaService: NovitaService,

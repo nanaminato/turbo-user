@@ -25,6 +25,8 @@ export class NovitaModelSelectorComponent  implements OnInit {
   set modelType(type: string){
     this.selectModels(type);
   }
+  @Input()
+  nsfw: boolean = false;
   @Output()
   selection = new EventEmitter<NovitaModel>();
   novitaModels: NovitaModel[] = [];
@@ -35,7 +37,7 @@ export class NovitaModelSelectorComponent  implements OnInit {
   private selectModels(type: string) {
     switch (type){
       case "vae":
-        this.numerService.getVaeModels().subscribe({
+        this.numerService.getVaeModels(this.nsfw).subscribe({
           next: models=>{
             this.novitaModels.length = 0;
             models.forEach(model=>{
@@ -48,7 +50,7 @@ export class NovitaModelSelectorComponent  implements OnInit {
         })
         break;
       case "lora":
-        this.numerService.getLoraModels().subscribe({
+        this.numerService.getLoraModels(this.nsfw).subscribe({
           next: models=>{
             this.novitaModels.length = 0;
             models.forEach(model=>{
@@ -61,7 +63,7 @@ export class NovitaModelSelectorComponent  implements OnInit {
         })
         break;
       case "embedding":
-        this.numerService.getEmbeddingModels().subscribe({
+        this.numerService.getEmbeddingModels(this.nsfw).subscribe({
           next: models=>{
             this.novitaModels.length = 0;
             models.forEach(model=>{
@@ -74,7 +76,7 @@ export class NovitaModelSelectorComponent  implements OnInit {
         })
         break;
       case "image":
-        this.numerService.getImageModels().subscribe({
+        this.numerService.getImageModels(this.nsfw).subscribe({
           next: models=>{
             this.novitaModels.length = 0;
             models.forEach(model=>{
@@ -87,7 +89,7 @@ export class NovitaModelSelectorComponent  implements OnInit {
         })
         break;
       case "video":
-        this.numerService.getVideoModels().subscribe({
+        this.numerService.getVideoModels(this.nsfw).subscribe({
           next: models=>{
             this.novitaModels.length = 0;
             models.forEach(model=>{

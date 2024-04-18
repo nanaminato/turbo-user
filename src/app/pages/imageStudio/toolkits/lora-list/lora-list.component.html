@@ -1,7 +1,7 @@
 <div class="w-100">
   <ion-label>Loras</ion-label>
   @for(lora of loras; track lora){
-    <app-lora-section [min]="min" [max]="max" [step]="step" [lora]="lora" [index]="$index" (delete)="awareDelete($event)"></app-lora-section>
+    <app-lora-section [nsfw]="nsfw" [min]="min" [max]="max" [step]="step" [lora]="lora" [index]="$index" (delete)="awareDelete($event)"></app-lora-section>
   }
   <div class="d-flex justify-content-center my-1">
     <button style="width: 100px;" (click)="addNewLora()"

@@ -2,9 +2,15 @@
   <div class="w-100 d-flex flex-row">
     <div class="h-100 bg-light flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 316px;">
       <div class="sticky-top px-3">
-        <button nz-button class="m-2" (click)="showImageMenu()">
-          <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
-        </button>
+        <div class="d-flex flex-row">
+          <button nz-button class="m-2" (click)="showImageMenu()">
+            <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
+          </button>
+          <div class="m-2">
+            <span>{{ 'universal.nsfw'|translate }}</span>
+            <nz-switch [(ngModel)]="nsfw"></nz-switch>
+          </div>
+        </div>
         <app-image-model [model]="model" (ngModelChange)="modelChange($event)"></app-image-model>
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
@@ -20,8 +26,8 @@
         <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'image.negative-prompt'|translate}}</ion-label>
         <ion-textarea auto-grow="true" fill="outline" [(ngModel)]="negative_prompt">
         </ion-textarea>
-        <app-lora-list [min]="-10" [max]="10" [step]="0.1" [default]="1" [loras]="loras"></app-lora-list>
-        <app-embedding-list [embeddings]="embeddings"></app-embedding-list>
+        <app-lora-list [nsfw]="nsfw" [min]="-10" [max]="10" [step]="0.1" [default]="1" [loras]="loras"></app-lora-list>
+        <app-embedding-list [nsfw]="nsfw" [embeddings]="embeddings"></app-embedding-list>
         <ion-label>{{'image.guidance-scale'|translate}}</ion-label>
         <ion-row>
           <ion-col>
