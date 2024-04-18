@@ -2,12 +2,13 @@ import {Injectable} from "@angular/core";
 import * as signalR from "@microsoft/signalr";
 import {ServiceProvider} from "../roots";
 import {AuthService} from "./auth.service";
-import {ChatHistory, ChatModel, Message} from "../models";
+import {ChatHistory, ChatModel} from "../models";
 import {ChatModule} from "../pages/chat.module";
 ///https://www.npmjs.com/package/@microsoft/signalr
 @Injectable({
   providedIn: "root"
 })
+// [obsolete]
 export class MessageService{
   private hubConnection: signalR.HubConnection | undefined;
   constructor(private provider: ServiceProvider,private auth: AuthService) {

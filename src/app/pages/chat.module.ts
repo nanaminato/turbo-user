@@ -18,12 +18,12 @@ import {Configuration} from "../models";
   providers: [
     ConfigurationResolver,
     SystemPromptResolver,
-    {
-      provide: configurationChangeSubject, useValue: new Subject<Configuration>()
-    },
-    {
-      provide: systemPromptChangeSubject, useValue: new Subject<boolean>()
-    }
+    // {
+    //   provide: configurationChangeSubject, useValue: new Subject<Configuration>()
+    // },
+    // {
+    //   provide: systemPromptChangeSubject, useValue: new Subject<boolean>()
+    // }
   ]
 })
 export class ChatModule {

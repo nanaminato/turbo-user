@@ -26,6 +26,7 @@ import {AuthService} from "../../../auth_module";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-novita-text2-img',
@@ -48,7 +49,8 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     ImageModelComponent,
     EmbeddingListComponent,
     LoraListComponent,
-    NzTooltipDirective
+    NzTooltipDirective,
+    TranslateModule
   ]
 })
 export class NovitaText2ImgComponent  implements OnInit,DoCheck,

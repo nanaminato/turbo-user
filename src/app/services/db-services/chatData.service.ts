@@ -4,7 +4,7 @@ import {DatasModule} from "./datas.module";
 import {ChatHistory, ChatHistoryModel, ChatListModel, ChatModel} from "src/app/models";
 
 @Injectable({
-  providedIn: DatasModule
+  providedIn: "root"
 })
 export class ChatDataService{
   constructor(private dbService: DbService) {

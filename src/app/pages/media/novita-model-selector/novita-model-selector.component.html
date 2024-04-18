@@ -1,7 +1,7 @@
 <div class="w-100 d-flex flex-row justify-content-evenly flex-wrap overflow-y-scroll"
   >
   @if(novitaModels.length===0){
-    没有数据哦
+    {{'universal.noData'|translate}}
   }@else{
     @for(model of novitaModels; track model){
       <div class="position-relative m-1" (click)="triggerSelect(model)"

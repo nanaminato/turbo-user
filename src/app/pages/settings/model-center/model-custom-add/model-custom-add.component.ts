@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {DisplayModel} from "../../../../models";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-model-custom-add',
@@ -8,7 +9,8 @@ import {DisplayModel} from "../../../../models";
   styleUrls: ['./model-custom-add.component.scss'],
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    TranslateModule
 
   ]
 })

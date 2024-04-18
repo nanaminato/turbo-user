@@ -8,6 +8,7 @@ import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-embedding-section',
@@ -22,7 +23,8 @@ import {FormsModule} from "@angular/forms";
     NzModalComponent,
     NzTooltipDirective,
     FormsModule,
-    NzModalContentDirective
+    NzModalContentDirective,
+    TranslateModule
 
   ]
 })

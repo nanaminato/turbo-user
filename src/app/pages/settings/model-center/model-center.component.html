@@ -1,6 +1,6 @@
 <div class="d-flex flex-row-reverse">
   <nz-modal [(nzVisible)]="customAddVisible"
-            [nzTitle]="'模型管理器'"
+            [nzTitle]="'settings.addOptionalModel' | translate"
             [nzFooter]="[]"
             (nzOnOk)="customAddVisible=false"
             (nzOnCancel)="customAddVisible=false"
@@ -10,7 +10,7 @@
         (displayModel)="newDisplayModelAction($event)"></app-model-custom-add>
     </ng-container>
   </nz-modal>
-  <button nz-button (click)="customAddVisible = true">添加可选模型</button>
+  <button nz-button (click)="customAddVisible = true">{{ 'settings.addOptionalModel' | translate }}</button>
 </div>
 @for (selected of selectedModels; track selected){
   <button class="bg-info mx-2 my-1  p-1 rounded-2"
@@ -25,5 +25,5 @@
   }
 }
 <div class="d-flex flex-row-reverse">
-  <button nz-button class="rounded-2" (click)="save()">保存</button>
+  <button nz-button class="rounded-2" (click)="save()">{{'universal.save'|translate}}</button>
 </div>

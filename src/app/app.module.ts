@@ -22,6 +22,18 @@ import {ChatModule} from "./pages/chat.module";
 import {AccountLabelComponent} from "./pages/accounts/account-label/account-label.component";
 import {SignInPageComponent} from "./pages/accounts/sign-in-page/sign-in-page.component";
 import {TokenInterceptorService} from "./roots";
+import {
+  backChatHistorySubject,
+  chatSessionSubject,
+  configurationChangeSubject, lastSessionToken, sizeReportToken,
+  systemPromptChangeSubject
+} from "./injection_tokens";
+import {Subject} from "rxjs";
+import {ChatHistoryTitle, Configuration, LastSessionModel} from "./models";
+import {ConfigurationResolver} from "./services/db-services";
+import {SystemPromptResolver} from "./services/db-services/system-prompt-resolver.service";
+import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "./services/normal-services";
+import {historyChangeSubject, loginSubject} from "./injection_tokens/subject.data";
 registerLocaleData(zh);
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -79,6 +91,35 @@ export function HttpLoaderFactory(http: HttpClient) {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
+    },
+    {
+      provide: configurationChangeSubject, useValue: new Subject<Configuration>()
+    },
+    ConfigurationResolver,
+    SystemPromptResolver,
+    ThemeSwitcherService,
+    DynamicConfigService,
+    SizeReportService,
+    {
+      provide: chatSessionSubject,useValue: new Subject<number>(),
+    },
+    {
+      provide: backChatHistorySubject, useValue: new Subject<ChatHistoryTitle>()
+    },
+    {
+      provide: systemPromptChangeSubject, useValue: new Subject<boolean>()
+    },
+    {
+      provide: loginSubject, useValue: new Subject<boolean>()
+    },
+    {
+      provide: historyChangeSubject, useValue: new Subject<boolean>()
+    },
+    {
+      provide: sizeReportToken, useValue: new SizeReportService(),
+    },
+    {
+      provide: lastSessionToken, useValue: new LastSessionModel(),
     },
     //base
 

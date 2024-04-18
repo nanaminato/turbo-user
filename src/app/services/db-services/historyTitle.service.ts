@@ -4,7 +4,7 @@ import {DatasModule} from "./datas.module";
 import {ChatHistoryTitle} from "../../models";
 
 @Injectable({
-  providedIn: DatasModule
+  providedIn: "root"
 })
 export class HistoryTitleService{
   constructor(private dbService: DbService) {

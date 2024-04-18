@@ -6,6 +6,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {ModelCustomAddComponent} from "./model-custom-add/model-custom-add.component";
 import {UniversalService} from "../../../services/db-services/universal.service";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-model-center',
@@ -16,7 +17,8 @@ import {UniversalService} from "../../../services/db-services/universal.service"
     NzButtonComponent,
     NzModalComponent,
     NzModalContentDirective,
-    ModelCustomAddComponent
+    ModelCustomAddComponent,
+    TranslateModule
   ]
 })
 export class ModelCenterComponent  implements OnInit {

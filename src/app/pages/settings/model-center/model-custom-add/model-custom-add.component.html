@@ -1,12 +1,12 @@
 <div class="form-group">
-  <label>model name</label>
+  <label>{{ 'settings.modelName' | translate }}</label>
   <input class="form-control" [(ngModel)]="modelName">
 </div>
 <div class="form-group">
-  <label>model value</label> 
+  <label>{{ 'settings.modelValue' | translate }}</label>
   <input class="form-control" [(ngModel)]="modelValue">
 </div>
-<div class="d-flex flex-row-reverse">
-  <button class="btn btn-primary" (click)="outerTransfer()">添加</button>
+<div class="d-flex mt-2 flex-row-reverse">
+  <button class="btn btn-primary" (click)="outerTransfer()">{{'universal.add'| translate}}</button>
 
 </div>

@@ -43,35 +43,7 @@ import {MenuAbleService} from "./services/normal-services/menu-able.service";
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   providers: [
-    ConfigurationResolver,
-    SystemPromptResolver,
-    ThemeSwitcherService,
-    DynamicConfigService,
-    SizeReportService,
-    {
-      provide: chatSessionSubject,useValue: new Subject<number>(),
-    },
-    {
-      provide: backChatHistorySubject, useValue: new Subject<ChatHistoryTitle>()
-    },
-    {
-      provide: configurationChangeSubject, useValue: new Subject<Configuration>()
-    },
-    {
-      provide: systemPromptChangeSubject, useValue: new Subject<boolean>()
-    },
-    {
-      provide: loginSubject, useValue: new Subject<boolean>()
-    },
-    {
-      provide: historyChangeSubject, useValue: new Subject<boolean>()
-    },
-    {
-      provide: sizeReportToken, useValue: new SizeReportService(),
-    },
-    {
-      provide: lastSessionToken, useValue: new LastSessionModel(),
-    },
+
   ]
 })
 export class AppComponent implements OnInit{
@@ -104,8 +76,10 @@ export class AppComponent implements OnInit{
       this.provider.apiUrl = config.apiUrl;
     })
     this.initThemeAndLanguage();
-    this.configObservable.subscribe(()=>{
-      this.initThemeAndLanguage();
+    this.configObservable.subscribe((config: Configuration)=>{
+      console.log("aware config app");
+      this.configuration = config;
+      this.initThemeAndLanguage(true);
     });
     this.backHistoryObservable.subscribe(async (historyTitle) => {
       if(historyTitle.dataId===MagicDataId) return;
@@ -121,10 +95,14 @@ export class AppComponent implements OnInit{
       }
     });
   }
-  initThemeAndLanguage(){
-    this.configuration = this.configurationService.configuration!;
-    let configDynamic = this.dynamicConfigService.getDynamicConfig(this.configuration);
+  initThemeAndLanguage(direct: boolean = false){
+    if(!direct){
+      this.configuration = this.configurationService.configuration!;
+    }
+    let configDynamic = this.dynamicConfigService.getDynamicConfig(this.configuration!);
     this.dynamicConfigService.initDynamic(configDynamic);
+    console.log(configDynamic);
+    console.log(new Date());
   }
   async ngOnInit() {
     this.sizeReportService.width = window.innerWidth;

@@ -4,6 +4,7 @@ import {NumerService} from "../../../services/fetch_services/numer.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NgOptimizedImage} from "@angular/common";
 import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-novita-model-selector',
@@ -13,7 +14,8 @@ import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
   imports: [
     NgOptimizedImage,
     NzImageDirective,
-    NzImageModule
+    NzImageModule,
+    TranslateModule
   ]
 })
 export class NovitaModelSelectorComponent  implements OnInit {

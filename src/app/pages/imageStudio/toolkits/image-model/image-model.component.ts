@@ -3,6 +3,7 @@ import {NzModalComponent, NzModalContentDirective, NzModalModule} from "ng-zorro
 import {IonicModule} from "@ionic/angular";
 import {NovitaModelSelectorComponent} from "../../../media/novita-model-selector/novita-model-selector.component";
 import {NovitaModel} from "../../../../models/media";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-image-model',
@@ -14,7 +15,8 @@ import {NovitaModel} from "../../../../models/media";
     IonicModule,
     NovitaModelSelectorComponent,
     NzModalContentDirective,
-    NzModalModule
+    NzModalModule,
+    TranslateModule
   ]
 })
 export class ImageModelComponent  implements OnInit {

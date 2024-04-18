@@ -370,7 +370,11 @@ export class ChatMainComponent implements OnDestroy{
       this.notification.error("不允许的操作","不要重新生成 系统级prompt。");
       return;
     }
-    await this.parseAllFile(reModel);//!!!!
+    let parseStatus = await this.parseAllFile(reModel);//!!!!!
+
+    if(!parseStatus){
+      return;
+    }
     let generateModel: ChatModel | undefined;
     if(reModel.role===AssistantRole){
       generateModel = reModel;
@@ -481,11 +485,12 @@ export class ChatMainComponent implements OnDestroy{
       onlyOne: true
     };
 
-    this.configurationObserver.subscribe((change)=>{
-      if(change){
-        // 响应更改
-        this.configuration = this.configurationService.configuration!;
-      }
+    this.configurationObserver.subscribe((configuration)=>{
+      // if(change){
+      //   // 响应更改
+      //   this.configuration = this.configurationService.configuration!;
+      // }
+      this.configuration = configuration;
     });
     // 初始化configuration
     this.configuration = this.configurationService.configuration!;

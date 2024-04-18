@@ -2,14 +2,14 @@ import {Inject, Injectable} from "@angular/core";
 import {DbService} from "./db.service";
 import {Subject} from "rxjs";
 import {DatasModule} from "./datas.module";
-import {Configuration, DisplayModel} from "../../models";
+import {Configuration} from "../../models";
 import {configurationChangeSubject} from "../../injection_tokens";
 import {RequestType} from "../../models/enumerates";
 import {DisplayModelGenerator} from "../../models";
 import {displayModels} from "../../models";
 export const timeToWait = 1;
 @Injectable({
-  providedIn: DatasModule
+  providedIn: "root"
 })
 export class ConfigurationService {
   public configuration: Configuration | undefined;
@@ -31,6 +31,7 @@ export class ConfigurationService {
           console.info("系统配置加载成功")
           this.configuration = config;
           this.configurationObserver.next(this.configuration);
+          console.log("next to observer")
         }else{
           this.dbService.setConfiguration(this.configuration!);
         }
@@ -69,21 +70,6 @@ export class ConfigurationService {
       }
     });
   }
-  // "gpt-3.5-turbo-1106",
-  // "gpt-3.5-turbo",
-  // "gemini-pro",
-  // "gemini-pro_o",
-  // "claude-2.1",
-  // "claude-3-opus-20240229",
-  // "claude-3-sonnet-20240229",
-  // "claude-3-haiku-20240307",
-  // "gpt-3.5-turbo-16k",
-  // "gpt-3.5-turbo-instruct",
-  // "gpt-4-1106-preview",
-  // "gpt-4",
-  // "gpt-4-0613",
-  // "gpt-4-32k",
-  // "gpt-4-32k-0613",
   public default_configuration(): Configuration {
     var generator = new DisplayModelGenerator();
     return {

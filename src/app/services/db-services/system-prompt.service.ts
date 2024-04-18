@@ -7,7 +7,7 @@ import {SystemPromptItem} from "../../models";
 import {systemPromptChangeSubject} from "../../injection_tokens";
 
 @Injectable({
-  providedIn: DatasModule
+  providedIn: "root"
 })
 export class SystemPromptService {
   public systemPrompts: SystemPromptItem[] | undefined;

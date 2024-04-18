@@ -1,8 +1,8 @@
 <div class="d-flex p-2">
-  <ion-label>Novita Model</ion-label>
+  <ion-label>{{'image.novita-model'|translate}}</ion-label>
 </div>
 <nz-modal [(nzVisible)]="modelSelectorVisible"
-          [nzTitle]="'图像生成模型选择'"
+          [nzTitle]="'image.modelSelector'|translate"
           [nzFooter]="[]"
           [nzWidth]="windowWidth!*0.6"
           (nzOnOk)="modelSelectorVisible=false"

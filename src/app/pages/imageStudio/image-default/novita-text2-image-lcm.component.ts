@@ -20,6 +20,7 @@ import {NovitaCheck} from "../../../services/handlers";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {AuthService} from "../../../auth_module";
 import {NzNotificationService} from "ng-zorro-antd/notification";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-image-main',
@@ -38,7 +39,8 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
     GalleryComponent,
     ImageModelComponent,
     LoraListComponent,
-    EmbeddingListComponent
+    EmbeddingListComponent,
+    TranslateModule
   ]
 })
 export class NovitaText2ImageLcmComponent implements OnInit, DoCheck,NovitaInit,CheckParameter {

@@ -8,21 +8,21 @@
         <app-image-model [model]="model" (ngModelChange)="modelChange($event)"></app-image-model>
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
-        <ion-label>Initial Image</ion-label>
+        <ion-label>{{'image.initial-image'|translate}}</ion-label>
         <div class="upload-area rounded-3" #imageContainer (click)="selectImage()">
           <img class="upload-img" *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" >
         </div>
         <input type="file" accept="image/*" (change)="handleImageChange($event)" #fileInput hidden>
-        <ion-label>Prompt</ion-label>
+        <ion-label>{{'image.prompt'|translate}}</ion-label>
         <ion-textarea
           auto-grow="true" fill="outline" [(ngModel)]="prompt"
         ></ion-textarea>
-        <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">Negative Prompt</ion-label>
+        <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'image.negative-prompt'|translate}}</ion-label>
         <ion-textarea auto-grow="true" fill="outline" [(ngModel)]="negative_prompt">
         </ion-textarea>
         <app-lora-list [min]="-10" [max]="10" [step]="0.1" [default]="1" [loras]="loras"></app-lora-list>
         <app-embedding-list [embeddings]="embeddings"></app-embedding-list>
-        <ion-label>Guidance Scale</ion-label>
+        <ion-label>{{'image.guidance-scale'|translate}}</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
@@ -31,7 +31,7 @@
             <nz-input-number [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-input-number>
           </ion-col>
         </ion-row>
-        <ion-label>Steps</ion-label>
+        <ion-label>{{'image.steps'|translate}}</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
@@ -40,7 +40,7 @@
             <nz-input-number [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-input-number>
           </ion-col>
         </ion-row>
-        <ion-label>Image Num</ion-label>
+        <ion-label>{{'image.image-num'|translate}}</ion-label>
         <ion-row>
           <ion-col>
             <nz-slider [nzMin]="1.0" [nzMax]="16.0" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
@@ -49,12 +49,12 @@
             <nz-input-number [nzMin]="1.0" [nzMax]="16.0" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
           </ion-col>
         </ion-row>
-        <ion-label>Seed</ion-label>
+        <ion-label>{{'image.seed'|translate}}</ion-label>
         <ion-label>
           <nz-input-number class="w-100" [(ngModel)]="seeds"></nz-input-number>
         </ion-label>
         <ion-label>
-          ClipSkip
+          {{'image.clip-skip'|translate}}
         </ion-label>
         <ion-row>
           <ion-col>
@@ -66,7 +66,7 @@
         </ion-row>
       </div>
       <div class="sticky-bottom">
-        <ion-button expand="block" (click)="generateImages()">Generate</ion-button>
+        <ion-button expand="block" (click)="generateImages()">{{'universal.generate'|translate}}</ion-button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 overflow-y-scroll overflow-x-scroll">

@@ -55,7 +55,7 @@ export const displayLanguages: { value: string, label: string }[] = [
   ]
 })
 export class SettingsComponent {
-  dynamicConfig: DynamicConfig;
+  dynamicConfig: DynamicConfig | undefined;
   configuration: Configuration;
 
   constructor(@Inject(sizeReportToken) private sizeReportService: SizeReportService,
@@ -68,25 +68,11 @@ export class SettingsComponent {
               private dynamicConfigService: DynamicConfigService
               ) {
     this.configuration = this.configurationService.configuration!;
-    let configDynamic = this.dynamicConfigService.getDynamicConfig(this.configuration);
-    if(configDynamic===undefined){
-      this.dynamicConfig = this.dynamicConfigService.getDefaultDynamicConfig();
-    }else{
-      this.dynamicConfig = configDynamic;
-    }
-    this.configurationObserver.subscribe((change) => {
-      if (change) {
-        // 响应更改
-        this.configuration = this.configurationService.configuration!;
-        let configDynamic = this.dynamicConfigService.getDynamicConfig(this.configuration);
-        if(configDynamic===undefined){
-          this.dynamicConfig = this.dynamicConfigService.getDefaultDynamicConfig();
-        }else{
-          this.dynamicConfig = configDynamic;
-        }
-        this.themeChange();
-        this.languageChange(this.dynamicConfig.language===undefined?'':this.dynamicConfig.language);
-      }
+    this.loadProperties();
+    this.configurationObserver.subscribe((configuration) => {
+      this.configuration = configuration;
+      console.log("aware change");
+      console.log(this.dynamicConfig);
     });
 
   }
@@ -102,7 +88,7 @@ export class SettingsComponent {
         '重置成功',
         '参数重置成功'
       );
-    this.configurationObserver.next(this.configuration);
+    this.configurationObserver.next(this.configurationService.configuration!);
   }
 
 
@@ -150,19 +136,29 @@ export class SettingsComponent {
   protected readonly themes = themes;
 
   themeChange() {
-    this.themeSwitcherService.load(this.dynamicConfig.theme);
-    this.dynamicConfigService.setDynamicConfig(this.configuration,this.dynamicConfig);
+    this.themeSwitcherService.load(this.dynamicConfig!.theme);
+    this.dynamicConfigService.setDynamicConfig(this.configuration,this.dynamicConfig!);
   }
 
   protected readonly languages = languages;
 
   languageChange($event: string) {
-    this.translate.use(this.dynamicConfig.language!);
-    this.dynamicConfig.languageIsSet = true;
-    this.dynamicConfigService.setDynamicConfig(this.configuration,this.dynamicConfig);
+    this.translate.use(this.dynamicConfig!.language!);
+    this.dynamicConfig!.languageIsSet = true;
+    this.dynamicConfigService.setDynamicConfig(this.configuration,this.dynamicConfig!);
   }
 
   protected readonly displayLanguages = displayLanguages;
   modelCenterVisible: boolean = false;
 
+  private loadProperties() {
+    let configDynamic = this.dynamicConfigService.getDynamicConfig(this.configuration);
+    if(configDynamic===undefined){
+      this.dynamicConfig = this.dynamicConfigService.getDefaultDynamicConfig();
+    }else{
+      this.dynamicConfig = configDynamic;
+    }
+    this.themeChange();
+    this.languageChange(this.dynamicConfig.language===undefined?'':this.dynamicConfig.language);
+  }
 }

@@ -12,7 +12,7 @@ import {
 import {CONFIGURATION} from "../../models/chat-stores/configuration.interface";
 import {GenerateTask} from "../../models/media/generateTask";
 @Injectable({
-  providedIn: DatasModule
+  providedIn: "root"
 })
 export class DbService{
   private idbDb: IDBPDatabase<ChatDb> | undefined;

@@ -15,9 +15,9 @@
           <div class="bg-theme sticky-bottom z-0">
             <ng-template #studios>
               <div class="w-100 d-flex flex-column">
-                <button nz-button class="bg-light text-dark mx-2 my-1" routerLink="/chat">文本生成</button>
-                <button nz-button class="bg-light text-dark mx-2 my-1" routerLink="/image-studio">图像工作室</button>
-                <button nz-button class="bg-light text-dark mx-2 my-1" routerLink="/video-studio">视频工作室</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/chat"><img height="25" width="25" src="assets/icon/aichat.png">{{'universal.aiChat' | translate}}</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/image-studio"><img height="25" width="25" src="assets/icon/aipainting.png">{{'universal.aiPainting' | translate}}</button>
+                <button nz-button class="bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/video-studio"><img height="25" width="25" src="assets/icon/aivideo.png">{{'universal.aiVideo' | translate}}</button>
               </div>
             </ng-template>
             <ng-container *ngTemplateOutlet="studios"></ng-container>
@@ -55,11 +55,11 @@
         </ion-chip>
 
         <div class="d-flex flex-column p-3">
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-lcm-txt2img']">Novita文字生成图片LCM</button>
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-lcm-img2img']">Novita图片生成图片LCM</button>
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-txt2img']">Novita文字生成图片</button>
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-img2img']">Novita图片生成图片</button>
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/task-lib']">仓库</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-lcm-txt2img']">{{'image.novita-text2img-lcm'| translate}}</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-lcm-img2img']">{{'image.novita-img2img-lcm'| translate}}</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-txt2img']">{{'image.novita-text2img'| translate}}</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/novita-img2img']">{{'image.novita-img2img'| translate}}</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['image-studio/task-lib']">{{'universal.storeHouse'| translate}}</button>
         </div>
       </div>
       <div class="bg-theme sticky-bottom z-0">
@@ -82,7 +82,7 @@
         </ion-chip>
         <div class="d-flex flex-column p-3">
           <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/novita-text2video']">Novita文字生成视频</button>
-          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/task-lib']">仓库</button>
+          <button class="m-2" nz-button routerLinkActive="active-image" [routerLink]="['video-studio/task-lib']">{{'universal.storeHouse'| translate}}</button>
         </div>
       </div>
       <div class="bg-theme sticky-bottom z-0">

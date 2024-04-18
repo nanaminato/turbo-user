@@ -8,6 +8,7 @@ import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {FormsModule} from "@angular/forms";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-lora-section',
@@ -22,7 +23,8 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     NzInputNumberComponent,
     FormsModule,
     NzIconDirective,
-    NzTooltipDirective
+    NzTooltipDirective,
+    TranslateModule
 
   ]
 })

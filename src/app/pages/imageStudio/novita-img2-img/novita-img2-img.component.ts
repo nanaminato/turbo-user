@@ -13,10 +13,8 @@ import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
 import {Embedding, Lora, NovitaTask, TaskResult, UrlImage} from "../../../models/images";
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {NovitaService} from "../../../services/fetch_services/novita.service";
-import {NzMessageService} from "ng-zorro-antd/message";
 import {samplers} from "../../../models/images/fields/samplers";
 import {CheckParameter, NovitaInit} from "../toolkits";
-import {NzModalModule} from "ng-zorro-antd/modal";
 import {ImageModelComponent} from "../toolkits/image-model/image-model.component";
 import {EmbeddingListComponent} from "../toolkits/embedding-list/embedding-list.component";
 import {LoraListComponent} from "../toolkits/lora-list/lora-list.component";
@@ -26,6 +24,7 @@ import {UniversalService} from "../../../services/db-services/universal.service"
 import {GenerateTask} from "../../../models/media/generateTask";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-novita-img2-img',
@@ -49,7 +48,8 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     ImageModelComponent,
     EmbeddingListComponent,
     LoraListComponent,
-    NzTooltipDirective
+    NzTooltipDirective,
+    TranslateModule
   ]
 })
 export class NovitaImg2ImgComponent  implements OnInit, DoCheck, NovitaInit, CheckParameter  {
