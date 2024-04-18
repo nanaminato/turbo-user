@@ -12,7 +12,9 @@
     "noData": "没有数据哦",
     "image-studio": "图像工作室",
     "video-studio": "视频工作室",
-    "nsfw": "无内容审查"
+    "nsfw": "无内容审查",
+    "modelName": "模型名",
+    "strength": "偏向度"
   },
   "storeHouse": {
     "task-id": "生成任务Id",

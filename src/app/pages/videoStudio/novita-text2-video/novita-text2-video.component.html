@@ -1,6 +1,6 @@
-<div class="w-100 h-100 d-flex flex-row">
+<div class="bg-theme text-theme w-100 h-100 d-flex flex-row">
   <div class="w-100 d-flex flex-row">
-    <div class="h-100 bg-light flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 416px;">
+    <div class="h-100 flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 416px;">
       <div class="sticky-top px-3">
         <button nz-button class="m-2" (click)="showVideoMenu()">
           <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
@@ -26,7 +26,7 @@
         <div class="d-flex justify-content-center my-1">
           <button style="width: 100px;"  nz-tooltip nzTooltipTitle="添加新的片段"
                   (click)="addNewSection()"
-                  class="bg-light border-1-standard d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
+                  class="bg-theme text-theme border-theme d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
         </div>
         <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'video.negative-prompt'|translate}}</ion-label>
         <ion-textarea auto-grow="true" fill="outline" [(ngModel)]="negative_prompt"></ion-textarea>
@@ -86,7 +86,7 @@
         </ion-row>
       </div>
       <div class="sticky-bottom">
-        <ion-button expand="block" (click)="generateVideo()">{{'video.generate'|translate}}</ion-button>
+        <ion-button expand="block" (click)="generateVideo()">{{'universal.generate'|translate}}</ion-button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 flex-column overflow-y-scroll overflow-x-scroll">
@@ -96,7 +96,7 @@
           {{'video.running' | translate}}
         }
       </div>
-      <nz-card class="w-100 d-flex justify-content-center">
+      <nz-card class="w-100 flex-grow-1 d-flex justify-content-center">
         @if(showVideo){
           <video controls>
             <source [src]="videoUrl" type="video/mp4">

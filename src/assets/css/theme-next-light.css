@@ -1,6 +1,7 @@
 /* Global Styles */
 .bg-theme {
-  background: #e7f8ff !important;
+  /*background: #e7f8ff !important;*/
+  background: white !important;
 }
 
 .bg-theme2 {
@@ -8,7 +9,9 @@
 }
 
 .border-theme {
-  border-color: cornflowerblue !important;
+  border: 1px solid;
+  /*border-color: cornflowerblue !important;*/
+  border-color: black !important;
 }
 
 .border-theme2 {
@@ -23,4 +26,10 @@
 .button-hover:hover,
 .selected {
   background-color: #f3f3f3 !important;
+}
+.ant-card
+{
+  color: black !important;
+  /*background: #e7f8ff !important;*/
+  background: white !important;
 }

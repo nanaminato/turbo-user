@@ -23,7 +23,7 @@
 .ant-select-selector,
 .bg-theme2 {
   color: #d1d5db !important;
-  background: #343541 !important;
+  background: #000000 !important;
 }
 
 .ant-card {
@@ -43,6 +43,7 @@ label {
 }
 
 .border-theme {
+  border: 1px solid;
   border-color: whitesmoke !important;
 }
 .border-theme2 {

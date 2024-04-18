@@ -12,7 +12,9 @@
     "noData": "No Data...",
     "image-studio": "Image Studio",
     "video-studio": "Video Studio",
-    "nsfw": "nsfw"
+    "nsfw": "nsfw",
+    "modelName": "Model Name",
+    "strength": "Strength"
   },
   "storeHouse": {
     "task-id": "task id",

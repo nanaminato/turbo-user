@@ -9,7 +9,7 @@ const routes: Routes = [
       {
         path: "",
         pathMatch:"full",
-        redirectTo:"novita-lcm-img2img",
+        redirectTo:"novita-lcm-txt2img",
 
       },
       {

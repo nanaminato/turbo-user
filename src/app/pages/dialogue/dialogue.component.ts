@@ -91,17 +91,17 @@ export class DialogueComponent {
   protected readonly DisplayType = DisplayType;
 
   getIcon(role: string | undefined, type: ShowType | undefined) {
-    if(role===undefined) return "assets/svgs/chat-gpt.png";
+    if(role===undefined) return "assets/svgs/chat-gpt_11zon.jpg";
     if(role===UserRole){
       return 'assets/svgs/programmer.png';
     }else if(role===SystemRole){
       return 'assets/svgs/system.svg';
     }
-    if(type===undefined) return 'assets/svgs/chat-gpt.png';
+    if(type===undefined) return 'assets/svgs/chat-gpt_11zon.jpg';
     switch (type){
 
     }
-    return "assets/svgs/chat-gpt.png";
+    return "assets/svgs/chat-gpt_11zon.jpg";
   }
   isHover: boolean = false;
 
@@ -135,17 +135,18 @@ export class DialogueComponent {
     if(chatModel.role===UserRole){
       return "You";
     }
-    if(chatModel.role===SystemRole){
-      return "System";
-    }
-
-    switch (chatModel.showType){
-      case ShowType.promiseChat:
-      case ShowType.staticChat:
-        return "ChatGPT";
-      default:
-        return "ChatGPT";
-    }
+    return chatModel.model;
+    // if(chatModel.role===SystemRole){
+    //   return "System";
+    // }
+    //
+    // switch (chatModel.showType){
+    //   case ShowType.promiseChat:
+    //   case ShowType.staticChat:
+    //     return "ChatGPT";
+    //   default:
+    //     return "ChatGPT";
+    // }
   }
 
   getWidth() {

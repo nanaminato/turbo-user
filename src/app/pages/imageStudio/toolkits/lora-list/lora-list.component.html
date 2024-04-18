@@ -1,10 +1,10 @@
-<div class="w-100">
+<div class="bg-theme text-theme w-100">
   <ion-label>Loras</ion-label>
   @for(lora of loras; track lora){
     <app-lora-section [nsfw]="nsfw" [min]="min" [max]="max" [step]="step" [lora]="lora" [index]="$index" (delete)="awareDelete($event)"></app-lora-section>
   }
   <div class="d-flex justify-content-center my-1">
     <button style="width: 100px;" (click)="addNewLora()"
-            class="bg-light border-1-standard d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
+            class="bg-theme text-theme border-theme d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
   </div>
 </div>

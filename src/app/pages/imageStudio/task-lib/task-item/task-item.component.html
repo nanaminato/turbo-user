@@ -1,4 +1,4 @@
-<div>
+<div class="bg-theme text-theme rounded-3">
   <div class="d-flex flex-row flex-wrap">
     <nz-col class="mx-2">
       <div>{{'storeHouse.task-id' | translate }}</div>
@@ -29,7 +29,7 @@
     @if(task?.taskResult!==undefined){
       @if(task?.task_type==='image'){
         @for(image of task!.taskResult?.images; track image){
-          <img nz-image width="200" height="200" [nzSrc]="present(image)"/>
+          <img nz-image class="m-1" width="200" height="200" [nzSrc]="present(image)"/>
         }
       }
       @else if(task?.task_type==='video'){
