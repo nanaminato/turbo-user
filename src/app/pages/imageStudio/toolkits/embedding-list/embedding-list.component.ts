@@ -4,6 +4,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {IonicModule} from "@ionic/angular";
 import {EmbeddingSectionComponent} from "../embedding-section/embedding-section.component";
 import {NzModalModule} from "ng-zorro-antd/modal";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-embedding-list',
@@ -14,7 +15,8 @@ import {NzModalModule} from "ng-zorro-antd/modal";
     NzIconDirective,
     IonicModule,
     EmbeddingSectionComponent,
-    NzModalModule
+    NzModalModule,
+    TranslateModule
   ]
 })
 export class EmbeddingListComponent  implements OnInit {

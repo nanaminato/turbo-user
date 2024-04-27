@@ -1,5 +1,5 @@
 <div class="bg-theme text-theme w-100">
-  <ion-label>Embeddings</ion-label>
+  <ion-label>{{'media.embeddings'|translate}}</ion-label>
   @for(embedding of embeddings; track embedding){
     <app-embedding-section [nsfw]="nsfw" [embedding]="embedding" [index]="$index" (delete)="awareDelete($event)"></app-embedding-section>
   }

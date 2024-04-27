@@ -23,6 +23,10 @@
     "account-id": "account id",
     "get-task-result": "Get Task Result"
   },
+  "media": {
+    "loras": "Lora Models",
+    "embeddings": "Embedding Models"
+  },
   "image": {
     "running": "The picture is being generated, please wait...",
     "novita-text2img-lcm": "Novita Text to Image Lcm",

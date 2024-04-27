@@ -5,6 +5,7 @@ import {IonicModule} from "@ionic/angular";
 import {LoraSectionComponent} from "../lora-section/lora-section.component";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzModalModule} from "ng-zorro-antd/modal";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-lora-list',
@@ -16,7 +17,8 @@ import {NzModalModule} from "ng-zorro-antd/modal";
     IonicModule,
     LoraSectionComponent,
     NzTooltipDirective,
-    NzModalModule
+    NzModalModule,
+    TranslateModule
   ]
 })
 export class LoraListComponent {
