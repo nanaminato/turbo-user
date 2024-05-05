@@ -130,6 +130,8 @@ export class NovitaText2VideoComponent implements DoCheck, NovitaInit {
   async checkParameter() {
     return new Promise<boolean>((resolve, reject) => {
       let piece = 0;
+      // console.log(this.width)
+      // console.log(this.height)
       this.framePrompts.forEach(p=>{
         piece+=p.frames;
       });

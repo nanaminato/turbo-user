@@ -121,8 +121,20 @@ export class NovitaText2ImgComponent  implements OnInit,DoCheck,
   }
   async checkParameter(){
     return new Promise<boolean>((resolve,reject)=>{
+      if(this.width<128||this.width>1024){
+        this.notification.error("宽度不在有效范围内","宽度范围128-1024，选定的宽度为"+this.width);
+        resolve(false);
+      }
+      if(this.height<128||this.height>1024){
+        this.notification.error("高度不在有效范围内","宽度范围128-1024，选定的高度为"+this.height);
+        resolve(false);
+      }
+      if(this.prompt===''){
+        this.notification.error("还没有设提示词","");
+        resolve(false);
+      }
       if(this.negative_prompt.indexOf(',')===-1) {
-        this.notification.error("negative_prompt是必须的，至少提供一个，并且使用','分隔","");
+        this.notification.error("如果反向提示词不为空，则至少提供一个反向提示词，并使用英文逗号（','）分隔","");
         resolve(false);
       }
       resolve(true);

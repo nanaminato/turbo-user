@@ -115,8 +115,12 @@ export class NovitaImg2ImageLcmComponent  implements OnInit, DoCheck, NovitaInit
   }
   async checkParameter(): Promise<boolean>{
     return new Promise((resolve, reject)=>{
+      if(this.prompt===''){
+        this.notification.error("还没有设提示词","");
+        resolve(false);
+      }
       if(this.negative_prompt.indexOf(',')===-1) {
-        this.notification.error("negative_prompt是必须的，至少提供一个，并且使用','分隔","");
+        this.notification.error("如果反向提示词不为空，则至少提供一个反向提示词，并使用英文逗号（','）分隔","");
         resolve(false);
       }
       resolve(true);
@@ -162,7 +166,7 @@ export class NovitaImg2ImageLcmComponent  implements OnInit, DoCheck, NovitaInit
         model_name: this.model!,
         input_image: this.trimImage!,
         prompt: this.prompt,
-        negative_prompt: this.negative_prompt,
+        negative_prompt: this.negative_prompt.trim(),
         image_num: this.image_num,
         sd_vae: "vae-ft-mse-840000-ema-pruned.safetensors",//this.sd_vae!,
         loras: this.novitaCheck.filter(this.loras),
