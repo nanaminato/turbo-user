@@ -74,7 +74,6 @@ export class ConfigurationService {
     var generator = new DisplayModelGenerator();
     return {
       model: "gpt-3.5-turbo-16k",
-      requestType: RequestType.Chat,
       chatConfiguration: {
         models: displayModels,
         historySessionLength: 10,

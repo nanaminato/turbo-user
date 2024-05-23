@@ -19,11 +19,7 @@ export class ChatContextHandler{
         // 如果传递了 结束指针，就跳过结束指针之后的聊天模型对象
         continue;
       }
-      if (chatModel.dataId! >= back! &&
-        (chatModel.showType === ShowType.staticChat
-          || chatModel.showType === ShowType.promiseChat
-          || chatModel.showType === ShowType.staticChatRequest
-        )) {
+      if (chatModel.dataId! >= back!) {
         let content = chatModel.content;
         if(chatModel.fileList===undefined||chatModel.fileList.length===0){
 

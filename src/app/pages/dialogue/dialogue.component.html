@@ -2,7 +2,7 @@
      [style]="getWidth()"
      (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
   <div class="d-flex flex-row align-items-center w-100">
-    <img class="mx-2" nz-image [ngSrc]="getIcon(chatModel?.role,type)" [nzFallback]="'assets/svgs/programmer.png'" width="20" height="20" alt="图标"/>
+    <img class="mx-2" nz-image [ngSrc]="getIcon(chatModel?.role)" [nzFallback]="'assets/svgs/programmer.png'" width="20" height="20" alt="图标"/>
     <div class="mx-2">{{ getHeadName(chatModel) }}</div>
 <!--    getHeadName(chatModel)-->
     @if(active){
@@ -43,24 +43,10 @@
   </div>
   <div class="flex-grow-1 centered px-5 my-2 w-100">
     <div [style]="getFontSize()">
-      @switch (getDisplayType(type)){
-        @case (DisplayType.staticRequestOrResult){
-          @defer (on immediate){
-            <app-static-request [chatModel]="chatModel"></app-static-request>
-          }@placeholder (minimum 50ms){
-            <nz-skeleton></nz-skeleton>
-          }
-        }
-        @case (DisplayType.dynamicChatResult){
-          @defer (on immediate){
-            <app-chat [chatModel]="chatModel" [content]="chatModel?.content?.length"></app-chat>
-          }@placeholder (minimum 50ms){
-            <nz-skeleton></nz-skeleton>
-          }
-        }
-        @default {
-          <app-static-request [chatModel]="chatModel"></app-static-request>
-        }
+      @defer (on immediate){
+        <app-chat [chatModel]="chatModel" [content]="chatModel?.content?.length"></app-chat>
+      }@placeholder (minimum 50ms){
+        <nz-skeleton></nz-skeleton>
       }
     </div>
 

@@ -31,7 +31,6 @@ import {user_routes} from "./roots/routes";
 import {ChatHistoryTitleAction, ChatHistoryTitleActionInfo} from "./models/operations";
 import {
   AuthService,
-  MessageService,
   RequestManagerService,
   SendManagerService
 } from "./auth_module";

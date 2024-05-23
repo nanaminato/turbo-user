@@ -69,37 +69,13 @@ export class DialogueComponent {
 
   protected readonly UserRole = UserRole;
 
-  get type(): ShowType | undefined {
-    return this._chatModel?.showType === undefined ? undefined : this._chatModel?.showType;
-  }
 
-
-  getDisplayType(type: ShowType | undefined): DisplayType {
-    if (type === undefined) return DisplayType.default;
-    switch (type) {
-      case ShowType.staticChatRequest:
-      case ShowType.staticChat:
-        return DisplayType.staticRequestOrResult;
-
-      case ShowType.promiseChat:
-        return DisplayType.dynamicChatResult;
-      default:
-        return DisplayType.default;
-    }
-  }
-
-  protected readonly DisplayType = DisplayType;
-
-  getIcon(role: string | undefined, type: ShowType | undefined) {
+  getIcon(role: string | undefined) {
     if(role===undefined) return "assets/svgs/chat-gpt_11zon.jpg";
     if(role===UserRole){
       return 'assets/svgs/programmer.png';
     }else if(role===SystemRole){
       return 'assets/svgs/system.svg';
-    }
-    if(type===undefined) return 'assets/svgs/chat-gpt_11zon.jpg';
-    switch (type){
-
     }
     return "assets/svgs/chat-gpt_11zon.jpg";
   }
@@ -136,17 +112,6 @@ export class DialogueComponent {
       return "You";
     }
     return chatModel.model;
-    // if(chatModel.role===SystemRole){
-    //   return "System";
-    // }
-    //
-    // switch (chatModel.showType){
-    //   case ShowType.promiseChat:
-    //   case ShowType.staticChat:
-    //     return "ChatGPT";
-    //   default:
-    //     return "ChatGPT";
-    // }
   }
 
   getWidth() {
@@ -181,14 +146,4 @@ export class DialogueComponent {
   }
 }
 
-enum DisplayType {
-  staticRequestOrResult,
-  staticImageResult,
-  staticSpeechResult,
 
-  dynamicChatResult,
-  dynamicImageResult,
-  dynamicSpeechResult,
-  dynamicTranscriptionResult,
-  default,
-}

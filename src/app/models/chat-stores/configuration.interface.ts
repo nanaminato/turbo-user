@@ -4,7 +4,6 @@ import {DisplayModel} from "./display.model";
 
 export interface Configuration{
   model: string;
-  requestType: RequestType,
   chatConfiguration: ChatStreamConfiguration;
   displayConfiguration: DisplayConfiguration,
   dynamic?: string;

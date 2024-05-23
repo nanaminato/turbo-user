@@ -27,7 +27,6 @@ export class SenderService{
         role: chatMessage.role,
         content: chatMessage.content,
         fileList: chatMessage.fileList,
-        showType: chatMessage.showType,
         finish: chatMessage.finish,
         model: chatMessage.model
       });
@@ -47,7 +46,6 @@ export class SenderService{
         role: chatMessage.role,
         content: chatMessage.content,
         fileList: chatMessage.fileList,
-        showType: chatMessage.showType,
         finish: chatMessage.finish,
         model: chatMessage.model
       });

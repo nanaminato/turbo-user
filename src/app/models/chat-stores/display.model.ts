@@ -1,18 +1,21 @@
 export interface DisplayModel{
   modelName: string;
   modelValue: string;
+  vision?: boolean;
 }
 export class DisplayModelGenerator{
-  generate(value: string): DisplayModel{
+  generate(value: string,vision:boolean = false): DisplayModel{
     return {
       modelName: value,
-      modelValue: value
+      modelValue: value,
+      vision: vision
     };
   }
-  generateWithName(name: string, value: string): DisplayModel{
+  generateWithName(name: string, value: string,vision:boolean = false): DisplayModel{
     return {
       modelName: name,
-      modelValue: value
+      modelValue: value,
+      vision: vision
     };
   }
 }

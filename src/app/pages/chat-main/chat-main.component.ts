@@ -25,7 +25,6 @@ import {
   ChatContext,
   ContextMemoryService,
   ModelFetchService,
-  ShowTypeService,
   SizeReportService,
   SystemContext
 } from "../../services/normal-services";
@@ -87,7 +86,6 @@ import {MenuAbleService} from "../../services/normal-services/menu-able.service"
   ],
   providers: [
     ChatContextHandler,
-    ShowTypeService,
     TurboService,
     ModelFetchService,
     {
@@ -123,16 +121,15 @@ export class ChatMainComponent implements OnDestroy{
       this.chatHistoryModel = new ChatHistoryModel();
     }
     this.answering = true;
-    // 获取当前的请求类型
-    let currentRequestModelType = this.configurationService.configuration?.requestType!;
+
     //构建请求文件列表
     await this.buildFileList();
 
     // 添加用户请求
-    const userRequestShowType = this.showTypeService.getSendMessageType(currentRequestModelType);
+
     const randomId = Date.now()*1000 + Math.floor(Math.random() * 500) + 1;
     const userModel = new ChatModel("user", this.inputText,
-      this.chatFileList, randomId,userRequestShowType,true,this.configuration!.model);
+      this.chatFileList, randomId,true,this.configuration!.model);
     this.chatModels.push(userModel);
     let parseStatus = await this.parseAllFile(userModel);//!!!!!
 
@@ -146,7 +143,7 @@ export class ChatMainComponent implements OnDestroy{
     }
 
     let fetchParam: ChatPacket
-      = this.resolveContext(currentRequestModelType,this.chatContext.pointer,undefined);
+      = this.resolveContext(this.chatContext.pointer,undefined);
     // 添加返回的 聊天信息模型
     const assistantModel = new ChatModel(AssistantRole);
     assistantModel.finish = false;
@@ -160,12 +157,11 @@ export class ChatMainComponent implements OnDestroy{
     // 如果当前的聊天历史模型的标题为空，说明使用的是刚创建的，还没有消息，存储到数据库，
     // 设置nextSubjection为true表示将会推送一个新的历史记录
     this.handleTitleWhenNewResponse(userModel);
-    assistantModel.showType = this.showTypeService.getPromiseReceiveType(currentRequestModelType); // 设置返回模型的展示类型
     this.inputText = '';// 清空输入框
-    let response: Observable<string> = this.modelFetchService.getFetchResponse(currentRequestModelType,fetchParam);
+    let response: Observable<string> = this.modelFetchService.getFetchResponse(fetchParam);
     // 订阅返回的数据
     this.animalModel = assistantModel;
-    this.responseSubscription = this.subscriptionResponse(response,assistantModel,currentRequestModelType);
+    this.responseSubscription = this.subscriptionResponse(response,assistantModel);
   }
   handleTitleWhenNewResponse(model: ChatModel){
     if (this.chatHistoryModel?.title === '') {
@@ -196,7 +192,7 @@ export class ChatMainComponent implements OnDestroy{
       this.sendManagerService.sendMessage(this.chatHistoryModel!.dataId!,model as ChatInterface);
     }
   }
-  subscriptionResponse(subject: Observable<string>, model: ChatModel,type: RequestType): Subscription{
+  subscriptionResponse(subject: Observable<string>, model: ChatModel): Subscription{
     let collector = '';
     model.content = '';
     return subject!.subscribe({
@@ -216,7 +212,6 @@ export class ChatMainComponent implements OnDestroy{
         model.finish = true;
         this.nextSubscribe(false);
         this.answering = false;
-        model.showType = this.showTypeService.getStaticResponseType(type);
         this.finalizeResponse();
         this.sendManagerService.updateMessage(this.chatHistoryModel?.dataId!,model as ChatInterface)
           .then(msg=>{
@@ -226,7 +221,6 @@ export class ChatMainComponent implements OnDestroy{
       complete: () => {
         this.answering = false;
         model.finish = true;
-        model.showType = this.showTypeService.getStaticResponseType(type);
         this.sendManagerService.updateMessage(this.chatHistoryModel?.dataId!,model as ChatInterface)
           .then(msg=>{
             console.log(msg)
@@ -397,7 +391,6 @@ export class ChatMainComponent implements OnDestroy{
       return;
     }
     // 添加用户请求
-    const requestType = this.showTypeService.getRequestType(endPointerModel.showType);
     let back: number | undefined;
     // back 指针，是为了进行细粒度控制上下文引入的指针，
     // 如果上下文后指针为空，就设置当前 “重新生成”的
@@ -408,16 +401,15 @@ export class ChatMainComponent implements OnDestroy{
       back = this.chatContext.pointer;
     }
     let fetchParam: ChatPacket
-      = this.resolveContext(requestType,back,endPointerModel.dataId,endPointerModel);
+      = this.resolveContext(back,endPointerModel.dataId,endPointerModel);
     // 添加返回的 聊天信息模型
     generateModel!.finish = false;
     generateModel!.markAsChanged = true;
-    generateModel!.showType = this.showTypeService.getPromiseReceiveType(requestType); // 设置返回模型的展示类型
 
     let response: Observable<string> = this.modelFetchService.getFetchResponse(
-      requestType,fetchParam,generateModel!.model);
+      fetchParam,generateModel!.model);
     // 订阅返回的数据
-    let animalSubscription = this.subscriptionResponse(response,generateModel!,requestType);
+    let animalSubscription = this.subscriptionResponse(response,generateModel!);
     this.responseHolder.push(animalSubscription);
   }
   @ViewChild('chatPanel') private chatPanel: ElementRef | undefined;
@@ -470,7 +462,6 @@ export class ChatMainComponent implements OnDestroy{
               private configurationService: ConfigurationService,
               private notification: NzNotificationService,
               @Inject(configurationChangeSubject) private configurationObserver: Subject<Configuration>,
-              private showTypeService: ShowTypeService,
               private modelFetchService: ModelFetchService,
               private parseService: ParseService,
               private auth: AuthService,
@@ -510,7 +501,7 @@ export class ChatMainComponent implements OnDestroy{
       });
     }
   }
-  resolveContext(requestType: RequestType = RequestType.Chat, startPointer: number|undefined = undefined, endPointer: number | undefined = undefined, reModel: ChatModel | undefined = undefined) {
+  resolveContext( startPointer: number|undefined = undefined, endPointer: number | undefined = undefined, reModel: ChatModel | undefined = undefined) {
     if (this.chatModels === undefined) {
       console.log("未知错误")
     }
@@ -624,7 +615,7 @@ export class ChatMainComponent implements OnDestroy{
     }
   }
   cloneChatModel(model2: ChatModel | undefined){
-    return new ChatModel(model2?.role,model2?.content,model2?.fileList,model2?.dataId,model2?.showType,model2?.finish,model2?.model);
+    return new ChatModel(model2?.role,model2?.content,model2?.fileList,model2?.dataId,model2?.finish,model2?.model);
   }
   handleUserTask($event: UserTask) {
     switch ($event.task){

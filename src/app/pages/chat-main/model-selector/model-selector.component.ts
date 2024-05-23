@@ -40,9 +40,6 @@ export class ModelSelectorComponent {
   }
   async onSelectChange() {
     this.configurationService!.configuration!.model! = this.model!;
-    if(this.model!.startsWith("gpt")){
-      this.configurationService.configuration!.requestType! = RequestType.Chat;
-    }
     await this.configurationService.setConfigurationLocal();
   }
 }

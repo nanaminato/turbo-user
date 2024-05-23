@@ -17,7 +17,6 @@ export class ChatModel {
               public content: string = '',
               public fileList?:FileAdds[],
               public dataId?: number,
-              public showType: ShowType = ShowType.staticChat,
               public finish: boolean = true,
               public model?: string) {
     if(dataId==null){
@@ -36,7 +35,6 @@ export interface ChatInterface{
   content?: string
   fileList?: FileAdds[];
   dataId: number;
-  showType: ShowType;
   finish: boolean;
   model?: string;
 }

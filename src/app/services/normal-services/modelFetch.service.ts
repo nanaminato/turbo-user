@@ -10,15 +10,11 @@ export class ModelFetchService{
   constructor(private turboService: TurboService,
               private authService: AuthService) {
   }
-  public getFetchResponse(type: RequestType,
+  public getFetchResponse(
                           param:  ChatPacket,
                           model?: string){
     let subject: Observable<string>;
-    switch (type) {
-      case RequestType.Chat:
-        subject = this.turboService.fetchChat(param as ChatPacket,model);
-        break;
-    }
+    subject = this.turboService.fetchChat(param as ChatPacket,model);
     return subject!;
   }
 }
