@@ -22,7 +22,7 @@ import {Configuration, DisplayModel} from "../../../models";
 })
 export class ModelSelectorComponent {
   chatStreamChildren: DisplayModel[] = [];
-  model: string | undefined;//localhost:44301
+  model: DisplayModel | undefined;
   constructor(private configurationService: ConfigurationService,
               @Inject(configurationChangeSubject) private configurationObservable: Subject<Configuration>) {
     this.buildSelector();
@@ -40,6 +40,7 @@ export class ModelSelectorComponent {
   }
   async onSelectChange() {
     this.configurationService!.configuration!.model! = this.model!;
+    console.log(this.model!)
     await this.configurationService.setConfigurationLocal();
   }
 }

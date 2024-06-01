@@ -20,10 +20,12 @@ export class ModelCustomAddComponent{
   constructor() { }
   @Output()
   displayModel: EventEmitter<DisplayModel> = new EventEmitter<DisplayModel>();
+  vision: boolean = false;
   outerTransfer() {
     this.displayModel.next({
       modelName: this.modelName,
-      modelValue: this.modelValue
+      modelValue: this.modelValue,
+      vision: this.vision
     });
   }
 }

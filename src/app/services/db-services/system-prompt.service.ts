@@ -1,6 +1,5 @@
 import {Inject, Injectable} from "@angular/core";
 import {DbService} from "./db.service";
-import {DatasModule} from "./datas.module";
 import {Observer} from "rxjs";
 import {timeToWait} from "./configuration.service";
 import {SystemPromptItem} from "../../models";

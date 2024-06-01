@@ -1,5 +1,5 @@
-import {Message} from "../chat-stores/message.model";
+import {Message, VisionMessage} from "../chat-stores/message.model";
 export class ChatPacket{
-  constructor(public messages: Message[]) {
+  constructor(public messages: Message[] | VisionMessage[]) {
   }
 }

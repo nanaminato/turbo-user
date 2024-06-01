@@ -4,7 +4,6 @@
   <div class="d-flex flex-row align-items-center w-100">
     <img class="mx-2" nz-image [ngSrc]="getIcon(chatModel?.role)" [nzFallback]="'assets/svgs/programmer.png'" width="20" height="20" alt="图标"/>
     <div class="mx-2">{{ getHeadName(chatModel) }}</div>
-<!--    getHeadName(chatModel)-->
     @if(active){
       <div nz-tooltip [nzTooltipTitle]="'dialog.inContext' | translate" class="active rounded-4 mx-2"></div>
     }

@@ -6,6 +6,10 @@
   <label>{{ 'settings.modelValue' | translate }}</label>
   <input class="form-control" [(ngModel)]="modelValue">
 </div>
+<div class="form-group">
+  <label>视觉支持</label>
+  <input type="checkbox" [(ngModel)]="vision">
+</div>
 <div class="d-flex mt-2 flex-row-reverse">
   <button class="btn btn-primary" (click)="outerTransfer()">{{'universal.add'| translate}}</button>
 

@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {ConfigurationService} from "../db-services";
 import {AuthService} from "../../auth_module";
 import {ServiceProvider} from "../../roots";
-import {ChatPacket, Message} from "../../models";
+import {ChatPacket, Message, VisionMessage} from "../../models";
 import {ErrorType, ResponseError} from "../../errors";
 
 @Injectable({
@@ -18,13 +18,14 @@ export class TurboService {
   }
 
   fetchChat(mp: ChatPacket, model?: string): Observable<string> {
-    const messages: Message[] = mp.messages;
+    const messages: Message[] | VisionMessage[] = mp.messages;
     let config = this.configurationService.configuration;
     let url = this.baseUrl + "/chat";
     let requestBody: any;
     requestBody = {
       messages: messages,
-      model: model === undefined ? config?.model : model,
+      model: model === undefined ? config?.model.modelValue : model,
+      vision: config?.model.vision,
       frequency_penalty: config?.chatConfiguration.frequency_penalty,
       max_tokens: config?.chatConfiguration.max_tokens,
       presence_penalty: config?.chatConfiguration.presence_penalty,

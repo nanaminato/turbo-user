@@ -5,6 +5,7 @@ import {MarkdownModule} from "ngx-markdown";
 import {CopiedButtonComponent} from "./copied-button/copied-button.component";
 import {EscapeHtmlPipe} from "./simple-sanitizer.pipe";
 import {CwPipe} from "./cw.pipe";
+import {ChatModel} from "../../../models";
 @Component({
   selector: 'app-markdown-root',
   templateUrl: './markdown-root.component.html',
@@ -23,14 +24,14 @@ export class MarkdownRootComponent
 
   }
   @Input()
-  set content(value: string | undefined) {
-    this._content = value;
+  set chatModel(value: ChatModel | undefined) {
+    this._chatModel = value;
   }
 
-  get content() {
-    return this._content === undefined ? '' : this._content;
+  get chatModel() {
+    return this._chatModel === undefined ? new ChatModel() : this._chatModel;
   }
 
-  private _content: string | undefined;
+  private _chatModel: ChatModel | undefined;
 
 }

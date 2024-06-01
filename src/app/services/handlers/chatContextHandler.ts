@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {ChatModel, Configuration, Message, SystemRole} from "../../models";
+import {ChatModel, Configuration, ContentClip, Message, SystemRole, VisionMessage} from "../../models";
 import {ShowType} from "../../models/enumerates";
 import {ChatContext, SystemContext} from "../normal-services";
 
@@ -8,11 +8,12 @@ export class ChatContextHandler{
   handler(back: number | undefined,
           configuration: Configuration,
           chatModels: ChatModel[],
-          endPointer: number | undefined): Message[]{
+          endPointer: number | undefined): Message[]|VisionMessage[]{
     let sessionLength = configuration?.chatConfiguration.historySessionLength!;
-    let messages: Message[] = [];
+    let messages: Message[] | VisionMessage[] = [];
     const originalArray = [...chatModels]; // 创建 chatModels 的副本
     const reversedArray = originalArray.reverse();
+    let vision = configuration.model.vision;
     for (let chatModel of reversedArray) {
       if (messages.length >= sessionLength) break;
       if(endPointer!==undefined && chatModel.dataId!>endPointer!){
@@ -24,17 +25,39 @@ export class ChatContextHandler{
         if(chatModel.fileList===undefined||chatModel.fileList.length===0){
 
         }else{
-          for (let file of chatModel.fileList!){
+          for (let file of chatModel.fileList!.filter(f=>!f.fileType?.startsWith("image"))){
             content += `\n filename: ${file.fileName} \n parsed file content: ${file.parsedContent}\n`
               ;
           }
         }
-        // 添加promiseChat是为了容错，避免没有及时的转为静态类型
-        messages.splice(0, 0, {
-          role: chatModel.role,
-          content: content
-          //chatModel.content
-        })
+
+        if(vision){
+          let complexContent:ContentClip[] = [];
+          complexContent.push({
+            type: "text",
+            text: content
+          })
+          for(let img of chatModel.fileList!.filter(f=>f.fileType?.startsWith("image"))){
+            complexContent.push({
+              type: "image",
+              image_url: {
+                url: img.fileContent!,
+                detail: configuration.chatConfiguration.detail
+              }
+            })
+          }
+
+          messages.splice(0,0,{
+            role: chatModel.role,
+            content: complexContent
+          })
+        }else{
+          messages.splice(0, 0, {
+            role: chatModel.role,
+            content: content
+          })
+        }
+
       }
     }
     return messages;
@@ -42,7 +65,7 @@ export class ChatContextHandler{
 
   handlerBefore(chatContext: ChatContext,
                 chatModels: ChatModel[],
-                messages: Message[]) {
+                messages: Message[] | VisionMessage[]) {
     let systemMs = chatContext.systems!;
     let ignores: SystemContext[] = systemMs;
     if(chatContext.pointer!==undefined){

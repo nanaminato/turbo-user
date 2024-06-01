@@ -5,7 +5,6 @@ import {NzImageModule} from "ng-zorro-antd/image";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {NgOptimizedImage} from "@angular/common";
-import {StaticRequestComponent} from "./static-request/static-request.component";
 import {ChatComponent} from "./chat/chat.component";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
@@ -15,7 +14,6 @@ import {ConfigurationService} from "../../services/db-services";
 import {sizeReportToken} from "../../injection_tokens";
 import {SizeReportService} from "../../services/normal-services";
 import {TaskType, UserTask} from "../../models/operations";
-import {ShowType} from "../../models/enumerates";
 
 @Component({
   selector: 'app-dialogue',
@@ -26,7 +24,6 @@ import {ShowType} from "../../models/enumerates";
     NzToolTipModule,
     NzIconModule,
     NgOptimizedImage,
-    StaticRequestComponent,
     ChatComponent,
     NzButtonModule,
     NzSkeletonModule,

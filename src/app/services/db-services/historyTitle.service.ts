@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {DbService} from "./db.service";
-import {DatasModule} from "./datas.module";
 import {ChatHistoryTitle} from "../../models";
 
 @Injectable({

@@ -20,13 +20,14 @@ import {ConfigExportComponent} from "./config-export/config-export.component";
 import {ConfigImportComponent} from "./config-import/config-import.component";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {IonicModule, MenuController} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
 import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "../../services/normal-services";
 import {Configuration, DynamicConfig} from "../../models";
 import {configurationChangeSubject, sizeReportToken} from "../../injection_tokens";
 import {ConfigurationService} from "../../services/db-services";
 import { themes } from 'src/app/themes/theme';
 import {ModelCenterComponent} from "./model-center/model-center.component";
+import {details} from "../../models/enumerates/enum.type";
 export const languages: string[] = [
   'zh','en','jp'
 ];
@@ -162,4 +163,6 @@ export class SettingsComponent {
     this.themeChange();
     this.languageChange(this.dynamicConfig.language===undefined?'':this.dynamicConfig.language);
   }
+
+  protected readonly details = details;
 }

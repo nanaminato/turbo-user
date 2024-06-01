@@ -1,10 +1,8 @@
 import {Inject, Injectable} from "@angular/core";
 import {DbService} from "./db.service";
 import {Subject} from "rxjs";
-import {DatasModule} from "./datas.module";
 import {Configuration} from "../../models";
 import {configurationChangeSubject} from "../../injection_tokens";
-import {RequestType} from "../../models/enumerates";
 import {DisplayModelGenerator} from "../../models";
 import {displayModels} from "../../models";
 export const timeToWait = 1;
@@ -71,9 +69,13 @@ export class ConfigurationService {
     });
   }
   public default_configuration(): Configuration {
-    var generator = new DisplayModelGenerator();
+    const generator = new DisplayModelGenerator();
     return {
-      model: "gpt-3.5-turbo-16k",
+      model: {
+        modelName: "gpt-3.5-turbo-16k",
+        modelValue: "gpt-3.5-turbo-16k",
+        vision: false
+      },
       chatConfiguration: {
         models: displayModels,
         historySessionLength: 10,

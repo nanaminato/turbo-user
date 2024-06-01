@@ -3,7 +3,7 @@
            (ngModelChange)="onSelectChange()">
   <nz-option-group nzLabel="chat">
     @for (chat of chatStreamChildren; track chat) {
-      <nz-option [nzLabel]="chat.modelName" [nzValue]="chat.modelValue"></nz-option>
+      <nz-option [nzLabel]="chat.modelName" [nzValue]="chat"></nz-option>
     }
   </nz-option-group>
 </nz-select>

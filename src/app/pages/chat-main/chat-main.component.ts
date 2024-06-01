@@ -1,6 +1,5 @@
 import {Component, ElementRef, Inject, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import {NzUploadFile, NzUploadModule} from "ng-zorro-antd/upload";
-
 import {map, Observable, Observer, Subject, Subscription} from "rxjs";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzModalModule} from "ng-zorro-antd/modal";
@@ -98,7 +97,7 @@ export class ChatMainComponent implements OnDestroy{
   async parseAllFile(userModel: ChatModel):Promise<boolean>{
     if(userModel.fileList===undefined||userModel.fileList.length===0) return true;
     const parseObservables =
-      userModel.fileList.map(f => this.parseService.parse(f));
+      userModel.fileList.filter(f=>!f.fileType?.startsWith("image")).map(f => this.parseService.parse(f));
 
     try {
       const parsedContents = await forkJoin(parseObservables).pipe(
@@ -124,12 +123,13 @@ export class ChatMainComponent implements OnDestroy{
 
     //构建请求文件列表
     await this.buildFileList();
+    // console.log(this.fileList)
 
     // 添加用户请求
 
     const randomId = Date.now()*1000 + Math.floor(Math.random() * 500) + 1;
     const userModel = new ChatModel("user", this.inputText,
-      this.chatFileList, randomId,true,this.configuration!.model);
+      this.chatFileList, randomId,true,this.configuration!.model.modelValue);
     this.chatModels.push(userModel);
     let parseStatus = await this.parseAllFile(userModel);//!!!!!
 
@@ -148,7 +148,7 @@ export class ChatMainComponent implements OnDestroy{
     const assistantModel = new ChatModel(AssistantRole);
     assistantModel.finish = false;
     assistantModel.reRandom();
-    assistantModel.model = this.configuration!.model;
+    assistantModel.model = this.configuration!.model.modelValue;
     this.chatModels.push(assistantModel);
     //  构建新的滚动 订阅
     this.scrollSubject = new Subject<boolean>();
@@ -477,10 +477,6 @@ export class ChatMainComponent implements OnDestroy{
     };
 
     this.configurationObserver.subscribe((configuration)=>{
-      // if(change){
-      //   // 响应更改
-      //   this.configuration = this.configurationService.configuration!;
-      // }
       this.configuration = configuration;
     });
     // 初始化configuration
@@ -712,6 +708,7 @@ export class ChatMainComponent implements OnDestroy{
     return fileType.startsWith("image");
   }
   async buildFileList() {
+    // 构建非图像文件
     const promises = this.fileList.map((file) => this.readFile(file));
     await Promise.all(promises);
   }
@@ -727,6 +724,7 @@ export class ChatMainComponent implements OnDestroy{
           fileSize: file.size,
           fileContent: base64String,
         };
+        // console.log(file.type)
         this.chatFileList.push(afile);
         resolve();
       };
@@ -748,9 +746,6 @@ export class ChatMainComponent implements OnDestroy{
 
   protected readonly RequestType = RequestType;
   showChoice: boolean = false;
-  showBallChoice() {
-    this.showChoice = !this.showChoice;
-  }
 
   addSystemInfo() {
     this.choiceVisible = true;
@@ -763,7 +758,6 @@ export class ChatMainComponent implements OnDestroy{
   choiceVisible: boolean = false;
 
   handleSystemPromptChoice($event: SystemPromptItem | undefined) {
-    // console.log($event)
     if($event!==undefined){
       if (this.chatHistoryModel === undefined) {
         this.chatHistoryModel = new ChatHistoryModel();

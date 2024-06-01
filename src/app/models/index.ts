@@ -3,7 +3,7 @@ export {ChatInterface,ChatModel,FileAdds,UserRole,AssistantRole,SystemRole} from
 export {ChatHistoryModel} from "./chat-stores/chatHistory.model"
 export {ChatListModel} from "./chat-stores/chatList.model"
 export {LastSessionModel} from "./share-datas/lastSession.model";
-export {Message} from "./chat-stores/message.model"
+export {Message,VisionMessage,ContentClip,VisionImage} from "./chat-stores/message.model"
 
 export {Configuration,ChatStreamConfiguration,
   SystemInfoConfig,
