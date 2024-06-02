@@ -30,9 +30,10 @@
         </div>
       </nz-card>
     }@else{
+<!--      'data:image/png;base64,'+-->
       <img nz-image class="show"
            [nzFallback]="fallback"
-           [nzSrc]="'data:image/png;base64,'+file.fileContent!" alt="图片"/>
+           [nzSrc]="file.fileContent!" alt="图片"/>
     }
   }
 </div>

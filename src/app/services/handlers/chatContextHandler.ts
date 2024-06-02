@@ -39,7 +39,7 @@ export class ChatContextHandler{
           })
           for(let img of chatModel.fileList!.filter(f=>f.fileType?.startsWith("image"))){
             complexContent.push({
-              type: "image",
+              type: "image_url",
               image_url: {
                 url: img.fileContent!,
                 detail: configuration.chatConfiguration.detail

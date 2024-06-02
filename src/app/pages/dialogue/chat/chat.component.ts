@@ -41,7 +41,7 @@ export class ChatComponent {
 
   @Input()
   set chatModel(value: ChatModel | undefined) {
-    console.log(value)
+    // console.log(value)
     this._chatModel = value;
   }
 

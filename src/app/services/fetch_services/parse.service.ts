@@ -11,6 +11,7 @@ export class ParseService{
   constructor(private http: HttpClient,private provider: ServiceProvider) {
   }
   parse(file: FileAdds): Observable<{content: string}>{
+    console.log("parse "+file)
     let url = this.provider.apiUrl+'api/fileExtractor';
     return this.http.post<{content: string}>(url,file);
   }

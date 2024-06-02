@@ -98,7 +98,7 @@ export class ChatMainComponent implements OnDestroy{
     if(userModel.fileList===undefined||userModel.fileList.length===0) return true;
     const parseObservables =
       userModel.fileList.filter(f=>!f.fileType?.startsWith("image")).map(f => this.parseService.parse(f));
-
+    if(parseObservables.length===0) return true;
     try {
       const parsedContents = await forkJoin(parseObservables).pipe(
         map(results => {
@@ -141,7 +141,7 @@ export class ChatMainComponent implements OnDestroy{
       this.chatContext.pointer = userModel.dataId;
       this.awareContextChange();
     }
-
+    // console.log("point 1")
     let fetchParam: ChatPacket
       = this.resolveContext(this.chatContext.pointer,undefined);
     // 添加返回的 聊天信息模型
@@ -154,6 +154,7 @@ export class ChatMainComponent implements OnDestroy{
     this.scrollSubject = new Subject<boolean>();
     this.scrollSubscribe();
     this.nextSubscribe(true);
+    // console.log("point 2")
     // 如果当前的聊天历史模型的标题为空，说明使用的是刚创建的，还没有消息，存储到数据库，
     // 设置nextSubjection为true表示将会推送一个新的历史记录
     this.handleTitleWhenNewResponse(userModel);
@@ -704,9 +705,6 @@ export class ChatMainComponent implements OnDestroy{
     this.fileList = this.fileList.concat(file);
     return false;
   };
-  isBase64Image(fileType: string): boolean {
-    return fileType.startsWith("image");
-  }
   async buildFileList() {
     // 构建非图像文件
     const promises = this.fileList.map((file) => this.readFile(file));
@@ -717,21 +715,41 @@ export class ChatMainComponent implements OnDestroy{
     return new Promise<void>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64String = this.arrayBufferToBase64(reader.result as ArrayBuffer);
-        const afile: FileAdds = {
-          fileName: file.name,
-          fileType: file.type,
-          fileSize: file.size,
-          fileContent: base64String,
-        };
-        // console.log(file.type)
-        this.chatFileList.push(afile);
+        if(file.type?.startsWith("image")){
+          const base64String = reader.result as string;
+          const afile: FileAdds = {
+            fileName: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            fileContent: base64String,
+          };
+          this.chatFileList.push(afile);
+        }else {
+          const arrayBuffer = reader.result as ArrayBuffer;
+          const base64String = this.arrayBufferToBase64(arrayBuffer);
+          const afile: FileAdds = {
+            fileName: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            fileContent: base64String,
+          };
+          this.chatFileList.push(afile);
+        }
         resolve();
       };
 
       if (file) {
-        // @ts-ignore
-        reader.readAsArrayBuffer(file);
+        // reader.readAsDataURL(file);
+        console.log(file.type)
+        if(file.type?.startsWith("image")){
+          // @ts-ignore
+          reader.readAsDataURL(file);
+        }else{
+          // @ts-ignore
+          reader.readAsArrayBuffer(file);
+
+        }
+
       }
     });
   }

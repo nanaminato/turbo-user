@@ -33,5 +33,7 @@ export const displayModels =
     generator.generate("claude-3-haiku-20240307"),
     generator.generate("gpt-4"),
     generator.generate("gpt-4-1106-preview"),
+    generator.generate("gpt-4-vision-preview",true),
+    generator.generate("gpt-4-turbo",true)
   ];
 
