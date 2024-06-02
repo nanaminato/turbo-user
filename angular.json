@@ -44,6 +44,7 @@
               "src/styles.css",
               "src/theme/variables.scss",
               "src/global.scss",
+              "src/assets/fonts/iconfont.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/prismjs/themes/prism-okaidia.css",

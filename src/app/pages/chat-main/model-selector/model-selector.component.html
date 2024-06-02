@@ -1,9 +1,18 @@
-<nz-select ngModel="lucy" class="rounded-5 select m-3 bg-theme2 text-theme2"
-           [(ngModel)]="model" nzMode="default"
-           (ngModelChange)="onSelectChange()">
-  <nz-option-group nzLabel="chat">
-    @for (chat of chatStreamChildren; track chat) {
-      <nz-option [nzLabel]="chat.modelName" [nzValue]="chat"></nz-option>
-    }
-  </nz-option-group>
-</nz-select>
+<div class="d-flex flex-row">
+  <nz-select ngModel="lucy" class="rounded-5 select m-3 bg-theme2 text-theme2"
+             [(ngModel)]="model" nzMode="default"
+             (ngModelChange)="onSelectChange()">
+    <nz-option-group nzLabel="chat">
+      @for (chat of chatStreamChildren; track chat) {
+        <nz-option [nzLabel]="chat.modelName" [nzValue]="chat" >
+        </nz-option>
+      }
+    </nz-option-group>
+  </nz-select>
+  @if(model !== undefined && model.vision){
+    <div class="align-items-center d-flex justify-content-center">
+      <img nz-tooltip [nzTooltipTitle]="model!.modelName+' 支持视觉'" width="25" class="m-auto" height="25" src="https://www.bing.com/th?id=OIP.FpNwEwsRCs_UECrEJjzo5QHaHa&w=134&h=150&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"/>
+    </div>
+  }
+</div>
+

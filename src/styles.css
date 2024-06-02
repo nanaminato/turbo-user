@@ -2,7 +2,6 @@
   width: 6px; /* 滚动条宽度 */
   height: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background-color: transparent; /* 滚动条背景色 */
 }

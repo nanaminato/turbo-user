@@ -76,6 +76,7 @@ export class ModelCenterComponent  implements OnInit {
     models!.length = 0;
     this.selectedModels.forEach(s=>{
       models?.push(s);
+      // console.log(s)
     })
     this.closeAction.next(true);
   }

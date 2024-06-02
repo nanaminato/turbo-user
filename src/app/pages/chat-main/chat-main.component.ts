@@ -739,8 +739,6 @@ export class ChatMainComponent implements OnDestroy{
       };
 
       if (file) {
-        // reader.readAsDataURL(file);
-        console.log(file.type)
         if(file.type?.startsWith("image")){
           // @ts-ignore
           reader.readAsDataURL(file);

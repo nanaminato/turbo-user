@@ -7,6 +7,8 @@ import {ConfigurationService} from "../../../services/db-services";
 import {configurationChangeSubject} from "../../../injection_tokens";
 import {RequestType} from "../../../models/enumerates";
 import {Configuration, DisplayModel} from "../../../models";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 
 
 @Component({
@@ -16,7 +18,9 @@ import {Configuration, DisplayModel} from "../../../models";
   imports: [
     FormsModule,
     NzSelectModule,
-    NgForOf
+    NgForOf,
+    NzIconDirective,
+    NzTooltipDirective
   ],
   standalone: true
 })
@@ -40,7 +44,7 @@ export class ModelSelectorComponent {
   }
   async onSelectChange() {
     this.configurationService!.configuration!.model! = this.model!;
-    console.log(this.model!)
+    // console.log(this.model!)
     await this.configurationService.setConfigurationLocal();
   }
 }
