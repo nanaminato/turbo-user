@@ -9,7 +9,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {GalleryComponent} from "../gallery/gallery.component";
 import {Embedding, Lora, NovitaText2LcmResponse, TaskImage, UrlImage} from "../../../models/images";
-import {NovitaService} from "../../../services/fetch_services/novita.service";
+import {NovitaService} from "../../../services/fetch_services";
 import {CheckParameter, NovitaInit} from "../toolkits";
 import {ImageModelComponent} from "../toolkits/image-model/image-model.component";
 import {LoraListComponent} from "../toolkits/lora-list/lora-list.component";
@@ -104,12 +104,6 @@ export class NovitaText2ImageLcmComponent implements OnInit, DoCheck,NovitaInit,
   }
   showImageMenu() {
     this.menuCtrl.open("image-menu");
-  }
-  async generateImages2(){
-    this.images!.length = 0;
-    this.images?.push({
-      image_url: "assets/placeholders/no.png"
-    })
   }
   checkParameter():Promise<boolean> {
     return new Promise((resolve, reject)=>{

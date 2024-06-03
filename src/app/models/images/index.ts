@@ -7,3 +7,4 @@ export {NovitaImg2LcmResponse} from "./novita-img2-lcm-Response";
 export {DirectImage,UrlImage,ExtraImage} from "./direct-image";
 export {NovitaTask} from "./novita-task";
 export {TaskResult, TaskInfo,TaskVideo,TaskExtra,TaskImage} from "./task-result";
+export {DallE,DallE3Response,ImageDataResult} from "./dalle"

@@ -33,6 +33,11 @@ const routes: Routes = [
           .then(c=>c.NovitaImg2ImgComponent)
       },
       {
+        path: "dalle",
+        loadComponent: ()=> import("./dalle/dalle.component")
+          .then(c=>c.DalleComponent)
+      },
+      {
         path: "task-lib",
         loadComponent: ()=> import("./task-lib/task-lib.component")
           .then(c=>c.TaskLibComponent)

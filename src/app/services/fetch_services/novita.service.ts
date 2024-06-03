@@ -9,7 +9,7 @@ import {
   Text2,
   Text2Lcm
 } from "../../models/images";
-import {TaskResult} from "../../models/images/task-result";
+import {TaskResult} from "../../models/images";
 import {Text2Video} from "../../models/videos";
 
 @Injectable({
