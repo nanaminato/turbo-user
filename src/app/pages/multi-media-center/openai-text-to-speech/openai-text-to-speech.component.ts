@@ -59,7 +59,7 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
   ],
   standalone: true
 })
-export class OpenaiTextToSpeechComponent  implements OnInit {
+export class OpenaiTextToSpeechComponent{
   voice: string = "alloy";
   human_voices: string[] = [
     "alloy","echo","fable","onyx",
@@ -86,9 +86,6 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
     this.menuAble.enableMedia()
   }
 
-  ngOnInit() {
-    console.log()
-  }
   fileList: TtsFile[] = []
   onFileDrop(event: DragEvent) {
     event.preventDefault();
