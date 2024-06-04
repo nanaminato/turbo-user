@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 
 @Component({
   selector: 'app-openai-speech-to-text',
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OpenaiSpeechToTextComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private menuAble: MenuAbleService,) {
+    this.menuAble.enableMedia()
+  }
 
   ngOnInit() {
     console.log()

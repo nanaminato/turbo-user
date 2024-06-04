@@ -1,3 +1,101 @@
-<p>
-  openai-text-to-speech works!
-</p>
+<nz-card>
+  <nz-row class="align-items-center my-1 bg-theme2 text-theme2">
+    <nz-col class="m-2">
+      <nz-col class="m-1">模型</nz-col>
+      <nz-col>
+        <nz-select class="select big" [(ngModel)]="model">
+          <nz-option-group [nzLabel]="'文字转语音模型'">
+            @for (selection of models; track selection) {
+              <nz-option [nzLabel]="selection" [nzValue]="selection"></nz-option>
+            }
+          </nz-option-group>
+        </nz-select>
+
+      </nz-col>
+    </nz-col>
+    <nz-col class="m-2">
+      <nz-col class="mx-1">
+        {{ 'banner.voiceTone' | translate }}
+      </nz-col>
+      <nz-col>
+        <nz-select class="select big" [(ngModel)]="voice">
+          <nz-option-group [nzLabel]="'banner.manVoice' | translate">
+            <nz-option *ngFor="let voice of human_voices" [nzValue]="voice" [nzLabel]="voice"></nz-option>
+          </nz-option-group>
+          <nz-option-group [nzLabel]="'banner.womanVoice' | translate">
+            <nz-option *ngFor="let voice of woman_voices" [nzValue]="voice" [nzLabel]="voice"></nz-option>
+          </nz-option-group>
+        </nz-select>
+      </nz-col>
+    </nz-col>
+    <nz-col class="m-2">
+      <nz-col class="mx-1">
+        {{ 'banner.soundType' | translate }}
+      </nz-col>
+      <nz-col>
+        <nz-select class="select big" [(ngModel)]="response_format">
+          <nz-option-group [nzLabel]="'banner.fileFormat' | translate">
+            <nz-option *ngFor="let response_format of speech_response_formats" [nzValue]="response_format"
+                       [nzLabel]="response_format"></nz-option>
+          </nz-option-group>
+        </nz-select>
+      </nz-col>
+    </nz-col>
+    <nz-row class="m-2">
+      <nz-col class="m-1">速度</nz-col>
+      <nz-row>
+        <nz-slider class="slider big" [nzMin]="0.25" [nzMax]="4" [nzStep]="0.25" [(ngModel)]="speed"></nz-slider>
+        <nz-input-number [nzMin]="0.25" [nzMax]="4" [nzStep]="0.25" [(ngModel)]="speed"></nz-input-number>
+      </nz-row>
+    </nz-row>
+  </nz-row>
+</nz-card>
+<div class="m-1 border-1 border-black">
+  <div class="file-drop d-flex justify-content-center align-items-center" style="height: 150px;"
+       (click)="fileInput.click()"
+       (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+    <div class="drop-message">
+      <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
+      将文件拖放到此处
+    </div>
+    <input multiple type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput>
+  </div>
+  <div>
+    @for (file of fileList; track file){
+      <div class="d-flex flex-row m-1 border rounded-2 justify-content-between">
+        <div class="d-flex flex-column">
+          <nz-row>
+            <nz-col class="mx-2">
+              <img width="40" height="40" nz-image [nzSrc]="getIcon(file.name!)" [nzFallback]="'assets/svgs/file.svg'" alt="图标">
+            </nz-col>
+            <nz-col>
+              <nz-row>
+                <nz-col class="mx-2">
+                  <div>文件: </div>
+                </nz-col>
+                <nz-col class="mx-2">
+                  <div>类型: {{file.type}}</div>
+                </nz-col>
+                <nz-col class="mx-2">
+                  <div>大小: {{file.size}}</div>
+                </nz-col>
+              </nz-row>
+              <nz-row>
+                <nz-col class="mx-2">
+                  <div>{{file.name}}</div>
+                </nz-col>
+              </nz-row>
+            </nz-col>
+          </nz-row>
+        </div>
+        <div class="d-flex justify-content-end align-items-center me-2">
+          <button nz-button
+                  (click)="removeFile(file)">删除</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+<nz-card>
+
+</nz-card>
