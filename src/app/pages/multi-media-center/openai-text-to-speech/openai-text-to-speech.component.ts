@@ -117,9 +117,6 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
     }
     return false
   }
-  indexOf(file: File){
-    return this.fileList.map(f=>file).indexOf(file);
-  }
   addFilesToList(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -131,8 +128,7 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
     }
   }
 
-  removeFile(file: File) {
-    const index = this.indexOf(file);
+  removeFile(index:number) {
     if (index > -1) {
       this.fileList.splice(index, 1);
     }

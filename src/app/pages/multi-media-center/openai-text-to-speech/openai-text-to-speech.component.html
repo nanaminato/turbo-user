@@ -115,7 +115,7 @@
               解析内容
             </button>
             <button nz-button class="m-1"
-                    (click)="removeFile(ttsFile.file!)">
+                    (click)="removeFile($index)">
               <span nz-icon nzType="delete" nzTheme="outline"></span>
               删除
             </button>
@@ -131,7 +131,6 @@
     <button nz-button (click)="putAllContent()" class="m-2">导入上面文件内容</button>
     <button nz-button (click)="inputText = ''" class="m-2">清空内容</button>
     <button nz-button (click)="generate()" class="m-2">生成音频</button>
-
   </div>
   <div class="d-flex justify-content-center align-items-center p-2">
     <textarea [(ngModel)]="inputText"
