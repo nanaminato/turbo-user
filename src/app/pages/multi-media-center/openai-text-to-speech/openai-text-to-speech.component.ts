@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
@@ -12,6 +12,13 @@ import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzImageDirective} from "ng-zorro-antd/image";
+import {TtsFile} from "../../../models/media";
+import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
+import {NzSpinComponent} from "ng-zorro-antd/spin";
+import {Bs64Handler} from "../../../services/handlers";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {OpenaiService} from "../../../services/fetch_services";
+import {TtsResponse} from "../../../models/media/tts";
 
 @Component({
   selector: 'app-openai-text-to-speech',
@@ -33,6 +40,12 @@ import {NzImageDirective} from "ng-zorro-antd/image";
     NzIconDirective,
     NzButtonComponent,
     NzImageDirective,
+    NzAutosizeDirective,
+    NzInputDirective,
+    NzSpinComponent,
+  ],
+  providers: [
+    Bs64Handler
   ],
   standalone: true
 })
@@ -53,15 +66,18 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
   models: string[] = [
     "tts-1","tts-1-hd"
   ];
-  constructor(private menuAble: MenuAbleService,) {
+  inputText: string = "";
+  constructor(private menuAble: MenuAbleService,
+              private sanitizer: DomSanitizer,
+              private bs64Handler: Bs64Handler,
+              private openaiService: OpenaiService) {
     this.menuAble.enableMedia()
   }
 
   ngOnInit() {
     console.log()
   }
-  fileList: File[] = [];
-
+  fileList: TtsFile[] = []
   onFileDrop(event: DragEvent) {
     event.preventDefault();
     const files = event.dataTransfer?.files;
@@ -77,24 +93,34 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
   onFileSelected(event: Event) {
     const target = event.target as HTMLInputElement;
     const files = target.files;
-    this.fileList.length = 0;
     if (files) {
       this.addFilesToList(files);
     }
   }
-
+  contains(file: File){
+    for (const item of this.fileList) {
+      if(item === file){
+        return true;
+      }
+    }
+    return false
+  }
+  indexOf(file: File){
+    return this.fileList.map(f=>file).indexOf(file);
+  }
   addFilesToList(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      this.fileList.push(file);
-      console.log(file.type)
-      // if (!this.fileList.includes(file)) {
-      // }
+      if (!this.contains(file)) {
+        this.fileList.push({
+          file: file,
+        });
+      }
     }
   }
 
   removeFile(file: File) {
-    const index = this.fileList.indexOf(file);
+    const index = this.indexOf(file);
     if (index > -1) {
       this.fileList.splice(index, 1);
     }
@@ -117,5 +143,81 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
         return 'assets/svgs/code.svg';
     }
   }
+  @ViewChild('player') player: ElementRef<HTMLAudioElement> | undefined;
+  @ViewChild('musicIcon') musicIcon: ElementRef<HTMLImageElement> | undefined;
+  isAudioPlaying: boolean = false;
+  audioSrc: SafeUrl | undefined;
+  time: number = 0;
+  pending: boolean = true;
+  private timerInterval: any;
+  onAudioPlay() {
+    this.isAudioPlaying = true;
+    if(!this.musicIcon) return;
+    this.musicIcon.nativeElement.classList.add('playing');
+  }
 
+  onAudioPause() {
+    this.isAudioPlaying = false;
+    if(!this.musicIcon) return;
+    this.musicIcon.nativeElement.classList.remove('playing');
+  }
+  loading: boolean = false;
+  delta = 200;
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      this.time++;
+      if(this.time>this.delta){
+        clearInterval(this.timerInterval);
+      }
+    },100);
+  }
+
+  stopTimer() {
+    clearInterval(this.timerInterval);
+    this.pending = false;
+  }
+
+  getPendingText() {
+    return `Already waiting ${this.time/10}s, please wait patiently`;
+  }
+  async generate() {
+    const type = "audio/" + this.response_format;
+    let ttsResponse: TtsResponse | undefined;
+    this.loading = true;
+    try {
+      ttsResponse = await this.openaiService.tts({
+        model: this.model,
+        speed: this.speed,
+        response_format: this.response_format,
+        voice: this.voice,
+        input: this.inputText
+      })
+    } catch (e) {
+      this.loading = false;
+    }
+    this.loading = false;
+    const blob = this.bs64Handler.base64toBlob(ttsResponse?.base64!, type);
+    this.audioSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob)); // 创建安全的 URL
+  }
+
+  edit(ttsFile: TtsFile) {
+
+  }
+
+  reparse(ttsFile: TtsFile) {
+
+  }
+
+  reparseAll() {
+
+  }
+
+  putAllContent() {
+    this.inputText = '';
+    for(let ttsFile of this.fileList){
+      if(ttsFile.parsed){
+        this.inputText += ttsFile.parsedContent;
+      }
+    }
+  }
 }
