@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import {VideoModule} from "./pages/videoStudio/video.module";
+import {MediaModule} from "./pages/multi-media-center/media.module";
 
 const routes: Routes = [
   {
@@ -16,6 +17,11 @@ const routes: Routes = [
   {
     path: "video-studio", loadChildren:()=> import("./pages/videoStudio/video.module")
       .then(m=>VideoModule)
+  },
+  {
+    path: "media-studio",
+    loadChildren: ()=>import("./pages/multi-media-center/media.module")
+      .then(m=>MediaModule)
   }
 ];
 

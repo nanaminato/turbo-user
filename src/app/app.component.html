@@ -18,6 +18,7 @@
                 <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/chat"><img height="25" width="25" src="assets/icon/aichat_11zon.jpg">{{'universal.aiChat' | translate}}</button>
                 <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/image-studio"><img height="25" width="25" src="assets/icon/aipainting_11zon.jpg">{{'universal.aiPainting' | translate}}</button>
                 <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/video-studio"><img height="25" width="25" src="assets/icon/aivideo_11zon.jpg">{{'universal.aiVideo' | translate}}</button>
+                <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/media-studio"><span nz-icon nzType="node-index" nzTheme="outline"></span>多媒体工作室</button>
               </div>
             </ng-template>
             <ng-container *ngTemplateOutlet="studios"></ng-container>
@@ -95,6 +96,32 @@
         }
       </div>
     </ion-menu>
+
+    <ion-menu menuId="media-menu" [disabled]="menuAble.mediaDisable" contentId="main-content" type="overlay"
+    >
+      <div class="bg-theme p-0 m-0 d-flex flex-column h-100 z-2">
+        <ion-chip color="primary" class="mt-4 mx-2">
+          <ion-avatar>
+            <span nz-icon nzType="node-index" nzTheme="outline"></span>
+          </ion-avatar>
+          <ion-label>多媒体</ion-label>
+        </ion-chip>
+        <div class="d-flex flex-column p-3">
+          <button class="m-2 rounded-2" nz-button routerLinkActive="active-image" [routerLink]="['media-studio/openai-text-to-speech']">openai 文字转语音</button>
+          <button class="m-2 rounded-2" nz-button routerLinkActive="active-image" [routerLink]="['media-studio/openai-speech-to-text']">openai 语音转文字</button>
+          <button class="m-2 rounded-2" nz-button routerLinkActive="active-image" [routerLink]="['media-studio/media-extractor']">文件内容提取器</button>
+        </div>
+      </div>
+      <div class="bg-theme sticky-bottom z-0">
+        <ng-container *ngTemplateOutlet="studios"></ng-container>
+        @defer (on viewport) {
+          <app-account-label></app-account-label>
+        } @placeholder {
+          <nz-skeleton></nz-skeleton>
+        }
+      </div>
+    </ion-menu>
+
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
