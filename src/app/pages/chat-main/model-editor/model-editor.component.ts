@@ -20,6 +20,4 @@ import {ChatModel} from "../../../models";
 export class ModelEditorComponent{
   @Input()
   chatModel: ChatModel | undefined;
-  expand: boolean = false;
-
 }

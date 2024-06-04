@@ -17,8 +17,14 @@ import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {Bs64Handler} from "../../../services/handlers";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {OpenaiService} from "../../../services/fetch_services";
+import {OpenaiService, ParseService} from "../../../services/fetch_services";
 import {TtsResponse} from "../../../models/media/tts";
+import {TtsFileEditorComponent} from "./tts-file-editor/tts-file-editor.component";
+import {ModelEditorComponent} from "../../chat-main/model-editor/model-editor.component";
+import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {ChatModel} from "../../../models";
+import {forkJoin, map} from "rxjs";
+import {NzNotificationService} from "ng-zorro-antd/notification";
 
 @Component({
   selector: 'app-openai-text-to-speech',
@@ -43,6 +49,10 @@ import {TtsResponse} from "../../../models/media/tts";
     NzAutosizeDirective,
     NzInputDirective,
     NzSpinComponent,
+    TtsFileEditorComponent,
+    ModelEditorComponent,
+    NzModalComponent,
+    NzModalContentDirective,
   ],
   providers: [
     Bs64Handler
@@ -70,7 +80,9 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
   constructor(private menuAble: MenuAbleService,
               private sanitizer: DomSanitizer,
               private bs64Handler: Bs64Handler,
-              private openaiService: OpenaiService) {
+              private openaiService: OpenaiService,
+              private parseService: ParseService,
+              private notification: NzNotificationService) {
     this.menuAble.enableMedia()
   }
 
@@ -164,6 +176,7 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
   loading: boolean = false;
   delta = 200;
   startTimer() {
+    this.time = 0;
     this.timerInterval = setInterval(() => {
       this.time++;
       if(this.time>this.delta){
@@ -184,6 +197,7 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
     const type = "audio/" + this.response_format;
     let ttsResponse: TtsResponse | undefined;
     this.loading = true;
+    this.startTimer();
     try {
       ttsResponse = await this.openaiService.tts({
         model: this.model,
@@ -194,22 +208,65 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
       })
     } catch (e) {
       this.loading = false;
+      this.stopTimer();
     }
+    this.stopTimer();
     this.loading = false;
     const blob = this.bs64Handler.base64toBlob(ttsResponse?.base64!, type);
     this.audioSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob)); // 创建安全的 URL
   }
-
+  editTtsFile: TtsFile | undefined;
+  ttsEditModelVisible: boolean = false;
   edit(ttsFile: TtsFile) {
-
+    this.editTtsFile = ttsFile;
+    ttsFile.parsed = true;
+    this.ttsEditModelVisible = true;
   }
 
-  reparse(ttsFile: TtsFile) {
+  async reparse(ttsFile: TtsFile) {
+    if(ttsFile.fileData===undefined){
+      await this.waitReadFile(ttsFile);
+    }
 
+    try {
+      this.parseService.parseTts(ttsFile).subscribe({
+        next: res=>{
+          ttsFile.parsedContent = res.content;
+          ttsFile.parsed = true;
+        },
+        error: (error:any)=>{
+          this.notification.error(error.error,"")
+        }
+      })
+    } catch (error) {
+      console.error('发生错误：', error);
+    }
   }
 
-  reparseAll() {
+  async reparseAll() {
+    await this.waitReadAllFile();
+    await this.parseAllFile();
+  }
+  async parseAllFile():Promise<boolean>{
+    const parseObservables =
+      this.fileList.map(f => this.parseService.parseTts(f));
+    if(parseObservables.length===0) return true;
+    try {
+      const parsedContents = await forkJoin(parseObservables).pipe(
+        map(results => {
+          for (let i = 0; i < this.fileList!.length; i++) {
+            this.fileList![i].parsedContent = results[i].content;
+            this.fileList![i].parsed = true;
+          }
+          return true;
+        })
+      ).toPromise();
 
+      return parsedContents!;
+    } catch (error) {
+      console.error('发生错误：', error);
+      return false;
+    }
   }
 
   putAllContent() {
@@ -219,5 +276,37 @@ export class OpenaiTextToSpeechComponent  implements OnInit {
         this.inputText += ttsFile.parsedContent;
       }
     }
+  }
+  async waitReadAllFile() {
+    const promises = this.fileList.
+      filter(f=>f.fileData===undefined).
+      map((file) => this.readFile(file));
+    await Promise.all(promises);
+  }
+  async waitReadFile(ttsFile: TtsFile){
+    const promise = this.readFile(ttsFile);
+    await promise;
+  }
+
+  readFile(ttsFile: TtsFile): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        ttsFile.fileData = this.arrayBufferToBase64(arrayBuffer);
+        resolve();
+      };
+      if (ttsFile) {
+        reader.readAsArrayBuffer(ttsFile.file!);
+      }
+    });
+  }
+  arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
   }
 }

@@ -1,3 +1,12 @@
+<nz-modal [(nzVisible)]="ttsEditModelVisible"
+          (nzOnCancel)="ttsEditModelVisible = false"
+          (nzOnOk)="ttsEditModelVisible = false"
+          [nzTitle]="'编辑解析文件内容'">
+  <ng-container *nzModalContent>
+    <app-tts-file-editor [ttsFile]="editTtsFile">
+    </app-tts-file-editor>
+  </ng-container>
+</nz-modal>
 <nz-card>
   <nz-row class="align-items-center my-1 bg-theme2 text-theme2">
     <nz-col class="m-2">
@@ -56,7 +65,7 @@
        (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
     <div class="drop-message">
       <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
-      将文件拖放到此处
+      将文件拖放到此处或者点击此处从电脑中选择文件
     </div>
     <input multiple type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput>
   </div>
@@ -118,16 +127,18 @@
 </div>
 <div class="border rounded-2">
   <div class="d-flex">
-    <button nz-button (click)="reparseAll()" class="m-2">解析所有内容</button>
-    <button nz-button (click)="putAllContent()" class="m-2">导入文件内容</button>
+    <button nz-button (click)="reparseAll()" class="m-2">解析所有文件</button>
+    <button nz-button (click)="putAllContent()" class="m-2">导入上面文件内容</button>
+    <button nz-button (click)="inputText = ''" class="m-2">清空内容</button>
     <button nz-button (click)="generate()" class="m-2">生成音频</button>
+
   </div>
   <div class="d-flex justify-content-center align-items-center p-2">
     <textarea [(ngModel)]="inputText"
       nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。" [nzAutosize]="{ minRows: 3, maxRows: 10 }"></textarea>
   </div>
   @if(loading){
-    <div class="d-flex align-items-center flex-row">
+    <div class="d-flex align-items-center flex-row m-5">
       正在处理中
       <div class="mx-3">
         <nz-spin nzSize="large" nzSimple></nz-spin>

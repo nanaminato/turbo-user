@@ -96,14 +96,15 @@ export class ChatMainComponent implements OnDestroy{
 
   async parseAllFile(userModel: ChatModel):Promise<boolean>{
     if(userModel.fileList===undefined||userModel.fileList.length===0) return true;
+    let sendList = userModel.fileList.filter(f=>!f.fileType?.startsWith("image"));
     const parseObservables =
-      userModel.fileList.filter(f=>!f.fileType?.startsWith("image")).map(f => this.parseService.parse(f));
+      sendList.map(f => this.parseService.parse(f));
     if(parseObservables.length===0) return true;
     try {
       const parsedContents = await forkJoin(parseObservables).pipe(
         map(results => {
-          for (let i = 0; i < userModel.fileList!.length; i++) {
-            userModel.fileList![i].parsedContent = results[i].content;
+          for (let i = 0; i < sendList.length; i++) {
+            sendList[i].parsedContent = results[i].content;
           }
           return true;
         })
