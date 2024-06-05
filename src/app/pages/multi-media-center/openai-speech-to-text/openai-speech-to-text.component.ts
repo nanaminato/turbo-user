@@ -97,12 +97,22 @@ export class OpenaiSpeechToTextComponent{
   addFilesToList(files: FileList) {
     // flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
     const allowedTypes =
-      ['audio/flac','audio/mp3','audio/mpeg','audio/mpga',
-      'audio/m4a','audio/ogg','audio/wav','audio/webm',
-        'video/mp4','audio/mp3'];
+      ['audio/flac','audio/x-flac',
+        'audio/mp3',
+        'audio/mpeg',
+        'audio/mpga',
+      'audio/x-m4a',
+        'audio/ogg',
+        'audio/wav',
+        'audio/wave',
+        'audio/x-wav',
+        'audio/x-pn-wav',
+        'audio/webm',
+        'video/mp4'];
     this.fileList.length = 0;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+      // console.log(file.type)
       if (allowedTypes.includes(file.type)) {
         this.fileList.push({
           file: file,
