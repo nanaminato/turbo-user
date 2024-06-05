@@ -59,24 +59,25 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
   ],
   standalone: true
 })
-export class OpenaiTextToSpeechComponent{
+export class OpenaiTextToSpeechComponent {
   voice: string = "alloy";
   human_voices: string[] = [
-    "alloy","echo","fable","onyx",
+    "alloy", "echo", "fable", "onyx",
   ];
   woman_voices: string[] = [
-    "nova","shimmer"
+    "nova", "shimmer"
   ];
   speech_response_formats: string[] = [
-    "mp3","opus","aac","flac"
+    "mp3", "opus", "aac", "flac"
   ]
   response_format: string = "mp3";
   model: string = "tts-1";
   speed: number = 1; // 0.25 - 4.0
   models: string[] = [
-    "tts-1","tts-1-hd"
+    "tts-1", "tts-1-hd"
   ];
   inputText: string = "";
+
   constructor(private menuAble: MenuAbleService,
               private sanitizer: DomSanitizer,
               private bs64Handler: Bs64Handler,
@@ -87,6 +88,7 @@ export class OpenaiTextToSpeechComponent{
   }
 
   fileList: TtsFile[] = []
+
   onFileDrop(event: DragEvent) {
     event.preventDefault();
     const files = event.dataTransfer?.files;
@@ -106,18 +108,13 @@ export class OpenaiTextToSpeechComponent{
       this.addFilesToList(files);
     }
   }
-  contains(file: File){
-    for (const item of this.fileList) {
-      if(item === file){
-        return true;
-      }
-    }
-    return false
-  }
+
   addFilesToList(files: FileList) {
+    const allowedTypes = ['application/msword', 'application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      if (!this.contains(file)) {
+      console.log(file.type)
+      if (allowedTypes.includes(file.type)) {
         this.fileList.push({
           file: file,
         });
@@ -125,11 +122,12 @@ export class OpenaiTextToSpeechComponent{
     }
   }
 
-  removeFile(index:number) {
+  removeFile(index: number) {
     if (index > -1) {
       this.fileList.splice(index, 1);
     }
   }
+
   getIcon(fileName: string) {
     const fileExtension = fileName.split('.').pop(); // 获取文件后缀
     switch (fileExtension) {
@@ -148,6 +146,7 @@ export class OpenaiTextToSpeechComponent{
         return 'assets/svgs/code.svg';
     }
   }
+
   @ViewChild('player') player: ElementRef<HTMLAudioElement> | undefined;
   @ViewChild('musicIcon') musicIcon: ElementRef<HTMLImageElement> | undefined;
   isAudioPlaying: boolean = false;
@@ -155,27 +154,30 @@ export class OpenaiTextToSpeechComponent{
   time: number = 0;
   pending: boolean = true;
   private timerInterval: any;
+
   onAudioPlay() {
     this.isAudioPlaying = true;
-    if(!this.musicIcon) return;
+    if (!this.musicIcon) return;
     this.musicIcon.nativeElement.classList.add('playing');
   }
 
   onAudioPause() {
     this.isAudioPlaying = false;
-    if(!this.musicIcon) return;
+    if (!this.musicIcon) return;
     this.musicIcon.nativeElement.classList.remove('playing');
   }
+
   loading: boolean = false;
   delta = 200;
+
   startTimer() {
     this.time = 0;
     this.timerInterval = setInterval(() => {
       this.time++;
-      if(this.time>this.delta){
+      if (this.time > this.delta) {
         clearInterval(this.timerInterval);
       }
-    },100);
+    }, 100);
   }
 
   stopTimer() {
@@ -184,8 +186,9 @@ export class OpenaiTextToSpeechComponent{
   }
 
   getPendingText() {
-    return `Already waiting ${this.time/10}s, please wait patiently`;
+    return `Already waiting ${this.time / 10}s, please wait patiently`;
   }
+
   async generate() {
     const type = "audio/" + this.response_format;
     let ttsResponse: TtsResponse | undefined;
@@ -208,8 +211,10 @@ export class OpenaiTextToSpeechComponent{
     const blob = this.bs64Handler.base64toBlob(ttsResponse?.base64!, type);
     this.audioSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob)); // 创建安全的 URL
   }
+
   editTtsFile: TtsFile | undefined;
   ttsEditModelVisible: boolean = false;
+
   edit(ttsFile: TtsFile) {
     this.editTtsFile = ttsFile;
     ttsFile.parsed = true;
@@ -217,18 +222,18 @@ export class OpenaiTextToSpeechComponent{
   }
 
   async reparse(ttsFile: TtsFile) {
-    if(ttsFile.fileData===undefined){
+    if (ttsFile.fileData === undefined) {
       await this.waitReadFile(ttsFile);
     }
 
     try {
       this.parseService.parseTts(ttsFile).subscribe({
-        next: res=>{
+        next: res => {
           ttsFile.parsedContent = res.content;
           ttsFile.parsed = true;
         },
-        error: (error:any)=>{
-          this.notification.error(error.error,"")
+        error: (error: any) => {
+          this.notification.error(error.error, "")
         }
       })
     } catch (error) {
@@ -238,45 +243,42 @@ export class OpenaiTextToSpeechComponent{
 
   async reparseAll() {
     await this.waitReadAllFile();
-    await this.parseAllFile();
+    var res = await this.parseAllFile();
+    // if(!res){
+    //   this.notification.error("解析出现了错误","请尝试对单个文件进行解析来发现出现错误的文件")
+    // }
   }
-  async parseAllFile():Promise<boolean>{
-    const parseObservables =
-      this.fileList.map(f => this.parseService.parseTts(f));
-    if(parseObservables.length===0) return true;
-    try {
-      const parsedContents = await forkJoin(parseObservables).pipe(
-        map(results => {
-          for (let i = 0; i < this.fileList!.length; i++) {
-            this.fileList![i].parsedContent = results[i].content;
-            this.fileList![i].parsed = true;
-          }
-          return true;
-        })
-      ).toPromise();
 
-      return parsedContents!;
-    } catch (error) {
-      console.error('发生错误：', error);
-      return false;
-    }
+  async parseAllFile() {
+    await Promise.all(this.fileList!.map(async (file) => {
+      // @ts-ignore
+      this.parseService.parseTts(file).subscribe({
+        next: res=>{
+          file.parsedContent = res.content;
+          file.parsed = true;
+        },
+        error: err => {
+          this.notification.error("解析文件出现了问题","")
+        }
+      })
+    }));
   }
 
   putAllContent() {
     this.inputText = '';
-    for(let ttsFile of this.fileList){
-      if(ttsFile.parsed){
+    for (let ttsFile of this.fileList) {
+      if (ttsFile.parsed) {
         this.inputText += ttsFile.parsedContent;
       }
     }
   }
+
   async waitReadAllFile() {
-    const promises = this.fileList.
-      filter(f=>f.fileData===undefined).
-      map((file) => this.readFile(file));
+    const promises = this.fileList.filter(f => f.fileData === undefined).map((file) => this.readFile(file));
     await Promise.all(promises);
   }
-  async waitReadFile(ttsFile: TtsFile){
+
+  async waitReadFile(ttsFile: TtsFile) {
     const promise = this.readFile(ttsFile);
     await promise;
   }
@@ -294,6 +296,7 @@ export class OpenaiTextToSpeechComponent{
       }
     });
   }
+
   arrayBufferToBase64(buffer: ArrayBuffer): string {
     let binary = '';
     const bytes = new Uint8Array(buffer);

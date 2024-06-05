@@ -3,6 +3,8 @@ import {ServiceProvider} from "../../roots";
 import {DallE, DallE3Response} from "../../models/images";
 import {Injectable} from "@angular/core";
 import {TtsRequest, TtsResponse} from "../../models/media/tts";
+import {OpenAiTranslationRequest} from "../../models/media/stt-translation";
+import {OpenAiTranscriptionRequest} from "../../models/media/stt-transcription";
 @Injectable({
   providedIn: "root"
 })
@@ -19,6 +21,32 @@ export class OpenaiService{
           },
           error: error=>{
             reject(error.error)
+          }
+        })
+    })
+  }
+  translate(request: OpenAiTranslationRequest){
+    return new Promise<any>((resolve,reject)=>{
+      this.http.post<any>(`${this.provider.apiUrl}api/media/whisper-translate`,request)
+        .subscribe({
+          next: (res:any)=>{
+            resolve(res)
+          },
+          error: error=>{
+            reject(error)
+          }
+        })
+    })
+  }
+  transcription(request: OpenAiTranscriptionRequest){
+    return new Promise<any>((resolve,reject)=>{
+      this.http.post<any>(`${this.provider.apiUrl}api/media/whisper-transcription`,request)
+        .subscribe({
+          next: (res:any)=>{
+            resolve(res)
+          },
+          error: error=>{
+            reject(error)
           }
         })
     })

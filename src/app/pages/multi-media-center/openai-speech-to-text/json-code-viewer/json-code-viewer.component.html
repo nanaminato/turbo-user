@@ -1,0 +1,12 @@
+<ng-template #buttonTemplate>
+  <app-copied-button></app-copied-button>
+</ng-template>
+<!--katex-->
+<!--mermaid-->
+
+<markdown class="" [data]="code | htmlSanitizer"
+          [disableSanitizer]="false"
+          lineNumbers
+          clipboard
+          [clipboardButtonTemplate]="buttonTemplate"
+></markdown>

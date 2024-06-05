@@ -67,7 +67,9 @@
       <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
       将文件拖放到此处或者点击此处从电脑中选择文件
     </div>
-    <input multiple type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput>
+    <input multiple
+           accept=".pdf,application/pdf,.txt,text/plain,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+           type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput>
   </div>
   <div>
     @for (ttsFile of fileList; track ttsFile){

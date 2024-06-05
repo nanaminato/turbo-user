@@ -75,22 +75,12 @@ export class MediaExtractorComponent{
       this.addFilesToList(files);
     }
   }
-  contains(file: File){
-    for (const item of this.fileList) {
-      if(item === file){
-        return true;
-      }
-    }
-    return false
-  }
   addFilesToList(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      if (!this.contains(file)) {
-        this.fileList.push({
-          file: file,
-        });
-      }
+      this.fileList.push({
+        file: file,
+      });
     }
   }
 
@@ -148,26 +138,19 @@ export class MediaExtractorComponent{
     await this.waitReadAllFile();
     await this.parseAllFile();
   }
-  async parseAllFile():Promise<boolean>{
-    const parseObservables =
-      this.fileList.map(f => this.parseService.parseTts(f));
-    if(parseObservables.length===0) return true;
-    try {
-      const parsedContents = await forkJoin(parseObservables).pipe(
-        map(results => {
-          for (let i = 0; i < this.fileList!.length; i++) {
-            this.fileList![i].parsedContent = results[i].content;
-            this.fileList![i].parsed = true;
-          }
-          return true;
-        })
-      ).toPromise();
-
-      return parsedContents!;
-    } catch (error) {
-      console.error('发生错误：', error);
-      return false;
-    }
+  async parseAllFile(){
+    await Promise.all(this.fileList!.map(async (file) => {
+      // @ts-ignore
+      this.parseService.parseTts(file).subscribe({
+        next: res=>{
+          file.parsedContent = res.content;
+          file.parsed = true;
+        },
+        error: err => {
+          this.notification.error("解析文件出现了问题","")
+        }
+      })
+    }));
   }
   async waitReadAllFile() {
     const promises = this.fileList.
