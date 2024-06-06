@@ -30,8 +30,9 @@ export class ChatComponent {
     this.startTimer();
   }
   @Input()
-  set fileLength(value: number | undefined){
-    if(value === undefined || value === 0){
+  set fileLength(value: number | undefined | null){
+    // console.log("file-length",value)
+    if(value === undefined || value === 0 || value == null){
 
     }else{
       this.stopTimer()

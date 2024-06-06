@@ -43,7 +43,9 @@
   <div class="flex-grow-1 centered px-5 my-2 w-100">
     <div [style]="getFontSize()">
       @defer (on immediate){
-        <app-chat [chatModel]="chatModel" [content]="chatModel?.content?.length" [fileLength]="chatModel?.fileList?.length"></app-chat>
+        <app-chat [chatModel]="chatModel"
+                  [content]="chatModel?.content?.length"
+                  [fileLength]="chatModel?.fileList?.length"></app-chat>
       }@placeholder (minimum 50ms){
         <nz-skeleton></nz-skeleton>
       }

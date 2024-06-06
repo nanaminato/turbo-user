@@ -16,6 +16,8 @@ import {IonicModule} from "@ionic/angular";
 import {NzModalComponent, NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
 import {TtsFileEditorComponent} from "../openai-text-to-speech/tts-file-editor/tts-file-editor.component";
 import {JsonCodeViewerComponent} from "./json-code-viewer/json-code-viewer.component";
+import {Bs64Handler} from "../../../services/handlers";
+import {FileHandler} from "../../../services/handlers/fileHandler";
 
 @Component({
     selector: 'app-openai-speech-to-text',
@@ -67,7 +69,8 @@ export class OpenaiSpeechToTextComponent{
   ];
   constructor(private menuAble: MenuAbleService,
               private openaiService: OpenaiService,
-              private notificaion: NzNotificationService) {
+              private notification: NzNotificationService,
+              private fileHandler: FileHandler) {
     this.menuAble.enableMedia()
   }
 
@@ -122,15 +125,25 @@ export class OpenaiSpeechToTextComponent{
     }
   }
   loading: boolean = false;
-  async translate() {
+  async pre(){
     if(this.fileList.length===0){
-      this.notificaion.error("还没有选择文件","")
+      this.notification.error("还没有选择文件","")
       return;
     }
     this.loading = true;
     this.outputText = ''
     let file = this.fileList[0];
-    await this.waitReadFile(file)
+    await this.fileHandler.waitReadFile(file)
+    return file;
+  }
+  async translate() {
+    let file: TtsFile | undefined;
+    let result = await this.pre();
+    if(result===undefined){
+      return;
+    }else{
+      file = result;
+    }
     try{
       let result = await this.openaiService.translate({
         file: file.fileData!,
@@ -140,16 +153,9 @@ export class OpenaiSpeechToTextComponent{
         suffix: file!.file!.name.split('.')[1],
         prompt: this.prompt
       });
-      // console.log(text)
-      if(result.error!==undefined && result.error!=null){
-        this.outputText = this.suggestion;
-        this.notificaion.error(result.error.code,''+result.error.type)
-      }else{
-        this.outputText = result.text;
-      }
-      this.result = result;
+      this.tackleResult(result);
     }catch (e:any){
-      this.notificaion.error(e.error,'')
+      this.notification.error(e.error,'')
     }
     this.loading = false;
   }
@@ -157,14 +163,13 @@ export class OpenaiSpeechToTextComponent{
   viewSourceVisible: boolean = false;
   suggestion = "生成失败，请通过点击'查看源结果'查看具体信息"
   async transcription() {
-    if(this.fileList.length===0){
-      this.notificaion.error("还没有选择文件","")
+    let file: TtsFile | undefined;
+    let result = await this.pre();
+    if(result===undefined){
       return;
+    }else{
+      file = result;
     }
-    this.loading = true;
-    this.outputText = ''
-    let file = this.fileList[0];
-    await this.waitReadFile(file)
     try{
       let result = await this.openaiService.transcription({
         file: file.fileData!,
@@ -175,43 +180,20 @@ export class OpenaiSpeechToTextComponent{
         language: this.language,
         prompt: this.prompt
       });
-      if(result.error!==undefined && result.error!=null ){
-        this.outputText = this.suggestion;
-        this.notificaion.error(result.error.code,''+result.error.type)
-      }else{
-        this.outputText = result.text;
-      }
-      this.result = result;
+      this.tackleResult(result);
     }catch (e:any){
-      this.notificaion.error(e.error,'')
+      this.notification.error(e.error,'')
     }
     this.loading = false;
   }
-  async waitReadFile(ttsFile: TtsFile) {
-    const promise = this.readFile(ttsFile);
-    await promise;
-  }
-
-  readFile(ttsFile: TtsFile): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const arrayBuffer = reader.result as ArrayBuffer;
-        ttsFile.fileData = this.arrayBufferToBase64(arrayBuffer);
-        resolve();
-      };
-      if (ttsFile) {
-        reader.readAsArrayBuffer(ttsFile.file!);
-      }
-    });
-  }
-
-  arrayBufferToBase64(buffer: ArrayBuffer): string {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
+  tackleResult(result: any){
+    // console.log(text)
+    if(result.error!==undefined && result.error!=null ){
+      this.outputText = this.suggestion;
+      this.notification.error(result.error.code,''+result.error.type)
+    }else{
+      this.outputText = result.text;
     }
-    return btoa(binary);
+    this.result = result;
   }
 }

@@ -19,7 +19,7 @@ import {NzImageModule} from "ng-zorro-antd/image";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {TranslateModule} from "@ngx-translate/core";
 import {IonicModule} from "@ionic/angular";
-import {ChatContextHandler} from 'src/app/services/handlers';
+import {Bs64Handler, ChatContextHandler} from 'src/app/services/handlers';
 import {
   ChatContext,
   ContextMemoryService,
@@ -57,6 +57,7 @@ import {ParseService} from "../../services/fetch_services";
 import { forkJoin } from 'rxjs';
 import {AuthService, RequestManagerService, SendManagerService} from "../../auth_module";
 import {MenuAbleService} from "../../services/normal-services/menu-able.service";
+import {FileHandler} from "../../services/handlers/fileHandler";
 
 @Component({
   selector: 'app-chat-main',
@@ -468,7 +469,9 @@ export class ChatMainComponent implements OnDestroy{
               private parseService: ParseService,
               private auth: AuthService,
               private requestManagerService: RequestManagerService,
-              private sendManagerService: SendManagerService
+              private sendManagerService: SendManagerService,
+              private fileHandler: FileHandler,
+              private bs64Handler: Bs64Handler
   ) {
     this.menuAbleService.enableChat();
     // 添加默认值
@@ -727,7 +730,7 @@ export class ChatMainComponent implements OnDestroy{
           this.chatFileList.push(afile);
         }else {
           const arrayBuffer = reader.result as ArrayBuffer;
-          const base64String = this.arrayBufferToBase64(arrayBuffer);
+          const base64String = this.bs64Handler.arrayBufferToBase64(arrayBuffer);
           const afile: FileAdds = {
             fileName: file.name,
             fileType: file.type,
@@ -752,14 +755,7 @@ export class ChatMainComponent implements OnDestroy{
       }
     });
   }
-  arrayBufferToBase64(buffer: ArrayBuffer): string {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    for (let i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binary);
-  }
+
 
   protected readonly RequestType = RequestType;
   showChoice: boolean = false;
