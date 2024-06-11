@@ -14,12 +14,28 @@
 </div>
 @for (selected of selectedModels; track selected){
   <button class="bg-info mx-2 my-1  p-1 rounded-2"
-    (click)="addOrRemove(selected)">{{selected.modelValue}}</button>
+    (click)="addOrRemove(selected)">
+    {{selected.modelValue}}
+    @if(selected.internet===true){
+      <span nz-icon nzType="ant-cloud" nzTheme="outline"></span>
+    }
+    @if(selected.vision===true){
+      <span nz-icon nzType="eye" nzTheme="outline"></span>
+    }
+  </button>
 }
 @for (selectable of selectableModels; track selectable){
   @if (notSelected(selectable.modelValue)){
     <button class="c-dark mx-2 my-1  p-1 rounded-2"
-            (click)="addOrRemove(selectable)">{{selectable.modelValue}}</button>
+            (click)="addOrRemove(selectable)">
+      {{selectable.modelValue}}
+      @if(selectable.internet===true){
+        <span nz-icon nzType="ant-cloud" nzTheme="outline"></span>
+      }
+      @if(selectable.vision===true){
+        <span nz-icon nzType="eye" nzTheme="outline"></span>
+      }
+    </button>
   }@else{
 
   }

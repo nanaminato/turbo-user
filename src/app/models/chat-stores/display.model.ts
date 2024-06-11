@@ -2,6 +2,7 @@ export interface DisplayModel{
   modelName: string;
   modelValue: string;
   vision?: boolean;
+  internet?: boolean;
 }
 export class DisplayModelGenerator{
   generate(value: string,vision:boolean = false): DisplayModel{

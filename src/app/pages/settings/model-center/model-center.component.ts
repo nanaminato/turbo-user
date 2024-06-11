@@ -1,12 +1,14 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {DisplayModel, displayModels} from "../../../models";
-import {NumerService} from "../../../services/fetch_services/numer.service";
+import {NumerService} from "../../../services/fetch_services";
 import {ConfigurationService} from "../../../services/db-services";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {ModelCustomAddComponent} from "./model-custom-add/model-custom-add.component";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 
 @Component({
   selector: 'app-model-center',
@@ -18,7 +20,9 @@ import {TranslateModule} from "@ngx-translate/core";
     NzModalComponent,
     NzModalContentDirective,
     ModelCustomAddComponent,
-    TranslateModule
+    TranslateModule,
+    NzIconDirective,
+    NzTooltipDirective
   ]
 })
 export class ModelCenterComponent  implements OnInit {
@@ -35,23 +39,31 @@ export class ModelCenterComponent  implements OnInit {
     displayModels.forEach(e=>{
       this.push(e);
     });
-    this.numerService.getChatModels().subscribe({
-      next: models=>{
-        models.forEach(e=>{
-          this.push(e)
-        })
-      }
-    });
     this.universalService.getSelectableModels().then(models=>{
       models?.forEach((m: DisplayModel)=>{
         this.push(m);
+        // console.log("push",m.modelValue," local")
       })
     })
+    this.numerService.getChatModels().subscribe({
+      next: models=>{
+        models.forEach(m=>{
+          m.internet = true;
+          this.push(m,true);
+          // console.log("push",m.modelValue,"internet")
+        })
+      }
+    });
+
 
   }
-  push(displayModel: DisplayModel){
-    if(this.selectableModels.
-      findIndex(s=>s.modelValue===displayModel.modelValue)!==-1){
+  push(displayModel: DisplayModel,replace: boolean = false){
+    let search = this.selectableModels.
+    findIndex(s=>s.modelValue===displayModel.modelValue);
+    if(search!==-1){
+      if(replace){
+        this.selectableModels.splice(search,1,displayModel)
+      }
     }else{
       this.selectableModels.push(displayModel)
     }

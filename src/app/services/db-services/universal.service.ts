@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {DisplayModel} from "../../models";
 import {DbService} from "./db.service";
-import {GenerateTask} from "../../models/media/generateTask";
+import {GenerateTask} from "../../models/media";
 
 @Injectable({
   providedIn: "root"
