@@ -37,15 +37,19 @@ export class ChatContextHandler{
             type: "text",
             text: content
           })
-          for(let img of chatModel.fileList!.filter(f=>f.fileType?.startsWith("image"))){
-            complexContent.push({
-              type: "image_url",
-              image_url: {
-                url: img.fileContent!,
-                detail: configuration.chatConfiguration.detail
-              }
-            })
+          if(chatModel.fileList!==undefined){
+            let files = chatModel.fileList!.filter(f=>f.fileType?.startsWith("image"));
+            for(let img of files){
+              complexContent.push({
+                type: "image_url",
+                image_url: {
+                  url: img.fileContent!,
+                  detail: configuration.chatConfiguration.detail
+                }
+              })
+            }
           }
+
 
           messages.splice(0,0,{
             role: chatModel.role,
