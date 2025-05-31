@@ -1,4 +1,4 @@
 {
-  "apiUrl": "https://turboai.cloud/",
+  "apiUrl": "http://localhost:11000/",
   "apiUrl2": "https://localhost:44301/"
 }

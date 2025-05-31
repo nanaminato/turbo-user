@@ -4,7 +4,7 @@
           [class.selected]="selectId===history?.dataId"
           [class.border-1]="selectId===history?.dataId"
           (click)="changeSession(history?.dataId,$event)">
-    <span class="overflow-hidden">{{ history?.title }}</span>
+    <span class="overflow-hidden-x">{{ history?.title }}</span>
     @if(selectId===history?.dataId){
       <span
         nz-icon class="mx-2 py-1"

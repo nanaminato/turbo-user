@@ -28,6 +28,7 @@ import {ConfigurationService} from "../../services/db-services";
 import { themes } from 'src/app/themes/theme';
 import {ModelCenterComponent} from "./model-center/model-center.component";
 import {details} from "../../models/enumerates/enum.type";
+import {ServiceProvider} from "../../roots";
 export const languages: string[] = [
   'zh','en','jp'
 ];
@@ -66,7 +67,8 @@ export class SettingsComponent {
               @Inject(configurationChangeSubject) private configurationObserver: Subject<Configuration>,
               private renderer: Renderer2,
               private translate: TranslateService,
-              private dynamicConfigService: DynamicConfigService
+              private dynamicConfigService: DynamicConfigService,
+              private serviceProvider: ServiceProvider
               ) {
     this.configuration = this.configurationService.configuration!;
     this.loadProperties();
@@ -77,6 +79,9 @@ export class SettingsComponent {
       console.log(this.dynamicConfig);
     });
 
+  }
+  apiUrl(){
+    return this.serviceProvider.apiUrl;
   }
   miniPhone() {
     return this.sizeReportService.miniPhoneView();
