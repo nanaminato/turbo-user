@@ -1,24 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
-import {NgForOf} from "@angular/common";
-import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzImageDirective} from "ng-zorro-antd/image";
-import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
-import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
-import {NzOptionComponent, NzOptionGroupComponent, NzSelectComponent} from "ng-zorro-antd/select";
-import {NzSliderComponent} from "ng-zorro-antd/slider";
-import {NzSpinComponent} from "ng-zorro-antd/spin";
+import { NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
 import {TtsFileEditorComponent} from "../openai-text-to-speech/tts-file-editor/tts-file-editor.component";
 import {ParseService} from "../../../services/fetch_services";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TtsFile} from "../../../models/media";
-import {forkJoin, map} from "rxjs";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 
 @Component({
@@ -26,22 +18,12 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     templateUrl: './media-extractor.component.html',
     styleUrls: ['./media-extractor.component.scss'],
   imports: [
-    NgForOf,
-    NzAutosizeDirective,
     NzButtonComponent,
-    NzCardComponent,
     NzColDirective,
     NzIconDirective,
     NzImageDirective,
-    NzInputDirective,
-    NzInputNumberComponent,
-    NzModalComponent,
-    NzOptionComponent,
-    NzOptionGroupComponent,
+    NzModalModule,
     NzRowDirective,
-    NzSelectComponent,
-    NzSliderComponent,
-    NzSpinComponent,
     ReactiveFormsModule,
     TranslateModule,
     TtsFileEditorComponent,

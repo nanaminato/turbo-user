@@ -18,7 +18,6 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
   imports: [
     FormsModule,
     NzSelectModule,
-    NgForOf,
     NzIconDirective,
     NzTooltipDirective
   ],

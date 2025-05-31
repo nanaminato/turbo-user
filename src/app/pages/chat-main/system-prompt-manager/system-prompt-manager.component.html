@@ -14,21 +14,30 @@
     <nz-switch [(ngModel)]="chatContext!.onlyOne"></nz-switch>
   </nz-col>
 </div>
-<div *ngIf="chatContext?.systems?.length===0">
-  {{'ball.emptyContent' | translate}}
-  <nz-skeleton></nz-skeleton>
-</div>
-<div *ngIf="chatContext?.systems?.length!==0" class="scrollable-list my-2">
-  <div class="d-flex flex-column">
-    <div *ngFor="let item of chatContext?.systems!">
-      <nz-row>
-        <nz-col class="w-75">
-          {{getItem(item.id)?.content}}
-        </nz-col>
-        <nz-col>
-          <nz-switch [(ngModel)]="item.in"></nz-switch>
-        </nz-col>
-      </nz-row>
+@if(chatContext?.systems?.length===0){
+  <div>
+    {{'ball.emptyContent' | translate}}
+    <nz-skeleton></nz-skeleton>
+  </div>
+}
+@if(chatContext?.systems?.length!==0){
+  <div  class="scrollable-list my-2">
+    <div class="d-flex flex-column">
+
+      <div >
+        @for(item of chatContext?.systems;track item){
+          <nz-row>
+            <nz-col class="w-75">
+              {{getItem(item.id)?.content}}
+            </nz-col>
+            <nz-col>
+              <nz-switch [(ngModel)]="item.in"></nz-switch>
+            </nz-col>
+          </nz-row>
+        }
+
+      </div>
     </div>
   </div>
-</div>
+
+}

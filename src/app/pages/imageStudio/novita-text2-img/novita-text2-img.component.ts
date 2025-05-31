@@ -1,7 +1,7 @@
 import {Component, DoCheck, HostListener, OnInit} from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {IonicModule, MenuController} from "@ionic/angular";
-import {NovitaService} from "../../../services/fetch_services/novita.service";
+import {NovitaService} from "../../../services/fetch_services";
 import {Embedding, Lora, NovitaTask, UrlImage} from "../../../models/images";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {FormsModule} from "@angular/forms";
@@ -20,7 +20,7 @@ import {ImageModelComponent} from "../toolkits/image-model/image-model.component
 import {EmbeddingListComponent} from "../toolkits/embedding-list/embedding-list.component";
 import {LoraListComponent} from "../toolkits/lora-list/lora-list.component";
 import {NovitaCheck} from "../../../services/handlers";
-import {GenerateTask} from "../../../models/media/generateTask";
+import {GenerateTask} from "../../../models/media";
 import {AuthService} from "../../../auth_module";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
@@ -34,8 +34,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-text2-img.component.scss'],
   standalone: true,
   imports: [
-    NzRowDirective,
-    NzColDirective,
     IonicModule,
     FormsModule,
     NzSliderComponent,
@@ -43,9 +41,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     NzIconDirective,
     NzButtonComponent,
     GalleryComponent,
-    ModelCenterComponent,
-    NovitaModelSelectorComponent,
-    NzModalContentDirective,
     ImageModelComponent,
     EmbeddingListComponent,
     LoraListComponent,

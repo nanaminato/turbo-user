@@ -26,12 +26,7 @@ import {RegisterService, VerificationService} from "../../../auth_module";
     ReactiveFormsModule,
     NzCardComponent,
     NzFormDirective,
-    NzFormLabelComponent,
     NzColDirective,
-    NzFormItemComponent,
-    NzFormControlComponent,
-    NzInputDirective,
-    NzButtonComponent,
     NzRowDirective
   ],
   standalone: true

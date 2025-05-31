@@ -33,8 +33,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-img2-img.component.scss'],
   standalone: true,
   imports: [
-    NzRowDirective,
-    NzColDirective,
     IonicModule,
     FormsModule,
     NzSliderComponent,
@@ -42,9 +40,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     NzIconDirective,
     NzButtonComponent,
     GalleryComponent,
-    NzUploadComponent,
-    NgIf,
-    NzImageDirective,
     NzImageModule,
     ImageModelComponent,
     EmbeddingListComponent,

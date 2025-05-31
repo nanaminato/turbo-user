@@ -41,9 +41,8 @@ import {MenuAbleService} from "./services/normal-services/menu-able.service";
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  providers: [
-
-  ]
+  standalone: false,
+  providers: []
 })
 export class AppComponent implements OnInit{
   configuration: Configuration | undefined;

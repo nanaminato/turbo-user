@@ -33,10 +33,6 @@ import {Observer} from "rxjs";
     NzColDirective,
     ReactiveFormsModule,
     NzRowDirective,
-    NzFormDirective,
-    NzFormControlComponent,
-    NzInputGroupComponent,
-    NzInputDirective,
     NzCheckboxComponent,
     FormsModule
   ],

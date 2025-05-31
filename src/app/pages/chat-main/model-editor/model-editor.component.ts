@@ -13,7 +13,6 @@ import {ChatModel} from "../../../models";
     NzSpinModule,
     FormsModule,
     NzInputModule,
-    NgIf
   ],
   standalone: true
 })

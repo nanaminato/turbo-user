@@ -19,8 +19,6 @@ import {ChatModel} from "../../../models";
     NzSwitchModule,
     FormsModule,
     NzSkeletonModule,
-    NgIf,
-    NgForOf,
     TranslateModule
   ],
   standalone: true

@@ -39,7 +39,6 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzInputDirective,
     IonicModule,
     NzModalComponent,
-    TtsFileEditorComponent,
     NzModalContentDirective,
     JsonCodeViewerComponent,
     NzModalModule

@@ -15,9 +15,7 @@ import {TranslateModule} from "@ngx-translate/core";
   imports: [
     LandscapeComponent,
     NgClass,
-    NgForOf,
     IonicModule,
-    NzCardComponent,
     NzSpinComponent,
     TranslateModule
   ]

@@ -21,7 +21,6 @@ import {historyChangeSubject, loginSubject} from "../../injection_tokens/subject
     NzButtonModule,
     NzIconModule,
     HistoryBtComponent,
-    NgForOf,
     TranslateModule
   ],
   standalone: true

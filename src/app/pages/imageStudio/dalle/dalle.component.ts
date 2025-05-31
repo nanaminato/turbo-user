@@ -31,7 +31,6 @@ import {inheritAttributes} from "ionicons/dist/types/components/icon/utils";
     FormsModule,
     NzInputNumberComponent,
     NzSliderComponent,
-    NzTextEditComponent,
     NzAutosizeDirective,
     NzInputDirective
   ]

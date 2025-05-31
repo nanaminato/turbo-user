@@ -12,8 +12,6 @@ import {TranslateModule} from "@ngx-translate/core";
   styleUrls: ['./novita-model-selector.component.scss'],
   standalone: true,
   imports: [
-    NgOptimizedImage,
-    NzImageDirective,
     NzImageModule,
     TranslateModule
   ]

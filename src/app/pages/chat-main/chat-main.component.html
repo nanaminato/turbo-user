@@ -162,6 +162,16 @@
                   nz-tooltip [nzTooltipTitle]="'chat-main.clearContext' | translate ">
             <img src="assets/svgs/clear.svg" width="30" height="20" [alt]="'chat-main.clear' | translate ">
           </button>
+          <button class="mx-2 my-1 border-1 text-theme2 border-theme2 bg-theme2 rounded-2"
+                  (click)="insertInlineCodeFlags()"
+                  nz-tooltip [nzTooltipTitle]="'插入行内代码符号'">
+            <span nz-icon nzType="italic" nzTheme="outline"></span>
+          </button>
+          <button class="mx-2 my-1 border-1 text-theme2 border-theme2 bg-theme2 rounded-2"
+                  (click)="insertCodeFlags()"
+                  nz-tooltip [nzTooltipTitle]="'插入多行代码符号'">
+            <span nz-icon nzType="code" nzTheme="outline"></span>
+          </button>
         </div>
       </div>
       <div class="d-flex flex-row p-1 m-2 rounded-2" style="border: 1px solid #ccc;">

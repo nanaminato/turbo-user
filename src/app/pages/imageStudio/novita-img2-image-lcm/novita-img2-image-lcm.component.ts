@@ -11,7 +11,7 @@ import {Embedding, Lora, NovitaImg2LcmResponse, TaskImage, UrlImage} from "../..
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {NovitaService} from "../../../services/fetch_services/novita.service";
 import {NzUploadComponent} from "ng-zorro-antd/upload";
-import {NgIf} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
 import {CheckParameter, NovitaInit} from "../toolkits";
 import {ImageModelComponent} from "../toolkits/image-model/image-model.component";
@@ -31,8 +31,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-img2-image-lcm.component.scss'],
   standalone: true,
   imports: [
-    NzRowDirective,
-    NzColDirective,
     IonicModule,
     FormsModule,
     NzSliderComponent,
@@ -40,16 +38,14 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     NzIconDirective,
     NzButtonComponent,
     GalleryComponent,
-    NzUploadComponent,
-    NgIf,
-    NzImageDirective,
     NzImageModule,
     ImageModelComponent,
     EmbeddingListComponent,
     LoraListComponent,
     NzTooltipDirective,
     TranslateModule,
-    NzSwitchComponent
+    NzSwitchComponent,
+    NgOptimizedImage
   ]
 })
 export class NovitaImg2ImageLcmComponent  implements OnInit, DoCheck, NovitaInit,CheckParameter{

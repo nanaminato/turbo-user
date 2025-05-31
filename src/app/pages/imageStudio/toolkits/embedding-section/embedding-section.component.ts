@@ -19,9 +19,7 @@ import {TranslateModule} from "@ngx-translate/core";
     IonicModule,
     NovitaModelSelectorComponent,
     NzIconDirective,
-    NzInputNumberComponent,
     NzModalComponent,
-    NzTooltipDirective,
     FormsModule,
     NzModalContentDirective,
     TranslateModule

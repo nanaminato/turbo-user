@@ -82,7 +82,7 @@ import {FileHandler} from "../../services/handlers/fileHandler";
     NzImageModule,
     NzSkeletonModule,
     TranslateModule,
-    IonicModule
+    IonicModule,
   ],
   providers: [
     ChatContextHandler,
@@ -843,5 +843,11 @@ export class ChatMainComponent implements OnDestroy{
 
   superMini() {
     return this.sizeReportService.superMiniView();
+  }
+  insertCodeFlags(){
+
+  }
+  insertInlineCodeFlags(){
+
   }
 }

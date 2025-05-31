@@ -16,7 +16,6 @@ import {TranslateModule} from "@ngx-translate/core";
     NzIconDirective,
     IonicModule,
     LoraSectionComponent,
-    NzTooltipDirective,
     NzModalModule,
     TranslateModule
   ]

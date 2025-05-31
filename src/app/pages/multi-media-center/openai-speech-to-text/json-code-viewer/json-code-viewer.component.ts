@@ -9,7 +9,6 @@ import {MarkdownComponent} from "ngx-markdown";
   templateUrl: './json-code-viewer.component.html',
   styleUrls: ['./json-code-viewer.component.scss'],
   imports: [
-    MarkdownRootComponent,
     CopiedButtonComponent,
     EscapeHtmlPipe,
     MarkdownComponent

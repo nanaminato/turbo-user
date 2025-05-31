@@ -27,8 +27,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-text2-image-lcm.component.scss'],
   standalone: true,
   imports: [
-    NzRowDirective,
-    NzColDirective,
     IonicModule,
     FormsModule,
     NzSliderComponent,

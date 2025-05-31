@@ -16,7 +16,9 @@
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
         <ion-label>{{'image.initial-image'|translate}}</ion-label>
         <div class="upload-area rounded-3" #imageContainer (click)="selectImage()">
-          <img class="upload-img" *ngIf="selectedImage" [src]="selectedImage" alt="Selected Image" >
+          @if(selectedImage){
+            <img class="upload-img" [src]="selectedImage" alt="Selected Image" >
+          }
         </div>
         <input type="file" accept="image/*" (change)="handleImageChange($event)" #fileInput hidden>
 

@@ -19,7 +19,6 @@ import {NzCardComponent} from "ng-zorro-antd/card";
   standalone: true,
   imports: [
     IonicModule,
-    NzCardComponent
   ]
 })
 export class LandscapeComponent
