@@ -17,11 +17,10 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NovitaCheck} from "../../../services/handlers";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {AuthService} from "../../../auth_module";
-import {NovitaService} from "../../../services/fetch_services/novita.service";
-import {NzModalModule} from "ng-zorro-antd/modal";
+import {NovitaService} from "../../../services/fetch_services";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NovitaInit} from "../../imageStudio/toolkits";
-import {GenerateTask} from "../../../models/media/generateTask";
+import {GenerateTask} from "../../../models/media";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {TranslateModule} from "@ngx-translate/core";
@@ -33,7 +32,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-text2-video.component.scss'],
   standalone: true,
   imports: [
-    GalleryComponent,
     IonicModule,
     NzButtonComponent,
     NzIconDirective,

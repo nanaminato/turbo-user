@@ -3,8 +3,6 @@ import {
 } from '@angular/core';
 import {MarkdownModule} from "ngx-markdown";
 import {CopiedButtonComponent} from "./copied-button/copied-button.component";
-import {EscapeHtmlPipe} from "./simple-sanitizer.pipe";
-import {CwPipe} from "./cw.pipe";
 import {ChatModel} from "../../../models";
 @Component({
   selector: 'app-markdown-root',
@@ -14,8 +12,6 @@ import {ChatModel} from "../../../models";
   imports: [
     MarkdownModule,
     CopiedButtonComponent,
-    EscapeHtmlPipe,
-    CwPipe
   ]
 })
 export class MarkdownRootComponent

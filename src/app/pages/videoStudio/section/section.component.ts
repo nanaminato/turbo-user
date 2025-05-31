@@ -17,7 +17,6 @@ import {TranslateModule} from "@ngx-translate/core";
     IonicModule,
     FormsModule,
     NzPopoverDirective,
-    NzTooltipDirective,
     TranslateModule
   ]
 })

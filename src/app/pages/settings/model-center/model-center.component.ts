@@ -22,7 +22,6 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     ModelCustomAddComponent,
     TranslateModule,
     NzIconDirective,
-    NzTooltipDirective
   ]
 })
 export class ModelCenterComponent  implements OnInit {

@@ -3,13 +3,13 @@
 </ng-template>
 <!--katex-->
 <!--mermaid-->
-
-<markdown class="" [data]="chatModel?.content | htmlSanitizer"
+<!--| htmlSanitizer-->
+<markdown class="" [data]="chatModel?.content"
           [disableSanitizer]="false"
           lineNumbers
           emoji
           clipboard
-
           mermaid
+          katex
           [clipboardButtonTemplate]="buttonTemplate"
           ></markdown>

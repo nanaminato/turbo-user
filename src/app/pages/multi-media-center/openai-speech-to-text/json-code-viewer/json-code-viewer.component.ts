@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MarkdownRootComponent} from "../../../dialogue/markdown-root/markdown-root.component";
 import {CopiedButtonComponent} from "../../../dialogue/markdown-root/copied-button/copied-button.component";
-import {EscapeHtmlPipe} from "../../../dialogue/markdown-root/simple-sanitizer.pipe";
 import {MarkdownComponent} from "ngx-markdown";
 
 @Component({
@@ -10,7 +8,6 @@ import {MarkdownComponent} from "ngx-markdown";
   styleUrls: ['./json-code-viewer.component.scss'],
   imports: [
     CopiedButtonComponent,
-    EscapeHtmlPipe,
     MarkdownComponent
   ],
   standalone: true

@@ -51,7 +51,6 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzInputDirective,
     NzSpinComponent,
     TtsFileEditorComponent,
-    ModelEditorComponent,
     NzModalComponent,
     NzModalContentDirective,
   ],

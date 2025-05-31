@@ -844,10 +844,25 @@ export class ChatMainComponent implements OnDestroy{
   superMini() {
     return this.sizeReportService.superMiniView();
   }
-  insertCodeFlags(){
-
+  @ViewChild('promptBox', { static: true })
+  promptBox: ElementRef | undefined;
+  insertCodeFlags() {
+    if(!this.promptBox){
+      return;
+    }
+    const textarea = this.promptBox.nativeElement;
+    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+    const newText = textarea.value.substring(0, textarea.selectionStart) + '```\n' + selectedText + '\n```' + textarea.value.substring(textarea.selectionEnd);
+    this.inputText = newText;
   }
-  insertInlineCodeFlags(){
 
+  insertInlineCodeFlags(){
+    if(!this.promptBox){
+      return;
+    }
+    const textarea = this.promptBox.nativeElement;
+    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+    const newText = textarea.value.substring(0, textarea.selectionStart) + '`' + selectedText + '`' + textarea.value.substring(textarea.selectionEnd);
+    this.inputText = newText;
   }
 }
