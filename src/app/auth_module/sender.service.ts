@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {ServiceProvider} from "../roots";
-import {AuthService} from "./auth.service";
-import {ChatHistory, ChatHistoryTitle, ChatInterface, ChatModel, Message} from "../models";
+import {ChatHistory, ChatHistoryTitle, ChatInterface} from "../models";
 
 @Injectable({
   providedIn: "root"

@@ -12,10 +12,11 @@
   </nz-modal>
   <button nz-button (click)="customAddVisible = true">{{ 'settings.addOptionalModel' | translate }}</button>
 </div>
-@for (selected of selectedModels; track selected){
+@for (selected of selectedModels; track selected.modelName){
   <button class="bg-info mx-2 my-1  p-1 rounded-2"
+          nz-popover [nzPopoverTitle]="selected.modelValue"  nzPopoverPlacement="bottom"
     (click)="addOrRemove(selected)">
-    {{selected.modelValue}}
+    {{selected.modelName}}
     @if(selected.internet===true){
       <span nz-icon nzType="ant-cloud" nzTheme="outline"></span>
     }
@@ -24,11 +25,11 @@
     }
   </button>
 }
-@for (selectable of selectableModels; track selectable){
-  @if (notSelected(selectable.modelValue)){
-    <button class="c-dark mx-2 my-1  p-1 rounded-2"
+@for (selectable of selectableModels; track selectable.modelName){
+  @if (notSelected(selectable.modelName)){
+    <button class="c-dark mx-2 my-1  p-1 rounded-2" nz-popover [nzPopoverTitle]="selectable.modelValue" nzPopoverPlacement="bottom"
             (click)="addOrRemove(selectable)">
-      {{selectable.modelValue}}
+      {{selectable.modelName}}
       @if(selectable.internet===true){
         <span nz-icon nzType="ant-cloud" nzTheme="outline"></span>
       }

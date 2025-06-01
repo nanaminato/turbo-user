@@ -3,12 +3,13 @@ import {DisplayModel, displayModels} from "../../../models";
 import {NumerService} from "../../../services/fetch_services";
 import {ConfigurationService} from "../../../services/db-services";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
 import {ModelCustomAddComponent} from "./model-custom-add/model-custom-add.component";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
+import {NzPopoverDirective} from "ng-zorro-antd/popover";
 
 @Component({
   selector: 'app-model-center',
@@ -17,11 +18,12 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
   standalone: true,
   imports: [
     NzButtonComponent,
-    NzModalComponent,
+    NzModalModule,
     NzModalContentDirective,
     ModelCustomAddComponent,
     TranslateModule,
     NzIconDirective,
+    NzPopoverDirective,
   ]
 })
 export class ModelCenterComponent  implements OnInit {
@@ -34,31 +36,31 @@ export class ModelCenterComponent  implements OnInit {
   }
   selectableModels: DisplayModel[] = [];
   selectedModels: DisplayModel[] = [];
+
   ngOnInit() {
     displayModels.forEach(e=>{
-      this.push(e);
+      this.pushSelectableModel(e);
     });
     this.universalService.getSelectableModels().then(models=>{
       models?.forEach((m: DisplayModel)=>{
-        this.push(m);
-        // console.log("push",m.modelValue," local")
+        this.pushSelectableModel(m);
+        // console.log("push",m.modelName," local")
       })
     })
     this.numerService.getChatModels().subscribe({
       next: models=>{
         models.forEach(m=>{
           m.internet = true;
-          this.push(m,true);
-          // console.log("push",m.modelValue,"internet")
+          this.pushSelectableModel(m,true);
+          // console.log("push",m.modelName,"internet")
         })
       }
     });
 
 
   }
-  push(displayModel: DisplayModel,replace: boolean = false){
-    let search = this.selectableModels.
-    findIndex(s=>s.modelValue===displayModel.modelValue);
+  pushSelectableModel(displayModel: DisplayModel, replace: boolean = false){
+    let search = this.selectableModels.findIndex(s=>s.modelName===displayModel.modelName);
     if(search!==-1){
       if(replace){
         this.selectableModels.splice(search,1,displayModel)
@@ -67,19 +69,22 @@ export class ModelCenterComponent  implements OnInit {
       this.selectableModels.push(displayModel)
     }
   }
-  add(displayModel: DisplayModel){
-    this.universalService.addSelectableModel(displayModel);
-  }
-  selected(modelValue: string){
-    let i1 = this.selectedModels.findIndex(m=>m.modelValue===modelValue);
+  selected(modelName: string){
+    let i1 = this.selectedModels.findIndex(m=> m.modelName===modelName);
     return i1 !== -1;
   }
   addOrRemove(displayModel: DisplayModel){
-    let i1 = this.selectedModels.findIndex(m=>m.modelValue===displayModel.modelValue);
+    let i1 = this.selectedModels.findIndex(m=>m.modelName===displayModel.modelName);
     if(i1===-1){
       this.selectedModels.push(displayModel);
+      console.log("添加")
+      console.log(this.selectedModels);
+      console.log(this.selectableModels);
     }else{
       this.selectedModels.splice(i1,1);
+      console.log("删除")
+      console.log(this.selectedModels);
+      console.log(this.selectableModels);
     }
   }
   save(){
@@ -92,14 +97,17 @@ export class ModelCenterComponent  implements OnInit {
     this.closeAction.next(true);
   }
 
-  notSelected(modelValue: string) {
-    return !this.selected(modelValue);
+  notSelected(modelName: string) {
+    if(this.selectedModels.length===0){
+      return true;
+    }
+    return !this.selected(modelName);
   }
   customAddVisible: boolean = false;
   @Output() closeAction = new EventEmitter<boolean>();
 
   newDisplayModelAction(displayModel: DisplayModel) {
-    this.push(displayModel);
+    this.pushSelectableModel(displayModel);
     this.universalService.addSelectableModel(displayModel);
     this.customAddVisible = false;
   }
