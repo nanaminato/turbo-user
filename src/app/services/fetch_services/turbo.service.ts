@@ -22,12 +22,16 @@ export class TurboService {
     let config = this.configurationService.configuration;
     let url = this.baseUrl + "/chat";
     let requestBody: any;
+    let tokens: number | undefined | null = config?.chatConfiguration.max_completion_tokens;
+    if(tokens===0){
+      tokens = null;
+    }
     requestBody = {
       messages: messages,
       model: model === undefined ? config?.model.modelValue : model,
       vision: config?.model.vision,
       frequency_penalty: config?.chatConfiguration.frequency_penalty,
-      max_tokens: config?.chatConfiguration.max_tokens,
+      max_completion_tokens: tokens ,
       presence_penalty: config?.chatConfiguration.presence_penalty,
       stream: true,
       temperature: config?.chatConfiguration.temperature,

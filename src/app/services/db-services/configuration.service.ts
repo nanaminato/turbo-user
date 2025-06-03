@@ -81,7 +81,7 @@ export class ConfigurationService {
         historySessionLength: 10,
         top_p: 0.6,
         temperature: 0.6,
-        max_tokens: 4000,
+        max_completion_tokens: 4000,
         presence_penalty: 0.6,
         frequency_penalty: 0.6
       },

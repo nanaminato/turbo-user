@@ -132,7 +132,7 @@
     "standardOpenAIServers": "符合Openai标准的服务器",
     "keyFrom": "密钥来自",
     "defaultDialogueProperties": "对话默认属性",
-    "maxTokensPerInteraction": "单次回复限制 (max_tokens)",
+    "maxTokensPerInteraction": "单次回复限制 (max_completion_tokens)",
     "maxTokenUsagePerInteraction": "单次交互所用的最大 Token 数",
     "randomnessTemperature": "随机性 (temperature)",
     "higherValueMoreRandomness": "值越大，回复越随机",

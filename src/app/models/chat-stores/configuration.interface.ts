@@ -15,7 +15,7 @@ export interface ChatStreamConfiguration{
   models: DisplayModel[];
   top_p?: number;
   temperature?: number;
-  max_tokens?: number;
+  max_completion_tokens?: number;
   presence_penalty?: number;
   frequency_penalty?: number;
   historySessionLength: number;

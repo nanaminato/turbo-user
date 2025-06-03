@@ -195,15 +195,15 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-slider class="slider big" [(ngModel)]="configuration!.chatConfiguration.max_tokens"
-                         [nzStep]="1" [nzMin]="1" [nzMax]="32000"></nz-slider>
+              <nz-slider class="slider big" [(ngModel)]="configuration!.chatConfiguration.max_completion_tokens"
+                         [nzStep]="1" [nzMin]="0" [nzMax]="32000"></nz-slider>
             </nz-col>
             <nz-col>
               <nz-input-number
-                [nzMin]="1"
+                [nzMin]="0"
                 [nzMax]="32000"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration.max_tokens"
+                [(ngModel)]="configuration!.chatConfiguration.max_completion_tokens"
               ></nz-input-number>
             </nz-col>
           </nz-row>
