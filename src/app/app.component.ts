@@ -36,6 +36,7 @@ import {
 } from "./auth_module";
 import {historyChangeSubject, loginSubject} from "./injection_tokens/subject.data";
 import {MenuAbleService} from "./services/normal-services/menu-able.service";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -70,9 +71,12 @@ export class AppComponent implements OnInit{
     private configService: ConfigService,
     private provider: ServiceProvider
   ) {
-    this.configService.getConfig().subscribe((config: any)=>{
-      this.provider.apiUrl = config.apiUrl;
-    })
+    if(!environment.production) {
+      this.configService.getConfig().subscribe((config: any)=>{
+        this.provider.apiUrl = config.apiUrl;
+        // console.log("服务器地址: "+config.apiUrl);
+      });
+    }
     this.initThemeAndLanguage();
     this.configObservable.subscribe((config: Configuration)=>{
       console.log("aware config app");
@@ -115,6 +119,10 @@ export class AppComponent implements OnInit{
       }
       this.historyTitles?.reverse();
       let ids = await this.getUniqueDataIds(this.historyTitles);
+      // console.log("准备更新历史记录");
+      if(!environment.production){
+        await this.provider.waitForInit();
+      }
       let fetchedHistories =
         await this.requestManagerService.fetchHistoryAndRefreshData(ids);
       if(fetchedHistories!==undefined){

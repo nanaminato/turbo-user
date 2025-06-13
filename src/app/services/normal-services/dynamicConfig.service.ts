@@ -3,6 +3,9 @@ import {TranslateService} from "@ngx-translate/core";
 import {ThemeSwitcherService} from "./themeSwitcher.service";
 import {Configuration, DynamicConfig} from "../../models";
 
+// @Injectable({
+//   providedIn: "root",
+// })
 @Injectable()
 export class DynamicConfigService{
   constructor(private translate: TranslateService,

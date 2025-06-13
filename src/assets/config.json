@@ -1,4 +1,5 @@
 {
-  "apiUrl": "http://localhost:11000/",
-  "apiUrl2": "https://localhost:44301/"
+
+  "apiUrl2": "https://pdf.nexthub.asia/",
+  "apiUrl": "http://localhost:5101/"
 }

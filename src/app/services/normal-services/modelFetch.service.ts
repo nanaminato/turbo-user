@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {TurboService} from "../fetch_services/turbo.service";
+import {TurboService} from "../fetch_services";
 import {AuthService} from "../../auth_module";
-import {RequestType} from "../../models/enumerates";
 import {ChatPacket} from "../../models";
 
 @Injectable()

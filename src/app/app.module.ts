@@ -34,9 +34,10 @@ import {ConfigurationResolver} from "./services/db-services";
 import {SystemPromptResolver} from "./services/db-services/system-prompt-resolver.service";
 import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "./services/normal-services";
 import {historyChangeSubject, loginSubject} from "./injection_tokens/subject.data";
+import {ProdTranslateHttpLoader} from "./services/handlers";
 registerLocaleData(zh);
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new ProdTranslateHttpLoader(http);
 }
 @NgModule({
   declarations: [
@@ -121,7 +122,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: lastSessionToken, useValue: new LastSessionModel(),
     },
-    //base
 
   ],
   bootstrap: [

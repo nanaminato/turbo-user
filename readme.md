@@ -1,5 +1,9 @@
 ## 项目介绍
 本项目继承于turboUI
+构建 
+```bash
+ng build --base-href /ai/
+```
 ![img.png](img.png)  
 以下3个项目为turboai项目的完整部分。
 - project 1 turbo-user (turboai-user)

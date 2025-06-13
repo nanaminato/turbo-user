@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {NzMessageService} from "ng-zorro-antd/message";
 import { themes } from "src/app/themes/theme";
+import {environment} from "../../../environments/environment";
 
 @Injectable()
 export class ThemeSwitcherService{
@@ -19,7 +20,7 @@ export class ThemeSwitcherService{
     if(index===-1){
       return this.getThemePath('next-light');
     }
-    return `assets/css/theme-${theme}.css`;
+    return environment.baseUrl+`assets/css/theme-${theme}.css`;
   }
   private updateThemeLink(themePath: string): Promise<void> {
     let old = document.querySelector('style[theme]');
