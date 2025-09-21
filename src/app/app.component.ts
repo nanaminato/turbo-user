@@ -1,42 +1,20 @@
-import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, inject, Inject, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Observable, Observer, Subject} from "rxjs";
-import {
-  ChatDataService,
-  ConfigurationResolver,
-  ConfigurationService,
-  DbService,
-  HistoryTitleService
-} from "./services/db-services";
-import {SystemPromptResolver} from "./services/db-services/system-prompt-resolver.service";
-import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "./services/normal-services";
-import {
-  backChatHistorySubject,
-  chatSessionSubject,
-  configurationChangeSubject,
-  lastSessionToken,
-  sizeReportToken,
-  systemPromptChangeSubject
-} from "./injection_tokens";
-import {
-  ChatHistoryTitle,
-  Configuration,
-  LastSessionModel,
-} from "./models";
-import {ConfigService} from "./services/normal-services/config.service";
-import {ServiceProvider} from "./roots";
-import {MenuController} from "@ionic/angular";
-import {MagicDataId} from "./pages/chat-page/chat-page.component";
-import {user_routes} from "./roots/routes";
-import {ChatHistoryTitleAction, ChatHistoryTitleActionInfo} from "./models/operations";
-import {
-  AuthService,
-  RequestManagerService,
-  SendManagerService
-} from "./auth_module";
-import {historyChangeSubject, loginSubject} from "./injection_tokens/subject.data";
-import {MenuAbleService} from "./services/normal-services/menu-able.service";
 import {environment} from "../environments/environment";
+import {ChatHistoryTitle, Configuration} from "../models";
+import {MenuAbleService} from "../services/normal-services/menu-able.service";
+import {MenuController} from "@ionic/angular";
+import {backChatHistorySubject, configurationChangeSubject, sizeReportToken} from "../injection_tokens";
+import {DynamicConfigService, SizeReportService} from "../services/normal-services";
+import {ChatDataService, ConfigurationService, DbService, HistoryTitleService} from "../services/db-services";
+import {AuthService, RequestManagerService, SendManagerService} from "../auth_module";
+import {historyChangeSubject, loginSubject} from "../injection_tokens/subject.data";
+import {ConfigService} from "../services/normal-services/config.service";
+import {ServiceProvider} from "../roots";
+import {MagicDataId} from "../pages/chat-page/chat-page";
+import {user_routes} from "../roots/routes";
+import {ChatHistoryTitleAction, ChatHistoryTitleActionInfo} from "../models/operations";
 
 @Component({
   selector: 'app-root',
@@ -48,28 +26,28 @@ import {environment} from "../environments/environment";
 export class AppComponent implements OnInit{
   configuration: Configuration | undefined;
   historyTitles: ChatHistoryTitle[] | undefined;
-  // mainMenu: string = 'main-content';
   @ViewChild('myElement', { static: true })
   imageMenu: ElementRef | undefined;
+  public menuAble = inject(MenuAbleService);
+  private menuCtrl = inject(MenuController);
+  private sizeReportService = inject(SizeReportService);
+  private router = inject(Router);
+  private historyTitleService = inject(HistoryTitleService);
+  private chatDataService = inject(ChatDataService);
+  private dbService = inject(DbService);
+  private dynamicConfigService = inject(DynamicConfigService);
+  private configurationService = inject(ConfigurationService);
+  private auth = inject(AuthService);
+  private requestManagerService = inject(RequestManagerService);
+  private sendManagerService = inject(SendManagerService);
+  private configService = inject(ConfigService);
+  private provider = inject(ServiceProvider);
+
   constructor(
-    public menuAble: MenuAbleService,
-    private menuCtrl: MenuController,
-    @Inject(sizeReportToken) private sizeReportService: SizeReportService,
-    private router: Router,
-    private historyTitleService: HistoryTitleService,
-    private chatDataService: ChatDataService,
-    private dbService: DbService,
     @Inject(backChatHistorySubject) private backHistoryObservable: Subject<ChatHistoryTitle>,
-    private dynamicConfigService: DynamicConfigService,
-    private configurationService: ConfigurationService,
     @Inject(configurationChangeSubject) private configObservable: Observable<Configuration>,
-    private auth: AuthService,
     @Inject(loginSubject) private loginObservable: Observable<boolean>,
     @Inject(historyChangeSubject) private historyChangeObserver: Observer<boolean>,
-    private requestManagerService: RequestManagerService,
-    private sendManagerService: SendManagerService,
-    private configService: ConfigService,
-    private provider: ServiceProvider
   ) {
     if(!environment.production) {
       this.configService.getConfig().subscribe((config: any)=>{

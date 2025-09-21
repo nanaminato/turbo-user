@@ -1,0 +1,367 @@
+<div class="d-flex flex-column w-100 h-100 bg-theme2 text-theme2">
+  <div class="overflow-y-auto flex-grow-1 position-relative" #settingPanel>
+    <ion-header class="sticky-top" [translucent]="true">
+      <ion-toolbar>
+        <div class="d-flex flex-row justify-content-between p-2 align-items-center">
+          @if(miniPhone()){
+            <ion-buttons slot="start">
+              <ion-menu-button menu="chat-menu"></ion-menu-button>
+            </ion-buttons>
+          }
+          <div class="d-flex flex-column pt-2 mx-2">
+            <div style="font-size: 20px;font-weight: bold;">
+              {{ 'settings.self' | translate }}
+            </div>
+          </div>
+          <div class="py-2 my-auto pe-4 ms-5 ms-sm-0">
+            <button nz-button class="border-1 rounded-2" [routerLink]="['/chat']">
+              <span nz-icon nzType="close" nzTheme="outline"></span>
+            </button>
+          </div>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <div class="w-100 d-flex flex-column">
+      <button class="back-to-top text-center"
+              nz-button
+              (click)="scrollToTop()"
+              nz-tooltip [nzTooltipTitle]="'settings.backToTop' | translate"
+      ><span nz-icon nzType="arrow-up" nzTheme="outline"></span>
+      </button>
+      <nz-card class="m-2 rounded-4">
+        <div class="py-2">
+          <span class="title">{{ 'settings.self' | translate }}</span>
+        </div>
+        <div class="d-flex flex-row-reverse setting-action">
+          <button nz-button nzType="primary"
+                  (click)="applyChangeRightNow()"
+          >
+            <span nz-icon nzType="fall" nzTheme="outline"></span>
+            {{ 'settings.applySettings' | translate }}
+          </button>
+          <button nz-button nzType="primary"
+                  (click)="resetConfiguration()"
+          >
+            <span nz-icon nzType="undo" nzTheme="outline"></span>
+            {{ 'settings.restoreDefaultSettings' | translate }}
+          </button>
+
+        </div>
+      </nz-card>
+      <nz-card class="m-2 rounded-4">
+        <div class="py-2">
+          <div class="d-flex justify-content-between m-1">
+            <nz-row>
+              当前使用的后端服务器
+            </nz-row>
+            <nz-row>
+              <input nz-input class="rounded-2" [ngModel]="apiUrl()"/>
+            </nz-row>
+          </div>
+        </div>
+      </nz-card>
+      <nz-card class="m-2 rounded-4">
+        <div class="py-2">
+          <span class="title">{{ 'settings.quickConfig' | translate }}</span>
+        </div>
+        <div class="d-flex justify-content-between m-1">
+          <nz-col>
+            {{ 'settings.importExportConfig' | translate }}
+          </nz-col>
+          <nz-row>
+            <nz-col>
+              <nz-modal [(nzVisible)]="outputConfigVisible"
+                        [nzFooter]="[]"
+                        [nzTitle]="'settings.configExport' | translate"
+                        (nzOnCancel)="closeOutput()" (nzOnOk)="okAndCloseOutput()"
+              >
+                <ng-container *nzModalContent>
+                  <app-config-export [config]="configuration"></app-config-export>
+                </ng-container>
+              </nz-modal>
+              <button nz-button (click)="outputConfigVisible = true">
+                {{ 'settings.exportConfig' | translate }}
+              </button>
+            </nz-col>
+            <nz-col class="mx-1">
+              <nz-modal [(nzVisible)]="inputConfigVisible"
+                        [nzTitle]="'settings.configImport' | translate"
+                        [nzFooter]="[]"
+                        (nzOnCancel)="handleInputCancel()"
+                        (nzOnOk)="handleInputConfigOk()">
+                <ng-container *nzModalContent>
+                  <app-config-import
+                    (configInput)="handleConfigInput($event)"
+                  >
+                  </app-config-import>
+                </ng-container>
+              </nz-modal>
+              <button nz-button (click)="inputConfigVisible = true">
+                {{ 'settings.importConfig' | translate }}
+              </button>
+            </nz-col>
+          </nz-row>
+        </div>
+      </nz-card>
+      <nz-card class="m-2 rounded-4">
+        <div class="py-2">
+          <span class="title">{{ 'settings.displayOptions' | translate }}</span>
+        </div>
+        <div class="d-flex justify-content-between m-1">
+          <nz-col>
+            {{ 'settings.fontSize' | translate }}
+          </nz-col>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider" nzMin="10" nzMax="32" nzStep="1"
+                         [(ngModel)]="configuration.displayConfiguration.fontSize"
+              >
+              </nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="10"
+                [nzStep]="1"
+                [nzMax]="32"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration.displayConfiguration.fontSize">
+              </nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+        <div class="d-flex align-items-center justify-content-center m-1">
+          <div [style]="'font-size: '+configuration.displayConfiguration.fontSize+'px;'">
+            示例文本 AaBbCc
+          </div>
+        </div>
+        <div class="d-flex justify-content-between m-1">
+          <div class="title">{{ 'settings.theme' | translate }}</div>
+          <div>
+            <nz-select class="select big" [(ngModel)]="dynamicConfig!.theme" (ngModelChange)="themeChange()">
+              <nz-option-group [nzLabel]="'settings.theme' | translate">
+                @for (theme of themes; track theme) {
+                  <nz-option
+                    [nzValue]="theme" [nzLabel]="theme"></nz-option>
+                }
+              </nz-option-group>
+            </nz-select>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between m-1">
+          <div class="title">{{ 'settings.language' | translate }}</div>
+          <div>
+            <nz-select class="select big" [(ngModel)]="dynamicConfig!.language" (ngModelChange)="languageChange($event)">
+              <nz-option-group [nzLabel]="'settings.language' | translate">
+                @for (language_pair of displayLanguages; track language_pair) {
+                  <nz-option
+                    [nzValue]="language_pair.value" [nzLabel]="language_pair.label"></nz-option>
+                }
+              </nz-option-group>
+            </nz-select>
+          </div>
+        </div>
+      </nz-card>
+      <nz-card class="m-2 rounded-4">
+        <div class="py-2">
+          <span class="title">{{ 'settings.chatModelManagement' | translate }}</span>
+        </div>
+        <div class="d-flex flex-row-reverse">
+          <nz-modal [(nzVisible)]="modelCenterVisible"
+                    [nzTitle]="'settings.modelManager' | translate"
+                    [nzFooter]="[]"
+                    (nzOnOk)="modelCenterVisible=false"
+                    (nzOnCancel)="modelCenterVisible=false"
+                    >
+            <ng-container *nzModalContent>
+              <app-model-center (closeAction)="modelCenterVisible=false "></app-model-center>
+            </ng-container>
+          </nz-modal>
+          <button nz-button class="rounded-3" (click)="modelCenterVisible = true">{{ 'settings.modelManagement' | translate }}</button>
+        </div>
+      </nz-card>
+      <nz-card class="m-2 rounded-4">
+        <div class="py-2">
+          <span class="title">{{ 'settings.defaultDialogueProperties' | translate }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between  m-1">
+          <div>
+            <div>
+              <span class="title">{{ 'settings.maxTokensPerInteraction' | translate }}</span>
+            </div>
+            <div>
+              <span class="follow">{{ 'settings.maxTokenUsagePerInteraction' | translate }}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider big" [(ngModel)]="configuration!.chatConfiguration.max_completion_tokens"
+                         [nzStep]="1" [nzMin]="0" [nzMax]="32000"></nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="0"
+                [nzMax]="32000"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration!.chatConfiguration.max_completion_tokens"
+              ></nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+
+        <div class="d-flex justify-content-between m-1">
+          <div>
+            <div>
+              <span class="title">{{ 'settings.randomnessTemperature' | translate }}</span>
+            </div>
+            <div>
+              <span class="follow">{{ 'settings.higherValueMoreRandomness' | translate }}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration!.temperature"
+                         [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="0"
+                [nzStep]="0.01"
+                [nzMax]="1"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration!.chatConfiguration!.temperature"
+              ></nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+
+        <div class="d-flex justify-content-between  m-1">
+          <div>
+            <div>
+              <span class="title">{{ 'settings.nucleusSamplingTopP' | translate }}</span>
+            </div>
+            <div>
+              <span class="follow">{{ 'settings.similarToRandomnessButSeparate' | translate }}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration.top_p"
+                         [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="0"
+                [nzStep]="0.01"
+                [nzMax]="1"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration!.chatConfiguration.top_p"
+              ></nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+
+
+        <div class="d-flex justify-content-between  m-1">
+          <div>
+            <div>
+              <span class="title">{{ 'settings.topicNoveltyPresencePenalty' | translate }}</span>
+            </div>
+            <div>
+              <span class="follow">{{ 'settings.higherValueExpandsToNewTopics' | translate }}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration.presence_penalty"
+                         [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="0"
+                [nzStep]="0.01"
+                [nzMax]="1"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration!.chatConfiguration.presence_penalty"
+              ></nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+
+        <div class="d-flex justify-content-between  m-1">
+          <div>
+            <div>
+              <span class="title">{{ 'settings.frequencyPenalty' | translate }}</span>
+            </div>
+            <div>
+              <span class="follow">{{ 'settings.higherValueReducesRepetitiveWords' | translate }}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration.frequency_penalty"
+                         [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="0"
+                [nzStep]="0.01"
+                [nzMax]="1"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration!.chatConfiguration.frequency_penalty"
+              ></nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+        <div class="d-flex justify-content-between  m-1">
+          <div>
+            <div>
+              <span class="title">{{ 'settings.relatedHistoryMessageCount' | translate }}</span>
+            </div>
+            <div>
+              <span class="follow">{{ 'settings.historyMessageCountPerRequest' | translate }}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-slider class="slider"
+                         [(ngModel)]="configuration!.chatConfiguration.historySessionLength"
+                         [nzStep]="1" [nzMin]="1" [nzMax]="100"></nz-slider>
+            </nz-col>
+            <nz-col>
+              <nz-input-number
+                [nzMin]="1"
+                [nzMax]="100"
+                [ngStyle]="{ marginLeft: '16px' }"
+                [(ngModel)]="configuration!.chatConfiguration.historySessionLength"
+              ></nz-input-number>
+            </nz-col>
+          </nz-row>
+        </div>
+
+        <div class="d-flex justify-content-between  m-1">
+          <div>
+            <div>
+              <span class="title">{{'settings.lowOrHighFidelityImageUnderstanding' | translate}}</span>
+            </div>
+            <div>
+              <span class="follow">{{'settings.controlDetailsParametersThreeOptions' | translate}}</span>
+            </div>
+          </div>
+          <nz-row>
+            <nz-col>
+              <nz-select class="select big" [(ngModel)]="configuration!.chatConfiguration.detail">
+                <nz-option-group [nzLabel]="'settings.fidelity' | translate">
+                  @for(detail of details; track detail){
+                    <nz-option [nzValue]="detail"
+                               [nzLabel]="detail"></nz-option>
+                  }
+                </nz-option-group>
+              </nz-select>
+            </nz-col>
+          </nz-row>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>

@@ -8,7 +8,6 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {CLIPBOARD_OPTIONS, ClipboardButtonComponent, MarkdownModule} from "ngx-markdown";
 import {registerLocaleData} from "@angular/common";
-import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import zh from '@angular/common/locales/zh';
 import {FormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -17,27 +16,27 @@ import {NZ_I18N, zh_CN} from "ng-zorro-antd/i18n";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
-import {ChatHistoryComponent} from "./pages/chat-history/chat-history.component";
-import {ChatModule} from "./pages/chat.module";
-import {AccountLabelComponent} from "./pages/accounts/account-label/account-label.component";
-import {SignInPageComponent} from "./pages/accounts/sign-in-page/sign-in-page.component";
-import {TokenInterceptorService} from "./roots";
+import {Subject} from "rxjs";
+import { ProdTranslateHttpLoader } from '../services/handlers';
+import {ChatModule} from "../pages/chat.module";
+import {ChatHistory} from "../pages/chat-history/chat-history";
+import {AccountLabel} from "../pages/accounts/account-label/account-label";
+import {SignInPage} from "../pages/accounts/sign-in-page/sign-in-page";
+import {TokenInterceptorService} from "../roots";
 import {
   backChatHistorySubject,
   chatSessionSubject,
   configurationChangeSubject, lastSessionToken, sizeReportToken,
   systemPromptChangeSubject
-} from "./injection_tokens";
-import {Subject} from "rxjs";
-import {ChatHistoryTitle, Configuration, LastSessionModel} from "./models";
-import {ConfigurationResolver} from "./services/db-services";
-import {SystemPromptResolver} from "./services/db-services/system-prompt-resolver.service";
-import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "./services/normal-services";
-import {historyChangeSubject, loginSubject} from "./injection_tokens/subject.data";
-import {ProdTranslateHttpLoader} from "./services/handlers";
+} from "../injection_tokens";
+import {ChatHistoryTitle, Configuration, LastSessionModel} from "../models";
+import {ConfigurationResolver} from "../services/db-services";
+import {SystemPromptResolver} from "../services/db-services/system-prompt-resolver.service";
+import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "../services/normal-services";
+import {historyChangeSubject, loginSubject} from "../injection_tokens/subject.data";
 registerLocaleData(zh);
-export function HttpLoaderFactory(http: HttpClient) {
-  return new ProdTranslateHttpLoader(http);
+export function HttpLoaderFactory() {
+  return new ProdTranslateHttpLoader();
 }
 @NgModule({
   declarations: [
@@ -54,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       sanitize: SecurityContext.HTML,
     }),
     TranslateModule.forRoot({
-      defaultLanguage: 'zh',
+      lang: 'zh',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -67,22 +66,19 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
-
       registrationStrategy: 'registerWhenStable:30000'
     }),
   //   app
     NzButtonModule,
     NzIconModule,
-    ChatHistoryComponent,
-    AccountLabelComponent,
+    ChatHistory,
+    AccountLabel,
     NzSkeletonModule,
     RouterOutlet,
     TranslateModule,
-    SignInPageComponent,
+    SignInPage,
     HttpClientModule,
     IonicModule,
-  //   app
-
   ],
   providers: [
     // base
@@ -98,9 +94,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     },
     ConfigurationResolver,
     SystemPromptResolver,
-    ThemeSwitcherService,
-    DynamicConfigService,
-    SizeReportService,
     {
       provide: chatSessionSubject,useValue: new Subject<number>(),
     },
@@ -115,12 +108,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     },
     {
       provide: historyChangeSubject, useValue: new Subject<boolean>()
-    },
-    {
-      provide: sizeReportToken, useValue: new SizeReportService(),
-    },
-    {
-      provide: lastSessionToken, useValue: new LastSessionModel(),
     },
 
   ],
