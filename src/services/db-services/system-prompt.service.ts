@@ -4,60 +4,15 @@ import {Observer} from "rxjs";
 import {timeToWait} from "./configuration.service";
 import {SystemPromptItem} from "../../models";
 import {systemPromptChangeSubject} from "../../injection_tokens";
+import {Store} from "@ngrx/store";
+import {systemPromptActions} from "../../systems/store/system-prompts/prompts.actions";
 
 @Injectable({
   providedIn: "root"
 })
 export class SystemPromptService {
   public systemPrompts: SystemPromptItem[] | undefined;
-  private initFinish = false;
   dbService: DbService = inject(DbService);
-  constructor(
-              @Inject(systemPromptChangeSubject)
-              private promptChangeObserver:Observer<boolean>
-              ) {
-    this.Init();
-  }
-  public async Init(){
-    this.systemPrompts = [];
-    this.initFinish = true;
-    this.dbService.waitForDbInit().then(async () => {
-      this.getSystemPrompts().then(
-                  (systemInfoList) => {
-        if (systemInfoList !== undefined) {
-          console.info("系统预设加载成功")
-          this.systemPrompts!.length = 0;
-          for(let info of systemInfoList){
-            this.systemPrompts?.push(info)
-          }
-          this.promptChangeObserver.next(true);
-        }
-      });
-    });
-  }
-  public async accept() {
-    if (this.systemPrompts !== undefined) {
-      return true;
-    } else {
-      await this.waitThisInit();
-      return true;
-    }
-  }
-
-  private async waitThisInit(): Promise<void> {
-    return new Promise((resolve) => {
-      if (this.initFinish) {
-        resolve();
-      } else {
-        const interval = setInterval(() => {
-          if (this.initFinish) {
-            clearInterval(interval);
-            resolve();
-          }
-        }, timeToWait);
-      }
-    });
-  }
 
   private getSystemPrompts():Promise<SystemPromptItem[] | undefined> {
     return this.dbService.getSystemPrompts();
@@ -90,14 +45,10 @@ export class SystemPromptService {
 
     this.isAddOrPutPromptsRunning = false;
   }
+  store = inject(Store)
+
   async reLoad() {
-    let items = await this.getSystemPrompts();
-    if(items===undefined) return;
-    this.systemPrompts!.length = 0;
-    for (let item of items){
-      this.systemPrompts?.push(item);
-    }
-    this.promptChangeObserver.next(true);
+    this.store.dispatch(systemPromptActions.load())
   }
 
 

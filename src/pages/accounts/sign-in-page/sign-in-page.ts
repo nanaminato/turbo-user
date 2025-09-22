@@ -21,6 +21,8 @@ import {AuthService, RegisterService, VerificationService} from "../../../auth_m
 import {user_routes} from "../../../roots/routes";
 import {loginSubject} from "../../../injection_tokens/subject.data";
 import {Observer} from "rxjs";
+import {Store} from "@ngrx/store";
+import {authActions} from "../../../systems/store/system.actions";
 
 @Component({
   standalone: true,
@@ -51,17 +53,12 @@ export class SignInPage {
     password: ['', [Validators.required,Validators.minLength(6), Validators.maxLength(20)]],
     remember: [true]
   });
-  private authService: AuthService = inject(AuthService);
   verificationService: VerificationService = inject(VerificationService);
   message: NzMessageService = inject(NzMessageService);
   router: Router = inject(Router);
-  constructor(
-              @Inject(loginSubject) private loginObserver:Observer<boolean>
-              ) {
-
-  }
   @ViewChild("vCode")
   vCode: ElementRef |undefined;
+  store = inject(Store);
   submitForm(): void {
     if (this.validateForm.valid) {
       if(this.code?.toLowerCase()!==this.vCode?.nativeElement.value.toLowerCase()){
@@ -71,16 +68,7 @@ export class SignInPage {
       }
       let username = this.validateForm.value.username;
       let password = this.validateForm.value.password!;
-      this.authService.login(username!,password!)
-        .subscribe({
-          next: response => {
-            // console.log(response)
-            this.authService.restore({name: username!, id: response.id,password: password!}, response.token);
-            this.router.navigate(user_routes.account_info);
-            this.loginObserver.next(true);
-            }
-        });
-
+      this.store.dispatch(authActions.login({ username: username!, password: password! }));
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

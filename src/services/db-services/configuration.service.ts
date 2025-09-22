@@ -11,64 +11,8 @@ export const timeToWait = 1;
 })
 export class ConfigurationService {
   public configuration: Configuration | undefined;
-  private initFinish = false;
   dbService: DbService = inject(DbService);
-  constructor(
-              @Inject(configurationChangeSubject) private configurationObserver: Subject<Configuration>) {
-    this.init();
-  }
-
-  public async init() {
-    // 先加载默认配置
-    this.configuration = this.default_configuration();
-    this.initFinish = true;
-    // 等待数据库加载存储的配置
-    this.dbService.waitForDbInit().then(async () => {
-      this.getConfiguration().then((config) => {
-        if (config !== undefined) {
-          console.info("系统配置加载成功")
-          this.configuration = config;
-          this.configurationObserver.next(this.configuration);
-          console.log("next to observer")
-        }else{
-          this.dbService.setConfiguration(this.configuration!);
-        }
-      });
-    });
-  }
-
-
-
-  public async accept() {
-    if (this.configuration !== undefined) {
-      return true;
-    }
-    else if(this.initFinish){
-      this.configuration = this.default_configuration();
-      this.configurationObserver.next(this.configuration);
-      return true;
-    }
-    else {
-      await this.waitThisInit();
-      return true;
-    }
-  }
-
-  private async waitThisInit(): Promise<void> {
-    return new Promise((resolve) => {
-      if (this.initFinish) {
-        resolve();
-      } else {
-        const interval = setInterval(() => {
-          if (this.initFinish) {
-            clearInterval(interval);
-            resolve();
-          }
-        }, timeToWait);
-      }
-    });
-  }
-  public default_configuration(): Configuration {
+  default_configuration(): Configuration {
     const generator = new DisplayModelGenerator();
     return {
       model: {

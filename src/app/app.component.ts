@@ -1,13 +1,29 @@
-import {Component, ElementRef, HostListener, inject, Inject, OnInit, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  Inject,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {Observable, Observer, Subject} from "rxjs";
 import {environment} from "../environments/environment";
 import {ChatHistoryTitle, Configuration} from "../models";
 import {MenuAbleService} from "../services/normal-services/menu-able.service";
-import {MenuController} from "@ionic/angular";
-import {backChatHistorySubject, configurationChangeSubject, sizeReportToken} from "../injection_tokens";
+import {IonicModule, MenuController} from "@ionic/angular";
+import {
+  backChatHistorySubject,
+  configurationChangeSubject
+} from "../injection_tokens";
 import {DynamicConfigService, SizeReportService} from "../services/normal-services";
-import {ChatDataService, ConfigurationService, DbService, HistoryTitleService} from "../services/db-services";
+import {
+  ChatDataService,
+  ConfigurationService,
+  DbService,
+  HistoryTitleService
+} from "../services/db-services";
 import {AuthService, RequestManagerService, SendManagerService} from "../auth_module";
 import {historyChangeSubject, loginSubject} from "../injection_tokens/subject.data";
 import {ConfigService} from "../services/normal-services/config.service";
@@ -15,13 +31,43 @@ import {ServiceProvider} from "../roots";
 import {MagicDataId} from "../pages/chat-page/chat-page";
 import {user_routes} from "../roots/routes";
 import {ChatHistoryTitleAction, ChatHistoryTitleActionInfo} from "../models/operations";
+import {FormsModule} from "@angular/forms";
+import {ChatModule} from "../pages/chat.module";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {ChatHistory} from "../pages/chat-history/chat-history";
+import {AccountLabel} from "../pages/accounts/account-label/account-label";
+import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
+import {TranslatePipe} from "@ngx-translate/core";
+import {NgTemplateOutlet} from "@angular/common";
+import {Actions, ofType} from "@ngrx/effects";
+import {Store} from "@ngrx/store";
+import {authActions} from "../systems/store/system.actions";
+import {selectConfig} from "../systems/store/configuration/configuration.selectors";
+import {providerActions} from "../systems/store/provider/provider.actions";
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  standalone: false,
-  providers: []
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ChatModule,
+    NzButtonModule,
+    NzIconModule,
+    ChatHistory,
+    AccountLabel,
+    NzSkeletonModule,
+    IonicModule,
+    RouterLink,
+    RouterLinkActive,
+    TranslatePipe,
+    NgTemplateOutlet,
+  ],
+  providers: [
+
+  ],
 })
 export class AppComponent implements OnInit{
   configuration: Configuration | undefined;
@@ -42,23 +88,15 @@ export class AppComponent implements OnInit{
   private sendManagerService = inject(SendManagerService);
   private configService = inject(ConfigService);
   private provider = inject(ServiceProvider);
-
+  store = inject(Store);
   constructor(
     @Inject(backChatHistorySubject) private backHistoryObservable: Subject<ChatHistoryTitle>,
-    @Inject(configurationChangeSubject) private configObservable: Observable<Configuration>,
-    @Inject(loginSubject) private loginObservable: Observable<boolean>,
     @Inject(historyChangeSubject) private historyChangeObserver: Observer<boolean>,
   ) {
-    if(!environment.production) {
-      this.configService.getConfig().subscribe((config: any)=>{
-        this.provider.apiUrl = config.apiUrl;
-        // console.log("服务器地址: "+config.apiUrl);
-      });
-    }
+
     this.initThemeAndLanguage();
-    this.configObservable.subscribe((config: Configuration)=>{
-      console.log("aware config app");
-      this.configuration = config;
+    this.store.select(selectConfig).subscribe((config: Configuration | null)=>{
+      this.configuration = config!;
       this.initThemeAndLanguage(true);
     });
     this.backHistoryObservable.subscribe(async (historyTitle) => {
@@ -69,12 +107,12 @@ export class AppComponent implements OnInit{
         // 如果不存在具有相同 dataId 的项，则添加 historyTitle
       }
     });
-    this.loginObservable.subscribe(async (newLogin)=>{
-      if(newLogin){
-        await this.ngOnInit();
-      }
-    });
+
+    this.actions$.pipe(ofType(authActions.loginSuccess)).subscribe(()=>{
+      this.ngOnInit();
+    })
   }
+  actions$ = inject(Actions);
   initThemeAndLanguage(direct: boolean = false){
     if(!direct){
       this.configuration = this.configurationService.configuration!;
@@ -90,46 +128,7 @@ export class AppComponent implements OnInit{
     if(this.sizeReportService.miniPhoneView()){
       this.menuCtrl.close();
     }
-    this.dbService.waitForDbInit().then(async ()=>{
-      this.historyTitles = await this.historyTitleService.getHistoryTitles(this.auth.user?.id);
-      if (this.historyTitles === undefined) {
-        this.historyTitles = [];
-      }
-      this.historyTitles?.reverse();
-      let ids = await this.getUniqueDataIds(this.historyTitles);
-      // console.log("准备更新历史记录");
-      if(!environment.production){
-        await this.provider.waitForInit();
-      }
-      let fetchedHistories =
-        await this.requestManagerService.fetchHistoryAndRefreshData(ids);
-      if(fetchedHistories!==undefined){
-        for(let history of fetchedHistories){
-          let find = this.historyTitles
-            .findIndex(c=>c.dataId===history.dataId&&c.userId===history.dataId);
-          if(find!==-1){
-            /// 如果本地历史中包含和服务器下载的一样的数据标识,就删除本地并且添加下载数据
-            this.historyTitles.splice(find,1,history);
-          }else{
-            this.historyTitles.push(history);
-          }
-        }
-      }
-      let reverse = -1;
-      this.historyTitles.sort((a, b) => {
-        if (a.userId !== undefined && b.userId !== undefined) {
-          return (a.dataId - b.dataId)*reverse;
-        } else if (a.userId === undefined && b.userId === undefined) {
-          return (a.dataId - b.dataId)*reverse;
-        } else {
-          return (-1 + 2 * ((a.userId===undefined)?1:0))*reverse;
-        }
-      });
-      // reorder
-      // 依据 userId != null 依据dataId排序
-      // userId == null, 依据dataId 排序
-      this.historyChangeObserver.next(true);
-    });
+    this.store.dispatch(providerActions.load());
   }
   private async getUniqueDataIds(historyTitles: ChatHistoryTitle[]) {
     const dataIds: number[] = [];

@@ -8,12 +8,6 @@ import {GenerateTask} from "../../models/media";
 })
 export class UniversalService{
   dbService: DbService = inject(DbService);
-  constructor() {
-    this.init();
-  }
-  private init() {
-    this.dbService.waitForDbInit();
-  }
   async getSelectableModels(){
     return this.dbService.getAllSelectableModels();
   }

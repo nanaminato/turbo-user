@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {DBSchema, IDBPDatabase, openDB} from "idb";
 import {
   ChatHistory,
@@ -10,24 +10,18 @@ import {
 } from "../../models";
 import {CONFIGURATION} from "../../models/chat-stores/configuration.interface";
 import {GenerateTask} from "../../models/media";
+import {Store} from "@ngrx/store";
+import {dbActions} from "../../systems/store/system.actions";
 @Injectable({
   providedIn: "root"
 })
 export class DbService{
   private idbDb: IDBPDatabase<ChatDb> | undefined;
-  initFinish: boolean = false;
-  private readonly initPromise: Promise<void>;
-
+  store = inject(Store)
   constructor() {
-    this.initPromise = this.initDb().then(() => {
-      this.initFinish = true;
+    this.initDb().then(() => {
+      this.store.dispatch(dbActions.loadSuccess());
     });
-  }
-
-  public async waitForDbInit(): Promise<void> {
-    if (!this.initFinish) {
-      await this.initPromise;
-    }
   }
   async initDb(){
     this.idbDb = await openDB('chatDb-v1', 1, {
