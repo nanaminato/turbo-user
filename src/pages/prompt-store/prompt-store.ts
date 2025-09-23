@@ -20,6 +20,8 @@ import {SystemPromptItem} from "../../models";
 import {sizeReportToken, systemPromptChangeSubject} from "../../injection_tokens";
 import {SizeReportService} from "../../services/normal-services";
 import {SystemPromptService} from "../../services/db-services/system-prompt.service";
+import {Store} from "@ngrx/store";
+import {selectPrompt} from "../../systems/store/system-prompts/prompts.selectors";
 
 @Component({
   selector: 'app-prompt-store',
@@ -50,14 +52,11 @@ export class PromptStore {
   sizeReportService: SizeReportService = inject(SizeReportService);
   systemInfoService: SystemPromptService = inject(SystemPromptService);
   notification: NzNotificationService = inject(NzNotificationService);
-  constructor(
-              @Inject(systemPromptChangeSubject) private promptObservable: Observable<boolean>) {
-    this.systemPrompts = this.systemInfoService.systemPrompts;
-    for(let item of this.systemPrompts!){
-      this.filterPrompts.push(item);
-    }
-    this.promptObservable.subscribe(()=>{
-      this.filter();
+  store = inject(Store)
+  constructor() {
+    this.store.select(selectPrompt).subscribe((prompts: SystemPromptItem[] | undefined) => {
+      this.systemPrompts = prompts;
+      this.filter()
     })
   }
   miniPhone() {

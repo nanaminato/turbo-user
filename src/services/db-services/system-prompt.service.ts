@@ -11,7 +11,6 @@ import {systemPromptActions} from "../../systems/store/system-prompts/prompts.ac
   providedIn: "root"
 })
 export class SystemPromptService {
-  public systemPrompts: SystemPromptItem[] | undefined;
   dbService: DbService = inject(DbService);
 
   private getSystemPrompts():Promise<SystemPromptItem[] | undefined> {

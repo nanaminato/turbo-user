@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Output} from '@angular/core';
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NgForOf, NgTemplateOutlet} from "@angular/common";
 import {NzButtonModule} from "ng-zorro-antd/button";
@@ -8,6 +8,8 @@ import {TranslateModule} from "@ngx-translate/core";
 import {SystemPromptItem} from "../../../models";
 import {SystemPromptService} from "../../../services/db-services/system-prompt.service";
 import {user_routes} from "../../../roots/routes";
+import {Store} from "@ngrx/store";
+import {selectPrompt} from "../../../systems/store/system-prompts/prompts.selectors";
 
 @Component({
   selector: 'app-system-word-choice',
@@ -27,8 +29,11 @@ export class SystemWordChoice {
   @Output()
   chooseSystemPrompt = new EventEmitter<SystemPromptItem | undefined>();
   systemPrompts: SystemPromptItem[] | undefined;
-  constructor(private systemInfoService: SystemPromptService) {
-    this.systemPrompts = this.systemInfoService.systemPrompts;
+  store = inject(Store)
+  constructor() {
+    this.store.select(selectPrompt).subscribe((prompts: SystemPromptItem[] | undefined) => {
+      this.systemPrompts = prompts;
+    })
   }
   @Output()
   close = new EventEmitter<any>();

@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {ClipboardModule, ClipboardService} from "ngx-clipboard";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzFormModule} from "ng-zorro-antd/form";
@@ -6,6 +6,8 @@ import {FormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
 import {SystemPromptItem} from "../../../models";
 import {SystemPromptService} from "../../../services/db-services/system-prompt.service";
+import {selectPrompt} from "../../../systems/store/system-prompts/prompts.selectors";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-export-prompts',
@@ -22,10 +24,11 @@ import {SystemPromptService} from "../../../services/db-services/system-prompt.s
 })
 export class ExportPrompts {
   prompts: SystemPromptItem[] | undefined;
-
-  constructor(private systemPromptService: SystemPromptService,
-              private clipboardService: ClipboardService) {
-    this.prompts = this.systemPromptService.systemPrompts;
+  store = inject(Store)
+  constructor(private clipboardService: ClipboardService) {
+    this.store.select(selectPrompt).subscribe((prompts: SystemPromptItem[] | undefined) => {
+      this.prompts = prompts;
+    })
   }
 
   @ViewChild("textAreaElement")
