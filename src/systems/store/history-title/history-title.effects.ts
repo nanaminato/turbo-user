@@ -5,20 +5,24 @@ import {catchError, from, map, mergeMap, of, withLatestFrom} from "rxjs";
 import {Store} from "@ngrx/store";
 import {addWithMerge} from "./addWithMerge";
 import {HistoryTitleService} from "../../../services/db-services";
+import {AuthService, RequestService} from "../../../auth_module";
+import {ChatHistoryTitle} from "../../../models";
+import {selectHistoryTitle} from "./history-title.selectors";
 
 @Injectable()
 export class HistoryTitleEffect {
   actions$ = inject(Actions)
   store = inject(Store)
   historyTitleService = inject(HistoryTitleService)
+  authService = inject(AuthService)
   loadHistoryFromDb$ = createEffect(() =>
     this.actions$.pipe(
       ofType(historyTitleActions.loadFromDb),
       withLatestFrom(
-        this.store.select(state => state.auth.user?.id),
-        this.store.select(state => state.history.historyTitles),
+        this.store.select(selectHistoryTitle),
       ),
-      mergeMap(([action, userId, historyTitles]) => {
+      mergeMap(([action, historyTitles]) => {
+        let userId = this.authService.user!.id;
         if (!userId) {
           // 用户未登录，直接返回已有historyTitles
           return of(historyTitleActions.loadSuccess({ historyTitles }));
@@ -37,16 +41,35 @@ export class HistoryTitleEffect {
       })
     )
   );
-
+  requestService = inject(RequestService)
   loadHistoryFromHttpSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(historyTitleActions.loadFromHttp),
-      withLatestFrom(this.store.select(state => state.history.historyTitles)),
-      map(([{ httpHistoryTitles }, historyTitles]) => {
-        const merged = addWithMerge(historyTitles, httpHistoryTitles);
-        return historyTitleActions.loadSuccess({ historyTitles: merged });
+      withLatestFrom(
+        this.store.select(selectHistoryTitle)
+      ),
+      mergeMap(([action,historyTitles]) => {
+        let userId = this.authService.user!.id;
+        if (!userId) {
+          return of(historyTitleActions.loadSuccess({ historyTitles }));
+        }
+
+        const ids: number[] = (historyTitles && historyTitles.length > 0)
+          ? historyTitles.map((item: ChatHistoryTitle) => item.dataId)
+          : [];
+
+        return this.requestService.requestHistories(ids).pipe(
+          map(responseHistoryTitles => {
+            const safeResponse = responseHistoryTitles ?? [];
+            const merged = addWithMerge(historyTitles, safeResponse);
+            return historyTitleActions.loadSuccess({ historyTitles: merged });
+          }),
+          catchError(() => of(historyTitleActions.loadFailure()))
+        );
       })
     )
   );
+
+
 
 }

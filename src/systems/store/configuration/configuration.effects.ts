@@ -5,11 +5,11 @@ import {ConfigurationService, DbService} from "../../../services/db-services";
 import {configurationActions} from "./configuration.actions";
 
 @Injectable()
-export class SystemPromptsEffects {
+export class ConfigurationEffects {
   private actions$: Actions = inject(Actions)
   private dbService: DbService = inject(DbService);
   configurationService = inject(ConfigurationService);
-  loadSystemPrompts$ = createEffect(() =>
+  loadConfiguration$ = createEffect(() =>
     this.actions$.pipe(
       ofType(configurationActions.load),
       mergeMap(() =>

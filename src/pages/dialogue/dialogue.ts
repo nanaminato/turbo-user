@@ -9,11 +9,13 @@ import {Chat} from "./chat/chat";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {TranslateModule} from "@ngx-translate/core";
-import {ChatModel, SystemRole, UserRole} from "../../models";
+import {ChatModel, Configuration, SystemRole, UserRole} from "../../models";
 import {ConfigurationService} from "../../services/db-services";
 import {sizeReportToken} from "../../injection_tokens";
 import {SizeReportService} from "../../services/normal-services";
 import {TaskType, UserTask} from "../../models/operations";
+import {Store} from "@ngrx/store";
+import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 
 @Component({
   selector: 'app-dialogue',
@@ -33,12 +35,18 @@ import {TaskType, UserTask} from "../../models/operations";
 })
 export class Dialogue {
   private _chatModel: ChatModel | undefined;
-  private configurationService: ConfigurationService = inject(ConfigurationService);
   private sizeReportService: SizeReportService = inject(SizeReportService);
   private clipboard: ClipboardService = inject(ClipboardService);
   private notification: NzNotificationService = inject(NzNotificationService);
+  config: Configuration | null = null;
+  store = inject(Store);
+  constructor() {
+    this.store.select(selectConfig).subscribe(config => {
+      this.config = config;
+    });
+  }
   getFontSize() {
-    return `font-size: ${this.configurationService.configuration?.displayConfiguration.fontSize}px !important;`
+    return `font-size: ${this.config?.displayConfiguration.fontSize}px !important;`
   }
   @Input()
   set content(value: string | undefined) {

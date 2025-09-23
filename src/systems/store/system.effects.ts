@@ -14,7 +14,6 @@ export class SystemEffects{
       switchMap(() => [
         configurationActions.load(),
         systemPromptActions.load(),
-        historyTitleActions.loadFromDb()
       ])
     )
   );

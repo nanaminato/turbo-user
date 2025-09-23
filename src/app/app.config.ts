@@ -27,6 +27,14 @@ import {provideTranslateService} from "@ngx-translate/core";
 import {CLIPBOARD_OPTIONS, ClipboardButtonComponent, MarkdownModule} from "ngx-markdown";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AuthEffects} from "../systems/store/auth/auth.effects";
+import {HistoryTitleEffect} from "../systems/store/history-title/history-title.effects";
+import {ConfigurationEffects} from "../systems/store/configuration/configuration.effects";
+import {ProviderEffects} from "../systems/store/provider/provider.effects";
+import {SystemPromptsEffects} from "../systems/store/system-prompts/prompts.effects";
+import {SystemEffects} from "../systems/store/system.effects";
+import {configurationReducer} from "../systems/store/configuration/configuration.reducer";
+import {historyTitleReducer} from "../systems/store/history-title/history-title.reducer";
+import {systemPromptsReducer} from "../systems/store/system-prompts/prompts.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -88,6 +96,9 @@ export const appConfig: ApplicationConfig = {
       useValue: new Subject<boolean>(),
     },
     provideStore({
+      "config": configurationReducer,
+      "historyTitle": historyTitleReducer,
+      "prompts": systemPromptsReducer
     },
       {
       runtimeChecks: {
@@ -103,7 +114,7 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
-    provideEffects(AuthEffects),
-
+    provideEffects(AuthEffects, ConfigurationEffects, HistoryTitleEffect, ProviderEffects,
+      SystemPromptsEffects, SystemEffects),
   ]
 };

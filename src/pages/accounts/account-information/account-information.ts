@@ -9,6 +9,8 @@ import {AuthCallService} from "../../../auth_module/auth-call.service";
 import {Role} from "../../../models/accounts";
 import {user_routes} from "../../../roots/routes";
 import {loginSubject} from "../../../injection_tokens/subject.data";
+import {Store} from "@ngrx/store";
+import {authActions} from "../../../systems/store/system.actions";
 
 @Component({
   selector: 'app-account-information',
@@ -21,39 +23,17 @@ import {loginSubject} from "../../../injection_tokens/subject.data";
 })
 export class AccountInformation implements OnInit{
   message: NzMessageService = inject(NzMessageService);
-  verificationService: VerificationService = inject(VerificationService);
   router: Router = inject(Router);
   authService: AuthService = inject(AuthService);
   call: AuthCallService = inject(AuthCallService);
-  constructor(
-              @Inject(loginSubject) private loginObserver:Observer<boolean>
-              ) {
-
-  }
   roles: Role[] | undefined;
   get user(){
     return this.authService.user;
   }
   ngOnInit() {
-    this.verificationService.checkToken().pipe(
-      catchError((err: any) => {
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || err.status === 403) {
-            this.message.error("身份信息已经过期，请重新登录");
-            this.router.navigate(user_routes.sign_in);
-          }
-
-        } else {
-          this.message.error("网络错误")
-        }
-        throw err;
-      })
-    ).subscribe({
-      next: value => {
-        this.fetchRolesOfThisUser();
-        console.log("ok")
-      }
-    })
+    if(this.authService.user){
+      this.fetchRolesOfThisUser();
+    }
   }
   fetchRolesOfThisUser(){
     this.call.getRolesWithUserId(this.user?.id!).subscribe({
@@ -62,10 +42,9 @@ export class AccountInformation implements OnInit{
       }
     })
   }
-
+  store = inject(Store)
   logout() {
     this.authService.logout();
-    this.ngOnInit();
-    this.loginObserver.next(true);
+    this.store.dispatch(authActions.logout());
   }
 }

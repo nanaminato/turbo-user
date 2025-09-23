@@ -10,10 +10,8 @@ export const timeToWait = 1;
   providedIn: "root"
 })
 export class ConfigurationService {
-  public configuration: Configuration | undefined;
   dbService: DbService = inject(DbService);
   default_configuration(): Configuration {
-    const generator = new DisplayModelGenerator();
     return {
       model: {
         modelName: "gpt-3.5-turbo-16k",
@@ -36,22 +34,19 @@ export class ConfigurationService {
     };
   }
 
-  async getConfiguration(): Promise<Configuration | undefined> {
+  async getConfigFromDb(): Promise<Configuration | undefined> {
     return await this.dbService.getConfiguration();
   }
-
-  async setConfigurationLocal() {
-    await this.setConfiguration(this.configuration!);
-  }
-
-  async setConfiguration(configuration: Configuration) {
+  // 保存配置到数据库
+  async saveConfigToDb(configuration: Configuration) {
     if (!configuration) return;
     return await this.dbService.setConfiguration(configuration);
   }
 
-  async restoreConfiguration() {
-    this.configuration = this.default_configuration();
-    await this.setConfigurationLocal();
+  // 重置配置
+  async resetConfig() {
+    let config = this.default_configuration();
+    await this.saveConfigToDb(config);
   }
 
 

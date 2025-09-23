@@ -4,19 +4,26 @@ import {catchError} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {User} from "../models/accounts";
 import {AuthCallService} from "./auth-call.service";
+import {Store} from "@ngrx/store";
+import {authActions} from "../systems/store/system.actions";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  private tokenKey = 'auth_token';
+  private tokenKey = 'jwt_token';
   private userKey: string = "auth_user";
   public user: User | undefined;
   public token: string | undefined;
   message = inject(NzMessageService);
   call = inject(AuthCallService);
+  store = inject(Store);
   constructor() {
     this.resume();
+    if(this.user){
+      // 自动使用密码登录
+      this.store.dispatch(authActions.login({username: this.user.name, password: this.user.password}))
+    }
   }
   resume(){
     let iToken = localStorage.getItem(this.tokenKey);
@@ -47,9 +54,6 @@ export class AuthService {
         throw error;
       })
     );
-  }
-  store(){
-    this.restore(this.user!,this.token!);
   }
   restore(user: User, token: string) {
     this.user = user;

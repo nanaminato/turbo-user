@@ -21,9 +21,7 @@ export class RequestManagerService{
               dataId: history.dataId,
               chatList: []
             });
-            console.debug(history)
           }
-          console.log(`download histories ${histories.length} items`)
           resolve(histories);
         },
         error: err=>{

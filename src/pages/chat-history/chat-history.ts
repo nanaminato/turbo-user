@@ -12,6 +12,8 @@ import {ChatHistoryTitleActionInfo} from "../../models/operations";
 import {backChatHistorySubject, chatSessionSubject, lastSessionToken, sizeReportToken} from "../../injection_tokens";
 import {SizeReportService} from "../../services/normal-services";
 import {historyChangeSubject, loginSubject} from "../../injection_tokens/subject.data";
+import {Store} from "@ngrx/store";
+import {selectHistoryTitle} from "../../systems/store/history-title/history-title.selectors";
 
 @Component({
   selector: 'app-chat-history',
@@ -27,37 +29,19 @@ import {historyChangeSubject, loginSubject} from "../../injection_tokens/subject
 })
 export class ChatHistory
 {
-  @Input()
   chatHistoryTitle: ChatHistoryTitle[] | undefined;
-  @Output()
-  chatHistoryChangeEvent = new EventEmitter<ChatHistoryTitleActionInfo>();
   selectId: number | undefined;
   menuCtrl: MenuController = inject(MenuController);
   sizeReportService: SizeReportService = inject(SizeReportService);
   lastSession: LastSessionModel = inject(LastSessionModel);
+  store = inject(Store);
   constructor(
-    @Inject(chatSessionSubject) private chatSessionObserver:Observer<number> ,
-    @Inject(backChatHistorySubject) private backHistoryObservable: Observable<ChatHistoryTitle>,
-    @Inject(historyChangeSubject) private historyChangeObservable: Observable<boolean>
+    @Inject(chatSessionSubject) private chatSessionObserver:Observer<number>
               ) {
-    this.backHistoryObservable.subscribe(async (historyTitle) => {
-      if(historyTitle.dataId!==MagicDataId){
-        console.info(`订阅到新的 历史标识 ${historyTitle.dataId} ${historyTitle.title}`);
-        this.changeSession(historyTitle.dataId)
-      }else{
-        this.selectFirst();
-      }
-    });
-    this.historyChangeObservable.subscribe({
-      next: value=>{
-        if(value){
-          this.selectFirst();
-        }
-      }
+    this.store.select(selectHistoryTitle).subscribe((histories: ChatHistoryTitle[]) => {
+      this.chatHistoryTitle = histories;
     })
   }
-
-
   changeSession(dataId: number) {
     this.selectId = dataId;
     this.miniPhoneAction();
@@ -86,10 +70,6 @@ export class ChatHistory
     this.chatSessionObserver.next(this.selectId);
     this.lastSession.sessionId = this.selectId;
     //console.info(`选择历史的第一条 ${first.dataId} ${first.title}`)
-  }
-
-  reEmit($event: ChatHistoryTitleActionInfo) {
-    this.chatHistoryChangeEvent.emit($event);
   }
 
   handleHistoryChange($event: number) {

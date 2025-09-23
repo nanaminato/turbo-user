@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, Inject, Renderer2, ViewChild} from '@angular/core';
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {Subject} from "rxjs";
 import {NzFormModule} from "ng-zorro-antd/form";
@@ -29,6 +29,8 @@ import {ModelCenter} from "./model-center/model-center";
 import {details} from "../../models/enumerates/enum.type";
 import {ServiceProvider} from "../../roots";
 import {themes} from '../../themes/theme'
+import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
+import {Store} from "@ngrx/store";
 export const languages: string[] = [
   'zh','en','jp'
 ];
@@ -58,27 +60,24 @@ export const displayLanguages: { value: string, label: string }[] = [
 })
 export class Settings {
   dynamicConfig: DynamicConfig | undefined;
-  configuration: Configuration;
-
-  constructor(@Inject(sizeReportToken) private sizeReportService: SizeReportService,
+  config: Configuration | null = null;
+  store = inject(Store);
+  sizeReportService = inject(SizeReportService);
+  constructor(
               private themeSwitcherService: ThemeSwitcherService,
               private configurationService: ConfigurationService,
               private notification: NzNotificationService,
-              @Inject(configurationChangeSubject) private configurationObserver: Subject<Configuration>,
               private renderer: Renderer2,
               private translate: TranslateService,
               private dynamicConfigService: DynamicConfigService,
               private serviceProvider: ServiceProvider
               ) {
-    this.configuration = this.configurationService.configuration!;
-    this.loadProperties();
-    this.configurationObserver.subscribe((configuration) => {
-      this.configuration = configuration;
-      this.loadProperties();
-      console.log("aware change");
-      console.log(this.dynamicConfig);
+    this.store.select(selectConfig).subscribe(config => {
+      this.config = config;
+      if(config){
+        this.loadProperties();
+      }
     });
-
   }
   apiUrl(){
     return this.serviceProvider.apiUrl;
@@ -88,19 +87,20 @@ export class Settings {
   }
 
   async resetConfiguration() {
-    await this.configurationService.restoreConfiguration();
+    await this.configurationService.resetConfig()
     this.notification
       .create(
         "success",
         '重置成功',
         '参数重置成功'
       );
-    this.configurationObserver.next(this.configurationService.configuration!);
   }
 
 
   async applyChangeRightNow() {
-    await this.configurationService.setConfigurationLocal();
+    console.log('applyChangeRightNow');
+    console.log(this.config);
+    await this.configurationService.saveConfigToDb(this.config!);
     this.notification
       .create(
         "success",
@@ -135,16 +135,15 @@ export class Settings {
   }
 
   async handleConfigInput($event: Configuration) {
-    this.configurationService.configuration = $event;
-    this.configuration = $event;
-    await this.configurationService.setConfigurationLocal();
+    this.config = $event;
+    await this.configurationService.saveConfigToDb($event);
   }
 
   protected readonly themes = themes;
 
   themeChange() {
     this.themeSwitcherService.load(this.dynamicConfig!.theme);
-    this.dynamicConfigService.setDynamicConfig(this.configuration,this.dynamicConfig!);
+    this.dynamicConfigService.setDynamicConfig(this.config!,this.dynamicConfig!);
   }
 
   protected readonly languages = languages;
@@ -152,14 +151,14 @@ export class Settings {
   languageChange($event: string) {
     this.translate.use(this.dynamicConfig!.language!);
     this.dynamicConfig!.languageIsSet = true;
-    this.dynamicConfigService.setDynamicConfig(this.configuration,this.dynamicConfig!);
+    this.dynamicConfigService.setDynamicConfig(this.config!,this.dynamicConfig!);
   }
 
   protected readonly displayLanguages = displayLanguages;
   modelCenterVisible: boolean = false;
 
   private loadProperties() {
-    let configDynamic = this.dynamicConfigService.getDynamicConfig(this.configuration);
+    let configDynamic = this.dynamicConfigService.getDynamicConfig(this.config!);
     if(configDynamic===undefined){
       this.dynamicConfig = this.dynamicConfigService.getDefaultDynamicConfig();
     }else{

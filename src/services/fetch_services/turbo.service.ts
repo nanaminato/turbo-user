@@ -3,8 +3,10 @@ import {Observable} from "rxjs";
 import {ConfigurationService} from "../db-services";
 import {AuthService} from "../../auth_module";
 import {ServiceProvider} from "../../roots";
-import {ChatPacket, Message, VisionMessage} from "../../models";
+import {ChatPacket, Configuration, Message, VisionMessage} from "../../models";
 import {ErrorType, ResponseError} from "../../errors";
+import {Store} from "@ngrx/store";
+import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 
 @Injectable({
   providedIn: "root"
@@ -12,12 +14,17 @@ import {ErrorType, ResponseError} from "../../errors";
 export class TurboService {
   provider = inject(ServiceProvider);
   baseUrl: string = `${this.provider.apiUrl}api/ai`;
-  configurationService = inject(ConfigurationService);
   authService = inject(AuthService);
-
+  store = inject(Store);
+  config: Configuration | null = null;
+  constructor() {
+    this.store.select(selectConfig).subscribe(config => {
+      this.config = config;
+    });
+  }
   fetchChat(mp: ChatPacket, model?: string): Observable<string> {
     const messages: Message[] | VisionMessage[] = mp.messages;
-    let config = this.configurationService.configuration;
+    let config = this.config!;
     let url = this.baseUrl + "/chat";
     let requestBody: any;
     let tokens: number | undefined | null = config?.chatConfiguration.max_completion_tokens;

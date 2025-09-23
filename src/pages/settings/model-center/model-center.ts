@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
-import {DisplayModel, displayModels} from "../../../models";
+import {Configuration, DisplayModel, displayModels} from "../../../models";
 import {NumerService} from "../../../services/fetch_services";
 import {ConfigurationService} from "../../../services/db-services";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -10,6 +10,9 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {NzPopoverDirective} from "ng-zorro-antd/popover";
+import {Store} from "@ngrx/store";
+import {selectConfig} from "../../../systems/store/configuration/configuration.selectors";
+import {configurationActions} from "../../../systems/store/configuration/configuration.actions";
 
 @Component({
   selector: 'app-model-center',
@@ -28,12 +31,18 @@ import {NzPopoverDirective} from "ng-zorro-antd/popover";
 })
 export class ModelCenter implements OnInit {
   private numerService: NumerService = inject(NumerService)
-  private configurationService: ConfigurationService = inject(ConfigurationService)
   private universalService: UniversalService = inject(UniversalService)
+  config: Configuration | null = null;
+  store = inject(Store);
   constructor() {
-     this.configurationService.configuration?.chatConfiguration.models.forEach(t=>{
-       this.selectedModels.push(t)
-     })
+    this.store.select(selectConfig).subscribe(config => {
+      this.config = config;
+      if(config){
+        config.chatConfiguration.models.forEach(m=>{
+          this.selectableModels.push(m);
+        })
+      }
+    });
   }
   selectableModels: DisplayModel[] = [];
   selectedModels: DisplayModel[] = [];
@@ -78,23 +87,14 @@ export class ModelCenter implements OnInit {
     let i1 = this.selectedModels.findIndex(m=>m.modelName===displayModel.modelName);
     if(i1===-1){
       this.selectedModels.push(displayModel);
-      console.log("添加")
-      console.log(this.selectedModels);
-      console.log(this.selectableModels);
     }else{
       this.selectedModels.splice(i1,1);
-      console.log("删除")
-      console.log(this.selectedModels);
-      console.log(this.selectableModels);
     }
   }
   save(){
-    let models = this.configurationService.configuration?.chatConfiguration.models;
-    models!.length = 0;
-    this.selectedModels.forEach(s=>{
-      models?.push(s);
-      // console.log(s)
-    })
+    let config: Configuration = {...this.config!};
+    config.chatConfiguration!.models = [...this.selectedModels];
+    this.store.dispatch(configurationActions.configUpdate({config: config}))
     this.closeAction.next(true);
   }
 

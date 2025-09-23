@@ -1,10 +1,12 @@
 import {inject, Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {catchError, map, mergeMap, of, tap} from "rxjs";
-import {authActions} from "../system.actions";
+import {catchError, map, mergeMap, of, switchMap, tap} from "rxjs";
+import {authActions, dbActions} from "../system.actions";
 import {user_routes} from "../../../roots/routes";
 import {AuthService} from "../../../auth_module";
 import {Router} from "@angular/router";
+import {historyTitleActions} from "../history-title/history-title.actions";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
 export class AuthEffects {
@@ -27,19 +29,27 @@ export class AuthEffects {
       )
     )
   );
-
+  messageService = inject(NzMessageService);
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(authActions.loginSuccess),
         tap(action => {
+          this.messageService.success("登录成功")
           this.authService.restore(action.user, action.token);
           this.router.navigate(user_routes.account_info);
-          // 如果你还有其他登录成功后的逻辑，比如通知组件，可以考虑这里触发通知 action
         })
       ),
     { dispatch: false }
   );
-
+  dbLoadSuccess2$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.loginSuccess),
+      switchMap(() => [
+        historyTitleActions.loadFromDb(),
+        historyTitleActions.loadFromHttp()
+      ])
+    )
+  );
 
 }

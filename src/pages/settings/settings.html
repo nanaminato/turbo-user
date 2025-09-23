@@ -76,7 +76,7 @@
                         (nzOnCancel)="closeOutput()" (nzOnOk)="okAndCloseOutput()"
               >
                 <ng-container *nzModalContent>
-                  <app-config-export [config]="configuration"></app-config-export>
+                  <app-config-export [config]="config!"></app-config-export>
                 </ng-container>
               </nz-modal>
               <button nz-button (click)="outputConfigVisible = true">
@@ -114,7 +114,7 @@
           <nz-row>
             <nz-col>
               <nz-slider class="slider" nzMin="10" nzMax="32" nzStep="1"
-                         [(ngModel)]="configuration.displayConfiguration.fontSize"
+                         [(ngModel)]="config!.displayConfiguration.fontSize"
               >
               </nz-slider>
             </nz-col>
@@ -124,13 +124,13 @@
                 [nzStep]="1"
                 [nzMax]="32"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration.displayConfiguration.fontSize">
+                [(ngModel)]="config!.displayConfiguration.fontSize">
               </nz-input-number>
             </nz-col>
           </nz-row>
         </div>
         <div class="d-flex align-items-center justify-content-center m-1">
-          <div [style]="'font-size: '+configuration.displayConfiguration.fontSize+'px;'">
+          <div [style]="'font-size: '+config!.displayConfiguration.fontSize+'px;'">
             示例文本 AaBbCc
           </div>
         </div>
@@ -195,7 +195,7 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-slider class="slider big" [(ngModel)]="configuration!.chatConfiguration.max_completion_tokens"
+              <nz-slider class="slider big" [(ngModel)]="config!.chatConfiguration.max_completion_tokens"
                          [nzStep]="1" [nzMin]="0" [nzMax]="32000"></nz-slider>
             </nz-col>
             <nz-col>
@@ -203,7 +203,7 @@
                 [nzMin]="0"
                 [nzMax]="32000"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration.max_completion_tokens"
+                [(ngModel)]="config!.chatConfiguration.max_completion_tokens"
               ></nz-input-number>
             </nz-col>
           </nz-row>
@@ -220,7 +220,7 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration!.temperature"
+              <nz-slider class="slider" [(ngModel)]="config!.chatConfiguration!.temperature"
                          [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
             </nz-col>
             <nz-col>
@@ -229,7 +229,7 @@
                 [nzStep]="0.01"
                 [nzMax]="1"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration!.temperature"
+                [(ngModel)]="config!.chatConfiguration!.temperature"
               ></nz-input-number>
             </nz-col>
           </nz-row>
@@ -246,7 +246,7 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration.top_p"
+              <nz-slider class="slider" [(ngModel)]="config!.chatConfiguration.top_p"
                          [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
             </nz-col>
             <nz-col>
@@ -255,7 +255,7 @@
                 [nzStep]="0.01"
                 [nzMax]="1"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration.top_p"
+                [(ngModel)]="config!.chatConfiguration.top_p"
               ></nz-input-number>
             </nz-col>
           </nz-row>
@@ -273,7 +273,7 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration.presence_penalty"
+              <nz-slider class="slider" [(ngModel)]="config!.chatConfiguration.presence_penalty"
                          [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
             </nz-col>
             <nz-col>
@@ -282,7 +282,7 @@
                 [nzStep]="0.01"
                 [nzMax]="1"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration.presence_penalty"
+                [(ngModel)]="config!.chatConfiguration.presence_penalty"
               ></nz-input-number>
             </nz-col>
           </nz-row>
@@ -299,7 +299,7 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-slider class="slider" [(ngModel)]="configuration!.chatConfiguration.frequency_penalty"
+              <nz-slider class="slider" [(ngModel)]="config!.chatConfiguration.frequency_penalty"
                          [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
             </nz-col>
             <nz-col>
@@ -308,7 +308,7 @@
                 [nzStep]="0.01"
                 [nzMax]="1"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration.frequency_penalty"
+                [(ngModel)]="config!.chatConfiguration.frequency_penalty"
               ></nz-input-number>
             </nz-col>
           </nz-row>
@@ -325,7 +325,7 @@
           <nz-row>
             <nz-col>
               <nz-slider class="slider"
-                         [(ngModel)]="configuration!.chatConfiguration.historySessionLength"
+                         [(ngModel)]="config!.chatConfiguration.historySessionLength"
                          [nzStep]="1" [nzMin]="1" [nzMax]="100"></nz-slider>
             </nz-col>
             <nz-col>
@@ -333,7 +333,7 @@
                 [nzMin]="1"
                 [nzMax]="100"
                 [ngStyle]="{ marginLeft: '16px' }"
-                [(ngModel)]="configuration!.chatConfiguration.historySessionLength"
+                [(ngModel)]="config!.chatConfiguration.historySessionLength"
               ></nz-input-number>
             </nz-col>
           </nz-row>
@@ -350,7 +350,7 @@
           </div>
           <nz-row>
             <nz-col>
-              <nz-select class="select big" [(ngModel)]="configuration!.chatConfiguration.detail">
+              <nz-select class="select big" [(ngModel)]="config!.chatConfiguration.detail">
                 <nz-option-group [nzLabel]="'settings.fidelity' | translate">
                   @for(detail of details; track detail){
                     <nz-option [nzValue]="detail"

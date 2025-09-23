@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, inject, Inject} from '@angular/core';
 import {Subject} from "rxjs";
 import {FormsModule} from "@angular/forms";
 import {NzSelectModule} from "ng-zorro-antd/select";
@@ -9,6 +9,9 @@ import {RequestType} from "../../../models/enumerates";
 import {Configuration, DisplayModel} from "../../../models";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {Store} from "@ngrx/store";
+import {selectConfig} from "../../../systems/store/configuration/configuration.selectors";
+import {configurationActions} from "../../../systems/store/configuration/configuration.actions";
 
 
 @Component({
@@ -26,24 +29,25 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 export class ModelSelector {
   chatStreamChildren: DisplayModel[] = [];
   model: DisplayModel | undefined;
-  constructor(private configurationService: ConfigurationService,
-              @Inject(configurationChangeSubject) private configurationObservable: Subject<Configuration>) {
-    this.buildSelector();
-    this.model = this.configurationService.configuration?.model;
-    this.configurationObservable.subscribe((config)=>{
+  config: Configuration | null = null;
+  store = inject(Store);
+  configService = inject(ConfigurationService);
+  constructor() {
+    this.store.select(selectConfig).subscribe(config => {
+      this.config = config;
       this.buildSelector();
-      this.model = config.model;
-    })
+      this.model = config!.model;
+    });
   }
   buildSelector(){
     this.chatStreamChildren.length = 0;
-    for(let model of this.configurationService.configuration?.chatConfiguration!.models!){
+    for(let model of this.config!.chatConfiguration!.models!){
       this.chatStreamChildren.push(model)
     }
   }
   async onSelectChange() {
-    this.configurationService!.configuration!.model! = this.model!;
-    // console.log(this.model!)
-    await this.configurationService.setConfigurationLocal();
+    this.config!.model = this.model!;
+    this.store.dispatch(configurationActions.configUpdate({config: this.config!}))
+    this.configService.saveConfigToDb(this.config!)
   }
 }

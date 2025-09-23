@@ -53,6 +53,8 @@ import {MenuAbleService} from "../../services/normal-services/menu-able.service"
 import {Bs64Handler, ChatContextHandler} from "../../services/handlers";
 import {RequestType} from "../../models/enumerates";
 import {NzTooltipModule} from "ng-zorro-antd/tooltip";
+import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-chat-main',
@@ -120,7 +122,7 @@ export class ChatMainComponent implements OnDestroy{
 
     const randomId = Date.now()*1000 + Math.floor(Math.random() * 500) + 1;
     const userModel = new ChatModel("user", this.inputText,
-      this.chatFileList, randomId,true,this.configuration!.model.modelValue);
+      this.chatFileList, randomId,true,this.config!.model.modelValue);
     this.chatModels.push(userModel);
     let parseStatus = await this.parseAllFile(userModel);//!!!!!
 
@@ -139,7 +141,7 @@ export class ChatMainComponent implements OnDestroy{
     const assistantModel = new ChatModel(AssistantRole);
     assistantModel.finish = false;
     assistantModel.reRandom();
-    assistantModel.model = this.configuration!.model.modelValue;
+    assistantModel.model = this.config!.model.modelValue;
     this.chatModels.push(assistantModel);
     //  构建新的滚动 订阅
     this.scrollSubject = new Subject<boolean>();
@@ -300,7 +302,7 @@ export class ChatMainComponent implements OnDestroy{
     }
   }
 
-  configuration: Configuration | undefined;
+  config: Configuration | undefined;
   fileList: NzUploadFile[] = [];
   inputText: string = '';
   animalModel: ChatModel | undefined;
@@ -447,7 +449,6 @@ export class ChatMainComponent implements OnDestroy{
   chatDataService = inject(ChatDataService);
   chatHistoryService = inject(HistoryTitleService)
   lastSession = inject(LastSessionModel);
-  private configurationService = inject(ConfigurationService);
   notification = inject(NzNotificationService);
   private modelFetchService: ModelFetchService = inject(ModelFetchService);
   private parseService: ParseService = inject(ParseService);
@@ -455,6 +456,7 @@ export class ChatMainComponent implements OnDestroy{
   private requestManagerService: RequestManagerService = inject(RequestManagerService);
   private sendManagerService: SendManagerService = inject(SendManagerService);
   private bs64Handler: Bs64Handler = inject(Bs64Handler);
+  store = inject(Store);
   constructor(
               @Inject(chatSessionSubject) private chatSessionObservable: Observable<number>,
               @Inject(backChatHistorySubject) private backHistoryObserver: Observer<ChatHistoryTitle>,
@@ -467,12 +469,9 @@ export class ChatMainComponent implements OnDestroy{
       systems: [],
       onlyOne: true
     };
-
-    this.configurationObserver.subscribe((configuration)=>{
-      this.configuration = configuration;
+    this.store.select(selectConfig).subscribe((config: Configuration | null)=>{
+      this.config = config!;
     });
-    // 初始化configuration
-    this.configuration = this.configurationService.configuration!;
     this.chatSessionObservable.subscribe(async (dataId) => {
       this.initSession = false;
       console.info(`切换会话: 会话Id: ${dataId}`)
@@ -495,7 +494,7 @@ export class ChatMainComponent implements OnDestroy{
     }
     let messages = this.chatContextHandler.handler(
       startPointer,
-      this.configurationService.configuration!,
+      this.config!,
       this.chatModels,
       endPointer
     );
