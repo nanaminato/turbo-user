@@ -10,8 +10,6 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {TranslateModule} from "@ngx-translate/core";
 import {ChatModel, Configuration, SystemRole, UserRole} from "../../models";
-import {ConfigurationService} from "../../services/db-services";
-import {sizeReportToken} from "../../injection_tokens";
 import {SizeReportService} from "../../services/normal-services";
 import {TaskType, UserTask} from "../../models/operations";
 import {Store} from "@ngrx/store";

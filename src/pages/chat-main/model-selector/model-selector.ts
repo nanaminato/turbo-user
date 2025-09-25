@@ -1,11 +1,7 @@
-import {Component, inject, Inject} from '@angular/core';
-import {Subject} from "rxjs";
+import {Component, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {NzSelectModule} from "ng-zorro-antd/select";
-import {NgForOf} from "@angular/common";
 import {ConfigurationService} from "../../../services/db-services";
-import {configurationChangeSubject} from "../../../injection_tokens";
-import {RequestType} from "../../../models/enumerates";
 import {Configuration, DisplayModel} from "../../../models";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";

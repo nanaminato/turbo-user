@@ -1,9 +1,8 @@
-import {Component, inject, Inject} from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
+import {Component, inject} from '@angular/core';
+import {Router} from "@angular/router";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {TranslateModule} from "@ngx-translate/core";
 import {MenuController} from "@ionic/angular";
-import {sizeReportToken} from "../../../injection_tokens";
 import {AuthService} from "../../../auth_module";
 import {SizeReportService} from "../../../services/normal-services";
 import {user_routes} from "../../../roots/routes";

@@ -1,9 +1,6 @@
-import {inject, Inject, Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {DbService} from "./db.service";
-import {Observer} from "rxjs";
-import {timeToWait} from "./configuration.service";
 import {SystemPromptItem} from "../../models";
-import {systemPromptChangeSubject} from "../../injection_tokens";
 import {Store} from "@ngrx/store";
 import {systemPromptActions} from "../../systems/store/system-prompts/prompts.actions";
 

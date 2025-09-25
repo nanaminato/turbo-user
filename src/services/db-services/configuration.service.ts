@@ -1,9 +1,6 @@
-import {inject, Inject, Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {DbService} from "./db.service";
-import {Subject} from "rxjs";
 import {Configuration} from "../../models";
-import {configurationChangeSubject} from "../../injection_tokens";
-import {DisplayModelGenerator} from "../../models";
 import {displayModels} from "../../models";
 export const timeToWait = 1;
 @Injectable({

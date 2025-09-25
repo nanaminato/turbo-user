@@ -23,7 +23,6 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {IonicModule} from "@ionic/angular";
 import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "../../services/normal-services";
 import {Configuration, DynamicConfig} from "../../models";
-import {configurationChangeSubject, sizeReportToken} from "../../injection_tokens";
 import {ConfigurationService} from "../../services/db-services";
 import {ModelCenter} from "./model-center/model-center";
 import {details} from "../../models/enumerates/enum.type";

@@ -13,10 +13,6 @@ import {jwtInterceptor} from "../systems/interceptors/jwt.interceptor";
 import {routes} from "./app.routes";
 import {IonicModule, IonicRouteStrategy} from "@ionic/angular";
 import {NZ_I18N, zh_CN} from "ng-zorro-antd/i18n";
-import {
-  chatSessionSubject,
-} from "../injection_tokens";
-import {Subject} from "rxjs";
 import {provideServiceWorker} from "@angular/service-worker";
 import {provideTranslateService} from "@ngx-translate/core";
 import {CLIPBOARD_OPTIONS, ClipboardButtonComponent, MarkdownModule} from "ngx-markdown";

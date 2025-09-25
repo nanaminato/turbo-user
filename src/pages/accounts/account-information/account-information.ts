@@ -1,14 +1,10 @@
-import {Component, inject, Inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {catchError, Observer} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {NzCardComponent} from "ng-zorro-antd/card";
-import {AuthService, VerificationService} from "../../../auth_module";
+import {AuthService} from "../../../auth_module";
 import {AuthCallService} from "../../../auth_module/auth-call.service";
 import {Role} from "../../../models/accounts";
-import {user_routes} from "../../../roots/routes";
-import {loginSubject} from "../../../injection_tokens/subject.data";
 import {Store} from "@ngrx/store";
 import {authActions} from "../../../systems/store/system.actions";
 

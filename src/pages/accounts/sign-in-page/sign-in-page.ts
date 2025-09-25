@@ -13,14 +13,9 @@ import {
   ReactiveFormsModule,
   Validators
 } from "@angular/forms";
-import {NzFormControlComponent, NzFormDirective} from "ng-zorro-antd/form";
-import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {AuthService, RegisterService, VerificationService} from "../../../auth_module";
-import {user_routes} from "../../../roots/routes";
-import {loginSubject} from "../../../injection_tokens/subject.data";
-import {Observer} from "rxjs";
+import {VerificationService} from "../../../auth_module";
 import {Store} from "@ngrx/store";
 import {authActions} from "../../../systems/store/system.actions";
 

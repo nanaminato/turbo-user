@@ -17,7 +17,6 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {TranslateModule} from "@ngx-translate/core";
 import {IonicModule} from "@ionic/angular";
 import {SystemPromptItem} from "../../models";
-import {sizeReportToken, systemPromptChangeSubject} from "../../injection_tokens";
 import {SizeReportService} from "../../services/normal-services";
 import {SystemPromptService} from "../../services/db-services/system-prompt.service";
 import {Store} from "@ngrx/store";
