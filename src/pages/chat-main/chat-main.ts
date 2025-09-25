@@ -1,6 +1,6 @@
-import {Component, ElementRef, inject, Inject, OnDestroy, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import {NzUploadFile, NzUploadModule} from "ng-zorro-antd/upload";
-import {map, Observable, Observer, Subject, Subscription} from "rxjs";
+import {map, Observable, Subject, Subscription} from "rxjs";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {ModelEditor} from "./model-editor/model-editor";
@@ -26,19 +26,12 @@ import {
   SystemContext
 } from "../../services/normal-services";
 import {
-  backChatHistorySubject,
-  chatSessionSubject,
-  configurationChangeSubject,
-} from "../../injection_tokens";
-import {
   AssistantRole,
-  ChatHistoryModel,
-  ChatHistoryTitle, ChatInterface,
+  ChatHistoryModel,ChatInterface,
   ChatModel,
   ChatPacket,
   Configuration,
   FileAdds,
-  LastSessionModel,
   SystemPromptItem,
   SystemRole,
   UserRole
@@ -244,20 +237,8 @@ export class ChatMainComponent implements OnDestroy{
     }
     this.syncHistorySession();
   }
-  syncHistorySession(): Promise<string>{
-    return new Promise((resolve,reject)=>{
-      this.chatDataService.putHistory(this.chatHistoryModel!).then(() => {
-        if (this.notifyChatHistoryIdentifier) {
-          this.backHistoryObserver.next({
-            dataId: this.chatHistoryModel!.dataId!,
-            title: this.chatHistoryModel!.title,
-            userId: this.auth.user?.id!
-          })
-          this.notifyChatHistoryIdentifier = false;
-        }
-        resolve("同步数据到本地数据库成功");
-      });
-    })
+  syncHistorySession(){
+    this.chatDataService.putHistory(this.chatHistoryModel!);
   }
 
   nextSubscribe(data: boolean) {
@@ -448,7 +429,6 @@ export class ChatMainComponent implements OnDestroy{
   render = inject(Renderer2)
   chatDataService = inject(ChatDataService);
   chatHistoryService = inject(HistoryTitleService)
-  lastSession = inject(LastSessionModel);
   notification = inject(NzNotificationService);
   private modelFetchService: ModelFetchService = inject(ModelFetchService);
   private parseService: ParseService = inject(ParseService);
@@ -457,11 +437,7 @@ export class ChatMainComponent implements OnDestroy{
   private sendManagerService: SendManagerService = inject(SendManagerService);
   private bs64Handler: Bs64Handler = inject(Bs64Handler);
   store = inject(Store);
-  constructor(
-              @Inject(chatSessionSubject) private chatSessionObservable: Observable<number>,
-              @Inject(backChatHistorySubject) private backHistoryObserver: Observer<ChatHistoryTitle>,
-              @Inject(configurationChangeSubject) private configurationObserver: Subject<Configuration>,
-  ) {
+  constructor() {
     this.menuAbleService.enableChat();
     // 添加默认值
     this.chatContext = {
@@ -472,21 +448,7 @@ export class ChatMainComponent implements OnDestroy{
     this.store.select(selectConfig).subscribe((config: Configuration | null)=>{
       this.config = config!;
     });
-    this.chatSessionObservable.subscribe(async (dataId) => {
-      this.initSession = false;
-      console.info(`切换会话: 会话Id: ${dataId}`)
-      this.sync(dataId).then(()=>{
-        let chatContext = this.contextMemoryService.getValue(dataId);
-        this.inputChatContext(chatContext);
-      });
-    })
-    if (this.chatHistoryModel === undefined && this.lastSession.sessionId) {
-      this.initSession = false;
-      this.sync(this.lastSession.sessionId).then(async ()=>{
-        let chatContext = this.contextMemoryService.getValue(this.lastSession.sessionId!);
-        this.inputChatContext(chatContext);
-      });
-    }
+
   }
   resolveContext( startPointer: number|undefined = undefined, endPointer: number | undefined = undefined, reModel: ChatModel | undefined = undefined) {
     if (this.chatModels === undefined) {
@@ -507,15 +469,10 @@ export class ChatMainComponent implements OnDestroy{
     return new ChatPacket(messages);
   }
   async sync(dataId: number) {
-    if (dataId === this.lastSession.sessionId) {
-    } else {
-      // console.log("will open by observer " + dataId)
-    }
     try {
       this.chatDataService.getChatHistory(dataId).then(async (chatHistory)=>{
         if (chatHistory) {
           this.chatHistoryModel = chatHistory;
-          this.lastSession.sessionId = dataId;
 
           let messageIds: number[] = [];
           for(let ms of this.chatHistoryModel.chatList?.chatModel!){
@@ -527,18 +484,15 @@ export class ChatMainComponent implements OnDestroy{
             let ch = await this.chatDataService.getChatHistory(dataId);
             if (ch) {
               this.chatHistoryModel = ch;
-              this.lastSession.sessionId = dataId;
             } else {
               this.chatHistoryModel = new ChatHistoryModel();
               this.chatHistoryModel.userId = this.auth.user?.id;
-              this.lastSession.sessionId = this.chatHistoryModel.dataId;
             }
             // 本地加载，联网同步，（填充到本地），本地加载
           }
         } else {
           this.chatHistoryModel = new ChatHistoryModel();
           this.chatHistoryModel.userId = this.auth.user?.id;
-          this.lastSession.sessionId = this.chatHistoryModel.dataId;
         }
 
         this.initSession = true;
@@ -645,24 +599,14 @@ export class ChatMainComponent implements OnDestroy{
 
   handleOk(): void {
     this.isVisible = false;
-    // console.log(this.editModel);
-    // console.log(this.editBeforeModel);
     if(this.editModel===undefined || this.editBeforeModel===undefined) return;
     if(this.editBeforeModel?.content!==this.editModel?.content){
       this.editModel!.markAsChanged = true;
       console.log(this.notifyChatHistoryIdentifier)
-      this.sendManagerService.updateMessage(this.chatHistoryModel!.dataId!,this.editModel! as ChatInterface)
-        .then((msg: string)=>{
-          console.log(msg)
-        });
-      this.syncHistorySession().then((msg: any)=>{
-        console.log(msg);
-        // console.log(this.chatHistoryModel);
-      });
+      this.sendManagerService.updateMessage(this.chatHistoryModel!.dataId!,this.editModel! as ChatInterface);
+      this.syncHistorySession()
     }
     this.handleFinalization();
-    /// 暂时的替代品
-
   }
   handleFinalization(){
     this.editModel = undefined;

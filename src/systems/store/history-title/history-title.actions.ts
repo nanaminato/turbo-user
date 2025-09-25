@@ -9,6 +9,7 @@ export const historyTitleActions = createActionGroup({
     'load from http': emptyProps(),
     "load success":  props<{ historyTitles: ChatHistoryTitle[] }>(),
     'load failure': emptyProps(),
+    'clear': emptyProps(),
     // 以后你可以这里添加更多的 systemPrompt 相关 action
   }
 });

@@ -5,23 +5,18 @@ import {
   provideZoneChangeDetection, SecurityContext
 } from '@angular/core';
 import {PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading} from '@angular/router';
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {provideAnimations, provideNoopAnimations} from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';import {provideStoreDevtools} from '@ngrx/store-devtools';
-import {jwtInterceptor} from "../systems/system-services/jwt.interceptor";
+import {jwtInterceptor} from "../systems/interceptors/jwt.interceptor";
 import {routes} from "./app.routes";
 import {IonicModule, IonicRouteStrategy} from "@ionic/angular";
 import {NZ_I18N, zh_CN} from "ng-zorro-antd/i18n";
-import {TokenInterceptorService} from "../roots";
 import {
-  backChatHistorySubject,
   chatSessionSubject,
-  configurationChangeSubject,
 } from "../injection_tokens";
 import {Subject} from "rxjs";
-import {ChatHistoryTitle, Configuration} from "../models";
-import {historyChangeSubject} from "../injection_tokens/subject.data";
 import {provideServiceWorker} from "@angular/service-worker";
 import {provideTranslateService} from "@ngx-translate/core";
 import {CLIPBOARD_OPTIONS, ClipboardButtonComponent, MarkdownModule} from "ngx-markdown";
@@ -47,7 +42,6 @@ export const appConfig: ApplicationConfig = {
       })
     }),
 
-    // ngx-markdown 也只能 importProvidersFrom
     importProvidersFrom(
       MarkdownModule.forRoot({
         clipboardOptions: {
@@ -73,39 +67,19 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: NZ_I18N, useValue: zh_CN },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true,
-    },
-
-    {
-      provide: configurationChangeSubject,
-      useValue: new Subject<Configuration>(),
-    },
-    {
-      provide: chatSessionSubject,
-      useValue: new Subject<number>(),
-    },
-    {
-      provide: backChatHistorySubject,
-      useValue: new Subject<ChatHistoryTitle>(),
-    },
-    {
-      provide: historyChangeSubject,
-      useValue: new Subject<boolean>(),
-    },
     provideStore({
-      "config": configurationReducer,
-      "historyTitle": historyTitleReducer,
-      "prompts": systemPromptsReducer
-    },
+        "config": configurationReducer,
+        "historyTitle": historyTitleReducer,
+        "prompts": systemPromptsReducer
+      },
       {
-      runtimeChecks: {
-        strictStateImmutability: false,
-        strictActionImmutability: false,
-      }
-    }),
+        runtimeChecks: {
+          strictStateImmutability: false,
+          strictActionImmutability: false,
+        }
+      }),
+    provideEffects(AuthEffects, ConfigurationEffects, HistoryTitleEffect, ProviderEffects,
+      SystemPromptsEffects, SystemEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
@@ -114,7 +88,6 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
-    provideEffects(AuthEffects, ConfigurationEffects, HistoryTitleEffect, ProviderEffects,
-      SystemPromptsEffects, SystemEffects),
+
   ]
 };

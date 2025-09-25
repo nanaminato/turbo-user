@@ -1,13 +1,15 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {inject, Injectable} from "@angular/core";
 import {historyTitleActions} from "./history-title.actions";
-import {catchError, from, map, mergeMap, of, withLatestFrom} from "rxjs";
+import {catchError, from, map, mergeMap, of, switchMap, tap, withLatestFrom} from "rxjs";
 import {Store} from "@ngrx/store";
 import {addWithMerge} from "./addWithMerge";
 import {HistoryTitleService} from "../../../services/db-services";
 import {AuthService, RequestService} from "../../../auth_module";
 import {ChatHistoryTitle} from "../../../models";
 import {selectHistoryTitle} from "./history-title.selectors";
+import {authActions} from "../system.actions";
+import {user_routes} from "../../../roots/routes";
 
 @Injectable()
 export class HistoryTitleEffect {
@@ -39,6 +41,14 @@ export class HistoryTitleEffect {
           )
         );
       })
+    )
+  );
+  missHistoryTitles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authActions.logout),
+      switchMap(() => [
+        historyTitleActions.clear()
+      ])
     )
   );
   requestService = inject(RequestService)

@@ -3,7 +3,6 @@ export type { ChatInterface, FileAdds } from "./chat-stores/chat.model";
 
 export {ChatHistoryModel} from "./chat-stores/chatHistory.model"
 export {ChatListModel} from "./chat-stores/chatList.model"
-export {LastSessionModel} from "./share-datas/lastSession.model";
 export type {Message,VisionMessage,ContentClip,VisionImage} from "./chat-stores/message.model"
 
 export type {Configuration,ChatStreamConfiguration,

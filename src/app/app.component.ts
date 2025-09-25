@@ -3,28 +3,20 @@ import {
   ElementRef,
   HostListener,
   inject,
-  Inject,
   OnInit,
   ViewChild
 } from '@angular/core';
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
-import {Observer, Subject} from "rxjs";
 import {ChatHistoryTitle, Configuration} from "../models";
 import {MenuAbleService} from "../services/normal-services/menu-able.service";
 import {IonicModule, MenuController} from "@ionic/angular";
-import {
-  backChatHistorySubject
-} from "../injection_tokens";
 import {DynamicConfigService, SizeReportService} from "../services/normal-services";
 import {
   ChatDataService,
-  ConfigurationService,
   HistoryTitleService
 } from "../services/db-services";
 import {AuthService, SendManagerService} from "../auth_module";
-import {historyChangeSubject} from "../injection_tokens/subject.data";
 import {ServiceProvider} from "../roots";
-import {MagicDataId} from "../pages/chat-page/chat-page";
 import {user_routes} from "../roots/routes";
 import {ChatHistoryTitleAction, ChatHistoryTitleActionInfo} from "../models/operations";
 import {FormsModule} from "@angular/forms";
@@ -38,7 +30,6 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {NgTemplateOutlet} from "@angular/common";
 import {Store} from "@ngrx/store";
 import {selectConfig} from "../systems/store/configuration/configuration.selectors";
-import {providerActions} from "../systems/store/provider/provider.actions";
 
 @Component({
   selector: 'app-root',
@@ -95,7 +86,6 @@ export class AppComponent implements OnInit{
   }
   async ngOnInit() {
     this.setMenu();
-    this.store.dispatch(providerActions.load());
   }
   setMenu(){
     this.sizeReportService.width = window.innerWidth;

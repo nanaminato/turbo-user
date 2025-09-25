@@ -42,6 +42,31 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.logout),
+        tap(() => {
+          this.authService.logout();
+          this.router.navigate(user_routes.sign_in);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loginFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.loginFailure),
+        tap(() => {
+          this.messageService.error("登录失败")
+          this.authService.logout();
+          this.router.navigate(user_routes.account_info);
+        })
+      ),
+    { dispatch: false }
+  );
+
   dbLoadSuccess2$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authActions.loginSuccess),

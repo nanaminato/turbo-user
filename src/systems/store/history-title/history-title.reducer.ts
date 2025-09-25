@@ -16,4 +16,7 @@ export const historyTitleReducer = createReducer(
     ...state,
     historyTitles,
   })),
+  on(historyTitleActions.clear, () => ({
+    ...initialState
+  }))
 );

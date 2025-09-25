@@ -3,8 +3,8 @@ import {dbActions} from "./system.actions";
 import {switchMap} from "rxjs";
 import {configurationActions} from "./configuration/configuration.actions";
 import {systemPromptActions} from "./system-prompts/prompts.actions";
-import {historyTitleActions} from "./history-title/history-title.actions";
 import {inject, Injectable} from "@angular/core";
+import {providerActions} from "./provider/provider.actions";
 @Injectable()
 export class SystemEffects{
   actions$ = inject(Actions)
@@ -12,6 +12,7 @@ export class SystemEffects{
     this.actions$.pipe(
       ofType(dbActions.loadSuccess),
       switchMap(() => [
+        providerActions.load(),
         configurationActions.load(),
         systemPromptActions.load(),
       ])
