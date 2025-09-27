@@ -12,7 +12,7 @@ export const initialState: ChatHistoryState = {
 
 export const chatHistoryReducer = createReducer(
   initialState,
-  on(chatHistoryActions.loadFromDbSuccess, (state, { historyModel }) => ({
+  on(chatHistoryActions.loadFromDbSuccess, chatHistoryActions.newChatSuccess, (state, { historyModel }) => ({
     ...state,
     history: {
       ...historyModel,
@@ -23,7 +23,6 @@ export const chatHistoryReducer = createReducer(
   })),
 
   on(chatHistoryActions.loadFromHttpSuccess, (state, { mergedChatList }) => ({
-    ...state,
     history: {
       ...state.history,
       chatList: mergedChatList

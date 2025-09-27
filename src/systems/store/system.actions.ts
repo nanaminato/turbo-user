@@ -20,3 +20,9 @@ export const dbActions = createActionGroup({
     "load success": emptyProps()
   }
 })
+export const chatActions = createActionGroup({
+  source: 'chat',
+  events: {
+    "start new chat": emptyProps()
+  }
+})

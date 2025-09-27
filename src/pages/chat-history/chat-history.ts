@@ -12,6 +12,7 @@ import {SendService} from "../../auth_module";
 import {historyTitleActions} from "../../systems/store/history-title/history-title.actions";
 import {NgStyle} from "@angular/common";
 import {chatHistoryActions} from "../../systems/store/chat-history/chat-history.actions";
+import {chatActions} from "../../systems/store/system.actions";
 
 @Component({
   selector: 'app-chat-history',
@@ -49,6 +50,7 @@ export class ChatHistory
   async newChat() {
     this.selectId = -1;
     this.miniPhoneAction();
+    this.store.dispatch(chatActions.startNewChat());
   }
   contextMenuVisible = false;
   contextMenuPosition = { x: 0, y: 0 };
@@ -74,7 +76,6 @@ export class ChatHistory
 
   selectHistory(dataId: number) {
     this.selectId = dataId;
-    console.log(this.historyTitles);
     this.store.dispatch(chatHistoryActions.loadSession({sessionId: dataId}))
   }
   // 点击页面其他位置，关闭菜单

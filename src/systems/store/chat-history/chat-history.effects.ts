@@ -6,6 +6,7 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {chatHistoryActions} from "./chat-history.actions";
 import {map, switchMap} from "rxjs";
 import {ChatHistoryModel, ChatInterface, ChatListModel, ChatModel} from "../../../models";
+import {chatActions} from "../system.actions";
 
 @Injectable()
 export class ChatHistoryEffects {
@@ -18,6 +19,21 @@ export class ChatHistoryEffects {
   loadSession$ = createEffect(() => this.actions$.pipe(
     ofType(chatHistoryActions.loadSession),
     map(({ sessionId }) => chatHistoryActions.loadFromDb({ sessionId })),
+  ));
+  newChat$ = createEffect(() => this.actions$.pipe(
+    ofType(chatActions.startNewChat),
+    map(() => chatHistoryActions.newChat()),
+  ));
+
+  newChatContext$ = createEffect(() => this.actions$.pipe(
+    ofType(chatHistoryActions.newChat),
+    map(() => {
+      const chatHistoryModel = new ChatHistoryModel();
+      chatHistoryModel.userId = this.auth.user?.id ?? undefined;
+
+      // @ts-ignore
+      return chatHistoryActions.newChatSuccess({ historyModel:chatHistoryModel! });
+    })
   ));
 
   loadFromDb$ = createEffect(() => this.actions$.pipe(
