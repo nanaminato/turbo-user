@@ -56,34 +56,14 @@ import {selectConfig} from "../systems/store/configuration/configuration.selecto
 })
 export class AppComponent implements OnInit{
   config: Configuration | undefined;
-  historyTitles: ChatHistoryTitle[] | undefined;
-  @ViewChild('myElement', { static: true })
-  imageMenu: ElementRef | undefined;
   menuAble = inject(MenuAbleService);
   menuCtrl = inject(MenuController);
   sizeReportService = inject(SizeReportService);
   router = inject(Router);
-  historyTitleService = inject(HistoryTitleService);
-  chatDataService = inject(ChatDataService);
-  dynamicConfigService = inject(DynamicConfigService);
   auth = inject(AuthService);
-  sendManagerService = inject(SendManagerService);
   provider = inject(ServiceProvider);
   store = inject(Store);
-  constructor() {
-    this.store.select(selectConfig).subscribe((config: Configuration | null)=>{
-      this.config = config!;
-      if(this.config){
-        this.initThemeAndLanguage(true);
-      }
-    });
-  }
 
-  initThemeAndLanguage(direct: boolean = false){
-    let configDynamic =
-      this.dynamicConfigService.getDynamicConfig(this.config!);
-    this.dynamicConfigService.initDynamic(configDynamic);
-  }
   async ngOnInit() {
     this.setMenu();
   }
@@ -111,27 +91,6 @@ export class AppComponent implements OnInit{
       this.menuCtrl.close();
     }
     this.router.navigate(user_routes.prompts);
-  }
-
-  async handleChatHistoryAction($event: ChatHistoryTitleActionInfo) {
-    switch ($event.action){
-      case ChatHistoryTitleAction.Delete:
-        const index = this.historyTitles?.findIndex(h=>h.dataId==$event.info.dataId);
-        if(index===undefined) return;
-        let historyTitle = this.historyTitles![index];
-        this.historyTitles?.splice(index,1);
-        await this.historyTitleService.deleteHistoryTitle(historyTitle).then(async ()=>{
-          this.sendManagerService.deleteHistory(historyTitle.dataId).then((msg:string)=>{
-            console.log("服务器: "+msg)
-          });
-          await this.chatDataService.deleteHistoriesByTitleId(historyTitle.dataId);
-        });
-        break;
-      case ChatHistoryTitleAction.Rename:
-        break;
-      default:
-        break;
-    }
   }
 
 }

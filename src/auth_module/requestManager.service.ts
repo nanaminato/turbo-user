@@ -9,6 +9,7 @@ import {DbService} from "../services/db-services";
 export class RequestManagerService{
   requestService = inject(RequestService);
   dbService = inject(DbService);
+  // 拉取title并更新数据库
   fetchHistoryAndRefreshData(historyDataIds: number[]):Promise<ChatHistoryTitle[] | undefined>{
     return new Promise((resolve,reject)=>{
       this.requestService.requestHistories(historyDataIds).subscribe({
@@ -31,6 +32,7 @@ export class RequestManagerService{
       });
     })
   }
+  // 拉取并更新数据库
   fetchMessageAndRefreshData(historyDataId: number,messageDataIds: number[]): Promise<ChatInterface[] | undefined>{
     return new Promise(async (resolve, reject)=>{
       this.requestService.requestMessages(historyDataId,messageDataIds)
@@ -48,6 +50,21 @@ export class RequestManagerService{
               await this.dbService.putChatInterface(message);
             }
             await this.dbService.addOrUpdateHistory(history!);
+            resolve(messages);
+          },
+          error: error=>{
+            reject({
+              error: "服务错误"
+            })
+          }
+        })
+    });
+  }
+  fetchMessage(historyDataId: number,messageDataIds: number[]): Promise<ChatInterface[] | undefined>{
+    return new Promise(async (resolve, reject)=>{
+      this.requestService.requestMessages(historyDataId,messageDataIds)
+        .subscribe({
+          next: async (messages: ChatInterface[])=>{
             resolve(messages);
           },
           error: error=>{

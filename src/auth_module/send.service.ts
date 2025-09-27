@@ -8,7 +8,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 @Injectable({
   providedIn: "root"
 })
-export class SenderService{
+export class SendService {
   http = inject(HttpClient);
   provider = inject(ServiceProvider)
   sendHistory(chatHistory: ChatHistoryTitle){

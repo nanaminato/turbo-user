@@ -10,7 +10,7 @@ export const initialState: HistoryTitleState = {
   historyTitles: [],
 };
 
-export const historyTitleReducer = createReducer(
+export const historyTitleReducers = createReducer(
   initialState,
   on(historyTitleActions.loadSuccess, (state, { historyTitles }) => ({
     ...state,

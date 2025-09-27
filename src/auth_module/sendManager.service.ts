@@ -1,12 +1,12 @@
 import {inject, Injectable} from "@angular/core";
 import {ChatHistory, ChatHistoryTitle, ChatInterface} from "../models";
-import {SenderService} from "./sender.service";
+import {SendService} from "./send.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class SendManagerService{
-  sendService = inject(SenderService);
+  sendService = inject(SendService);
   sendHistory(chatHistory: ChatHistoryTitle): Promise<string>{
     return new Promise((resolve,reject)=>{
       this.sendService.sendHistory(chatHistory)

@@ -12,7 +12,7 @@ import {NzSliderModule} from "ng-zorro-antd/slider";
 import {FormsModule} from "@angular/forms";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {RouterLink} from "@angular/router";
-import {NgForOf, NgStyle} from "@angular/common";
+import {NgStyle} from "@angular/common";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
@@ -97,8 +97,6 @@ export class Settings {
 
 
   async applyChangeRightNow() {
-    console.log('applyChangeRightNow');
-    console.log(this.config);
     await this.configurationService.saveConfigToDb(this.config!);
     this.notification
       .create(
@@ -144,8 +142,6 @@ export class Settings {
     this.themeSwitcherService.load(this.dynamicConfig!.theme);
     this.dynamicConfigService.setDynamicConfig(this.config!,this.dynamicConfig!);
   }
-
-  protected readonly languages = languages;
 
   languageChange($event: string) {
     this.translate.use(this.dynamicConfig!.language!);

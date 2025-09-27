@@ -36,18 +36,19 @@ import {
   SystemRole,
   UserRole
 } from "../../models";
-import {ChatDataService, ConfigurationService, HistoryTitleService} from "../../services/db-services";
+import {ChatDataService, HistoryTitleService} from "../../services/db-services";
 import {TaskType, UserTask} from "../../models/operations";
 import {ErrorType, ResponseError} from "../../errors";
 import {ParseService} from "../../services/fetch_services";
 import { forkJoin } from 'rxjs';
-import {AuthService, RequestManagerService, SendManagerService} from "../../auth_module";
+import {AuthService, SendManagerService} from "../../auth_module";
 import {MenuAbleService} from "../../services/normal-services/menu-able.service";
 import {Bs64Handler, ChatContextHandler} from "../../services/handlers";
 import {RequestType} from "../../models/enumerates";
 import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 import {Store} from "@ngrx/store";
+import {selectChatHistory} from "../../systems/store/chat-history/chat-history.selectors";
 
 @Component({
   selector: 'app-chat-main',
@@ -109,7 +110,6 @@ export class ChatMainComponent implements OnDestroy{
 
     //构建请求文件列表
     await this.buildFileList();
-    // console.log(this.fileList)
 
     // 添加用户请求
 
@@ -433,7 +433,6 @@ export class ChatMainComponent implements OnDestroy{
   private modelFetchService: ModelFetchService = inject(ModelFetchService);
   private parseService: ParseService = inject(ParseService);
   private auth: AuthService = inject(AuthService);
-  private requestManagerService: RequestManagerService = inject(RequestManagerService);
   private sendManagerService: SendManagerService = inject(SendManagerService);
   private bs64Handler: Bs64Handler = inject(Bs64Handler);
   store = inject(Store);
@@ -448,6 +447,9 @@ export class ChatMainComponent implements OnDestroy{
     this.store.select(selectConfig).subscribe((config: Configuration | null)=>{
       this.config = config!;
     });
+    this.store.select(selectChatHistory).subscribe((chatHistory: ChatHistoryModel) => {
+      this.chatHistoryModel = chatHistory;
+    })
 
   }
   resolveContext( startPointer: number|undefined = undefined, endPointer: number | undefined = undefined, reModel: ChatModel | undefined = undefined) {
@@ -468,40 +470,7 @@ export class ChatMainComponent implements OnDestroy{
     );
     return new ChatPacket(messages);
   }
-  async sync(dataId: number) {
-    try {
-      this.chatDataService.getChatHistory(dataId).then(async (chatHistory)=>{
-        if (chatHistory) {
-          this.chatHistoryModel = chatHistory;
 
-          let messageIds: number[] = [];
-          for(let ms of this.chatHistoryModel.chatList?.chatModel!){
-            messageIds.push(ms.dataId!);
-          }
-          let messages = await this.requestManagerService
-            .fetchMessageAndRefreshData(this.chatHistoryModel.dataId!,messageIds);
-          if(messages!==undefined&&messages.length>0){
-            let ch = await this.chatDataService.getChatHistory(dataId);
-            if (ch) {
-              this.chatHistoryModel = ch;
-            } else {
-              this.chatHistoryModel = new ChatHistoryModel();
-              this.chatHistoryModel.userId = this.auth.user?.id;
-            }
-            // 本地加载，联网同步，（填充到本地），本地加载
-          }
-        } else {
-          this.chatHistoryModel = new ChatHistoryModel();
-          this.chatHistoryModel.userId = this.auth.user?.id;
-        }
-
-        this.initSession = true;
-      });
-    } catch (error) {
-      console.error('Error fetching chat history:', error);
-      this.initSession = true;
-    }
-  }
 
   scrollToBottom(): void {
     if (!this.chatPanel) return;
@@ -519,41 +488,6 @@ export class ChatMainComponent implements OnDestroy{
   awareContextChange(){
     this.contextMemoryService.setValue(this.chatHistoryModel?.dataId!,
       this.chatContext);
-  }
-  async inputChatContext(chatContext: ChatContext | undefined){
-    if(chatContext!==undefined){
-      this.chatContext = chatContext;
-      if(this.chatContext.systems===undefined){
-        this.chatContext.systems = [];
-      }
-      if(this.chatContext.onlyOne===undefined){
-        this.chatContext.onlyOne = true;
-      }
-    }else{
-      this.chatContext = {
-        pointer: undefined,
-        systems: [],
-        onlyOne: true
-      };// 更换会话，需要创建新的 会话上下文数据
-      await this.waitForSessionInit();
-      let ms = this.chatModels.filter(m=>m.role===SystemRole);
-      for(let s of ms){
-        this.chatContext.systems?.push({
-          id: s.dataId!,
-          in: false
-        });
-      }
-      if(this.chatContext.onlyOne){
-        if(this.chatContext.systems!.length>0){
-          this.chatContext.systems![this.chatContext.systems!.length-1].in = true;
-        }
-      }else{
-        for (let s of this.chatContext.systems!){
-          s.in = true;
-        }
-      }
-      this.awareContextChange();
-    }
   }
   cloneChatModel(model2: ChatModel | undefined){
     return new ChatModel(model2?.role,model2?.content,model2?.fileList,model2?.dataId,model2?.finish,model2?.model);
@@ -755,21 +689,6 @@ export class ChatMainComponent implements OnDestroy{
     this.systemPromptManagerVisible = false;
     this.showChoice = false;
   }
-  private async waitForSessionInit() {
-    return new Promise<void>((resolve)=>{
-      if(this.initSession){
-        resolve();
-      }else{
-        const interval = setInterval(()=>{
-          if(this.initSession){
-            clearInterval(interval);
-            resolve();
-          }
-        },10)
-      }
-    });
-  }
-
 
   superMini() {
     return this.sizeReportService.superMiniView();

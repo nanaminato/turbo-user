@@ -24,8 +24,10 @@ import {ProviderEffects} from "../systems/store/provider/provider.effects";
 import {SystemPromptsEffects} from "../systems/store/system-prompts/prompts.effects";
 import {SystemEffects} from "../systems/store/system.effects";
 import {configurationReducer} from "../systems/store/configuration/configuration.reducer";
-import {historyTitleReducer} from "../systems/store/history-title/history-title.reducer";
+import {historyTitleReducers} from "../systems/store/history-title/history-title.reducers";
 import {systemPromptsReducer} from "../systems/store/system-prompts/prompts.reducer";
+import {ChatHistoryEffects} from "../systems/store/chat-history/chat-history.effects";
+import {chatHistoryReducer} from "../systems/store/chat-history/chat-history.reducers";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -65,8 +67,10 @@ export const appConfig: ApplicationConfig = {
     { provide: NZ_I18N, useValue: zh_CN },
     provideStore({
         "config": configurationReducer,
-        "historyTitle": historyTitleReducer,
-        "prompts": systemPromptsReducer
+        "historyTitle": historyTitleReducers,
+        "prompts": systemPromptsReducer,
+        "chatHistory": chatHistoryReducer,
+
       },
       {
         runtimeChecks: {
@@ -75,7 +79,7 @@ export const appConfig: ApplicationConfig = {
         }
       }),
     provideEffects(AuthEffects, ConfigurationEffects, HistoryTitleEffect, ProviderEffects,
-      SystemPromptsEffects, SystemEffects),
+      SystemPromptsEffects, SystemEffects, ChatHistoryEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

@@ -9,7 +9,6 @@ import {AuthService, RequestService} from "../../../auth_module";
 import {ChatHistoryTitle} from "../../../models";
 import {selectHistoryTitle} from "./history-title.selectors";
 import {authActions} from "../system.actions";
-import {user_routes} from "../../../roots/routes";
 
 @Injectable()
 export class HistoryTitleEffect {

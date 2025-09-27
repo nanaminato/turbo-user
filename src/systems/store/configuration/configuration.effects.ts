@@ -1,8 +1,12 @@
-import {catchError, from, map, mergeMap, of} from "rxjs";
+import {catchError, from, map, mergeMap, of, tap, withLatestFrom} from "rxjs";
 import {inject, Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {ConfigurationService, DbService} from "../../../services/db-services";
 import {configurationActions} from "./configuration.actions";
+import {DynamicConfigService} from "../../../services/normal-services";
+import {Configuration} from "../../../models";
+import {Store} from "@ngrx/store";
+import {selectConfig} from "./configuration.selectors";
 
 @Injectable()
 export class ConfigurationEffects {
@@ -28,5 +32,23 @@ export class ConfigurationEffects {
       )
     )
   );
+  store = inject(Store);
+  updateAppView$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(configurationActions.loadSuccess, configurationActions.configUpdate),
+        tap(action => {
+          // 直接从action中取配置
+          this.initThemeAndLanguage(action.config);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  dynamicConfigService = inject(DynamicConfigService);
+  initThemeAndLanguage(config: Configuration){
+    let configDynamic =
+      this.dynamicConfigService.getDynamicConfig(config);
+    this.dynamicConfigService.initDynamic(configDynamic);
+  }
 
 }
