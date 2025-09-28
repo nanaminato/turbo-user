@@ -1,5 +1,5 @@
 import {createReducer, on} from "@ngrx/store";
-import {ChatHistoryModel, ChatListModel} from "../../../models";
+import {ChatHistoryModel} from "../../../models";
 import {chatHistoryActions} from "./chat-history.actions";
 
 export interface ChatHistoryState {

@@ -1,6 +1,6 @@
 import {Component, ElementRef, inject, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import {NzUploadFile, NzUploadModule} from "ng-zorro-antd/upload";
-import {map, Observable, Subject, Subscription} from "rxjs";
+import {firstValueFrom, forkJoin, map, Observable, Subject, Subscription} from "rxjs";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {ModelEditor} from "./model-editor/model-editor";
@@ -27,7 +27,8 @@ import {
 } from "../../services/normal-services";
 import {
   AssistantRole,
-  ChatHistoryModel,ChatInterface,
+  ChatHistoryModel,
+  ChatInterface,
   ChatModel,
   ChatPacket,
   Configuration,
@@ -40,7 +41,6 @@ import {ChatDataService, HistoryTitleService} from "../../services/db-services";
 import {TaskType, UserTask} from "../../models/operations";
 import {ErrorType, ResponseError} from "../../errors";
 import {ParseService} from "../../services/fetch_services";
-import { forkJoin } from 'rxjs';
 import {AuthService, SendManagerService} from "../../auth_module";
 import {MenuAbleService} from "../../services/normal-services/menu-able.service";
 import {Bs64Handler, ChatContextHandler} from "../../services/handlers";
@@ -49,6 +49,7 @@ import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 import {Store} from "@ngrx/store";
 import {selectChatHistory} from "../../systems/store/chat-history/chat-history.selectors";
+import {historyTitleActions} from "../../systems/store/history-title/history-title.actions";
 
 @Component({
   selector: 'app-chat-main',
@@ -80,23 +81,27 @@ import {selectChatHistory} from "../../systems/store/chat-history/chat-history.s
 })
 export class ChatMainComponent implements OnDestroy{
 
-  async parseAllFile(userModel: ChatModel):Promise<boolean>{
-    if(userModel.fileList===undefined||userModel.fileList.length===0) return true;
-    let sendList = userModel.fileList.filter(f=>!f.fileType?.startsWith("image"));
-    const parseObservables =
-      sendList.map(f => this.parseService.parse(f));
-    if(parseObservables.length===0) return true;
-    try {
-      const parsedContents = await forkJoin(parseObservables).pipe(
-        map(results => {
-          for (let i = 0; i < sendList.length; i++) {
-            sendList[i].parsedContent = results[i].content;
-          }
-          return true;
-        })
-      ).toPromise();
+  async parseAllFile(userModel: ChatModel): Promise<boolean> {
+    if (!userModel.fileList || userModel.fileList.length === 0) return true;
 
-      return parsedContents!;
+    let sendList = userModel.fileList.filter(f => !f.fileType?.startsWith("image"));
+    if (sendList.length === 0) return true;
+
+    const parseObservables = sendList.map(f => this.parseService.parse(f));
+
+    try {
+      const parsedContents = await firstValueFrom(
+        forkJoin(parseObservables).pipe(
+          map(results => {
+            for (let i = 0; i < sendList.length; i++) {
+              sendList[i].parsedContent = results[i].content;
+            }
+            return true;
+          })
+        )
+      );
+
+      return parsedContents;
     } catch (error) {
       console.error('发生错误：', error);
       return false;
@@ -127,7 +132,6 @@ export class ChatMainComponent implements OnDestroy{
       this.chatContext.pointer = userModel.dataId;
       this.awareContextChange();
     }
-    // console.log("point 1")
     let fetchParam: ChatPacket
       = this.resolveContext(this.chatContext.pointer,undefined);
     // 添加返回的 聊天信息模型
@@ -140,7 +144,6 @@ export class ChatMainComponent implements OnDestroy{
     this.scrollSubject = new Subject<boolean>();
     this.scrollSubscribe();
     this.nextSubscribe(true);
-    // console.log("point 2")
     // 如果当前的聊天历史模型的标题为空，说明使用的是刚创建的，还没有消息，存储到数据库，
     // 设置nextSubjection为true表示将会推送一个新的历史记录
     this.handleTitleWhenNewResponse(userModel);
@@ -161,16 +164,17 @@ export class ChatMainComponent implements OnDestroy{
       }else{
         this.chatHistoryModel.title = this.inputText.substring(0,25);
       }
-      this.chatHistoryService.putHistoryTitles({
+      // 保存历史消息标题到indexed db
+      let title = {
         dataId: this.chatHistoryModel.dataId!,
         title: this.chatHistoryModel.title,
         userId: this.auth.user?.id!
-      }).then(()=>{
-        this.sendManagerService.sendHistory({
-          dataId: this.chatHistoryModel!.dataId!,
-          title: this.chatHistoryModel!.title,
-          userId: this.auth.user?.id!
-        }).then((msg:any)=>{
+      };
+      this.chatHistoryService.putHistoryTitle(title).then(()=>{
+        this.store.dispatch(historyTitleActions.newHistoryTitle({title: title}))
+        // 保存到服务器数据库
+        this.sendManagerService.sendHistory(title).then((msg:any)=>{
+          // 保存消息到服务器数据库
           this.sendManagerService.sendMessage(this.chatHistoryModel!.dataId!,model as ChatInterface);
         })
       })
@@ -201,17 +205,11 @@ export class ChatMainComponent implements OnDestroy{
         this.answering = false;
         this.finalizeResponse();
         this.sendManagerService.updateMessage(this.chatHistoryModel?.dataId!,model as ChatInterface)
-          .then(msg=>{
-          console.log(msg)
-          });
       },
       complete: () => {
         this.answering = false;
         model.finish = true;
         this.sendManagerService.updateMessage(this.chatHistoryModel?.dataId!,model as ChatInterface)
-          .then(msg=>{
-            console.log(msg)
-          });
         this.finalizeResponse();
       }
     });
@@ -299,7 +297,6 @@ export class ChatMainComponent implements OnDestroy{
     this._chatHistoryModel = value;
     this.chatModels = this._chatHistoryModel?.chatList?.chatModel!;
   }
-  initSession = false;
   chatModels: ChatModel[] = [];
   answering: boolean = false;
   notifyChatHistoryIdentifier: boolean = false;
@@ -437,18 +434,24 @@ export class ChatMainComponent implements OnDestroy{
   private bs64Handler: Bs64Handler = inject(Bs64Handler);
   store = inject(Store);
   constructor() {
-    this.menuAbleService.enableChat();
-    // 添加默认值
     this.chatContext = {
       pointer: undefined,
       systems: [],
-      onlyOne: true
-    };
+    }
+    this.menuAbleService.enableChat();
+    // 添加默认值
     this.store.select(selectConfig).subscribe((config: Configuration | null)=>{
       this.config = config!;
     });
     this.store.select(selectChatHistory).subscribe((chatHistory: ChatHistoryModel) => {
+      let defaultContext = {
+        pointer: undefined,
+        systems: [],
+      }
       this.chatHistoryModel = chatHistory;
+      this.chatContext = chatHistory
+        ? this.contextMemoryService.getValue(chatHistory.dataId!) || defaultContext
+        : defaultContext;
     })
 
   }
@@ -470,7 +473,6 @@ export class ChatMainComponent implements OnDestroy{
     );
     return new ChatPacket(messages);
   }
-
 
   scrollToBottom(): void {
     if (!this.chatPanel) return;
@@ -515,9 +517,7 @@ export class ChatMainComponent implements OnDestroy{
           }
           this.chatHistoryModel?.chatList?.chatModel!.splice(index, 1); // 删除符合条件的元素
           this.chatDataService.deleteChatModel($event.id);
-          this.sendManagerService.deleteMessage(this.chatHistoryModel?.dataId!,$event.id).then((msg:string)=>{
-            console.log(msg)
-          });
+          this.sendManagerService.deleteMessage(this.chatHistoryModel?.dataId!,$event.id);
         }
         this.chatDataService.putHistory(this.chatHistoryModel!).then(()=>{
         });
@@ -613,9 +613,7 @@ export class ChatMainComponent implements OnDestroy{
         }else{
           // @ts-ignore
           reader.readAsArrayBuffer(file);
-
         }
-
       }
     });
   }
@@ -639,24 +637,18 @@ export class ChatMainComponent implements OnDestroy{
       if (this.chatHistoryModel === undefined) {
         this.chatHistoryModel = new ChatHistoryModel();
       }
-      let model = new ChatModel(SystemRole,$event.content,
-      );
+      let model = new ChatModel(SystemRole,$event.content);
       let systemContext: SystemContext = {
         id: model.dataId!,
         in: true
       };
-      if(this.chatContext.onlyOne){
-        for(let system of this.chatContext.systems!){
-          system.in = false;
-        }
-      }
       // 将之前的系统信息移除上下文
       this.chatContext.systems!.push(systemContext);
       this.chatModels.push(model);
       /// make it stable for system ms!.
       if(this.chatHistoryModel.title===undefined||this.chatHistoryModel.title===''){
         this.chatHistoryModel.title = model.content;
-        this.chatHistoryService.putHistoryTitles({
+        this.chatHistoryService.putHistoryTitle({
           dataId: this.chatHistoryModel.dataId!,
           title: this.chatHistoryModel.title,
           userId: this.auth.user?.id!
@@ -667,9 +659,6 @@ export class ChatMainComponent implements OnDestroy{
             userId: this.auth.user?.id!
           }).then((msg)=>{
             this.sendManagerService.sendMessage(this.chatHistoryModel!.dataId!,model as ChatInterface)
-              .then((msg)=>{
-                console.log(msg)
-              })
           })
         })
 
@@ -701,8 +690,7 @@ export class ChatMainComponent implements OnDestroy{
     }
     const textarea = this.promptBox.nativeElement;
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    const newText = textarea.value.substring(0, textarea.selectionStart) + '```\n' + selectedText + '\n```' + textarea.value.substring(textarea.selectionEnd);
-    this.inputText = newText;
+    this.inputText = textarea.value.substring(0, textarea.selectionStart) + '```\n' + selectedText + '\n```' + textarea.value.substring(textarea.selectionEnd);
   }
 
   insertInlineCodeFlags(){
@@ -711,7 +699,6 @@ export class ChatMainComponent implements OnDestroy{
     }
     const textarea = this.promptBox.nativeElement;
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
-    const newText = textarea.value.substring(0, textarea.selectionStart) + '`' + selectedText + '`' + textarea.value.substring(textarea.selectionEnd);
-    this.inputText = newText;
+    this.inputText = textarea.value.substring(0, textarea.selectionStart) + '`' + selectedText + '`' + textarea.value.substring(textarea.selectionEnd);
   }
 }

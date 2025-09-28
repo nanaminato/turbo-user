@@ -9,10 +9,6 @@
       {{'ball.removeAll' | translate}}
     </button>
   </nz-col>
-  <nz-col>
-    {{'ball.singleSystemContext' | translate}}
-    <nz-switch [(ngModel)]="chatContext!.onlyOne"></nz-switch>
-  </nz-col>
 </div>
 @if(chatContext?.systems?.length===0){
   <div>

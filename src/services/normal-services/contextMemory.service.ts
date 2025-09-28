@@ -20,7 +20,6 @@ interface Dictionary<T> {
 export interface ChatContext{
   pointer: number | undefined;
   systems: SystemContext[] | undefined;
-  onlyOne: boolean;
 }
 export interface SystemContext{
   id: number;

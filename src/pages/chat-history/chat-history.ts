@@ -7,8 +7,6 @@ import {ChatHistoryTitle, } from "../../models";
 import {SizeReportService} from "../../services/normal-services";
 import {Store} from "@ngrx/store";
 import {selectHistoryTitle} from "../../systems/store/history-title/history-title.selectors";
-import {ChatDataService, HistoryTitleService} from "../../services/db-services";
-import {SendService} from "../../auth_module";
 import {historyTitleActions} from "../../systems/store/history-title/history-title.actions";
 import {NgStyle} from "@angular/common";
 import {chatHistoryActions} from "../../systems/store/chat-history/chat-history.actions";
@@ -32,13 +30,13 @@ export class ChatHistory
   selectId: number | undefined;
   menuCtrl: MenuController = inject(MenuController);
   sizeReportService: SizeReportService = inject(SizeReportService);
-  historyTitleService: HistoryTitleService = inject(HistoryTitleService);
-  sendService = inject(SendService);
   store = inject(Store);
-  chatDataService: ChatDataService = inject(ChatDataService);
   constructor() {
     this.store.select(selectHistoryTitle).subscribe((histories: ChatHistoryTitle[]) => {
       this.historyTitles = histories;
+      if(histories.length > 0 && this.selectId === -1) {
+        this.selectId = histories[0].dataId;
+      }
     })
   }
   miniPhoneAction(){
@@ -63,15 +61,8 @@ export class ChatHistory
   }
   async deleteHistory(dataId: number) {
     this.contextMenuVisible = false;
-    const index = this.historyTitles?.findIndex(h=>h.dataId==dataId);
-    if(index===undefined) return;
-    let historyTitle = this.historyTitles![index];
-    this.historyTitles?.splice(index,1);
-    await this.historyTitleService.deleteHistoryTitle(historyTitle).then(async ()=>{
-      this.sendService.deleteHistory(historyTitle.dataId);
-      await this.chatDataService.deleteHistoriesByTitleId(historyTitle.dataId);
-      this.store.dispatch(historyTitleActions.loadSuccess({historyTitles: this.historyTitles??[]}))
-    });
+    this.contextMenuVisible = false;
+    this.store.dispatch(historyTitleActions.delete({ dataId }));
   }
 
   selectHistory(dataId: number) {

@@ -15,7 +15,6 @@ export const chatHistoryActions = createActionGroup({
     'load from http failure': emptyProps(),
     'new chat success': props<{historyModel: ChatHistoryModel}>(),
     'new chat': emptyProps(),
-
     'load failure': emptyProps(),
   }
 });

@@ -4,9 +4,11 @@ import {Store} from "@ngrx/store";
 import {ChatDataService} from "../../../services/db-services";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {chatHistoryActions} from "./chat-history.actions";
-import {map, switchMap} from "rxjs";
+import {catchError, concatMap, from, map, of, switchMap, take} from "rxjs";
 import {ChatHistoryModel, ChatInterface, ChatListModel, ChatModel} from "../../../models";
 import {chatActions} from "../system.actions";
+import {selectChatHistory} from "./chat-history.selectors";
+import {historyTitleActions} from "../history-title/history-title.actions";
 
 @Injectable()
 export class ChatHistoryEffects {
@@ -20,18 +22,18 @@ export class ChatHistoryEffects {
     ofType(chatHistoryActions.loadSession),
     map(({ sessionId }) => chatHistoryActions.loadFromDb({ sessionId })),
   ));
+
   newChat$ = createEffect(() => this.actions$.pipe(
     ofType(chatActions.startNewChat),
     map(() => chatHistoryActions.newChat()),
   ));
 
+
   newChatContext$ = createEffect(() => this.actions$.pipe(
-    ofType(chatHistoryActions.newChat),
+    ofType(chatHistoryActions.newChat, historyTitleActions.deleteSuccess),
     map(() => {
       const chatHistoryModel = new ChatHistoryModel();
       chatHistoryModel.userId = this.auth.user?.id ?? undefined;
-
-      // @ts-ignore
       return chatHistoryActions.newChatSuccess({ historyModel:chatHistoryModel! });
     })
   ));
@@ -88,6 +90,26 @@ export class ChatHistoryEffects {
       }
     })
   ));
+  saveHistory$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(chatHistoryActions.loadFromHttpSuccess),
+      concatMap(({ mergedChatList }) => {
+        return this.store.select(selectChatHistory).pipe(
+          take(1),
+          concatMap(history => {
+            const newHistory: ChatHistoryModel = {
+              ...history,
+              chatList: mergedChatList
+            };
+            return from(this.chatDataService.putHistory(newHistory)).pipe(
+              map(() => ({ type: '[Chat] Save History Success' })),
+              catchError(() => of({ type: '[Chat] Save History Failure' }))
+            );
+          })
+        );
+      })
+    )
+  );
 
 }
 

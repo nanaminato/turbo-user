@@ -16,6 +16,14 @@ export const historyTitleReducers = createReducer(
     ...state,
     historyTitles,
   })),
+  on(historyTitleActions.newHistoryTitle, (state, {title}) => ({
+    ...state,
+    historyTitles: [title, ...state.historyTitles],
+  })),
+  on(historyTitleActions.deleteSuccess, (state, { dataId }) => ({
+    ...state,
+    historyTitles: state.historyTitles.filter(h => h.dataId !== dataId)
+  })),
   on(historyTitleActions.clear, () => ({
     ...initialState
   }))

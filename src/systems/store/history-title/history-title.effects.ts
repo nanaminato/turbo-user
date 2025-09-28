@@ -1,11 +1,11 @@
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {inject, Injectable} from "@angular/core";
 import {historyTitleActions} from "./history-title.actions";
-import {catchError, from, map, mergeMap, of, switchMap, tap, withLatestFrom} from "rxjs";
+import {catchError, concatMap, from, map, mergeMap, of, switchMap, take, tap, withLatestFrom} from "rxjs";
 import {Store} from "@ngrx/store";
 import {addWithMerge} from "./addWithMerge";
-import {HistoryTitleService} from "../../../services/db-services";
-import {AuthService, RequestService} from "../../../auth_module";
+import {ChatDataService, HistoryTitleService} from "../../../services/db-services";
+import {AuthService, RequestService, SendService} from "../../../auth_module";
 import {ChatHistoryTitle} from "../../../models";
 import {selectHistoryTitle} from "./history-title.selectors";
 import {authActions} from "../system.actions";
@@ -15,6 +15,8 @@ export class HistoryTitleEffect {
   actions$ = inject(Actions)
   store = inject(Store)
   historyTitleService = inject(HistoryTitleService)
+  private sendService: SendService = inject(SendService);
+  private chatDataService: ChatDataService = inject(ChatDataService);
   authService = inject(AuthService)
   loadHistoryFromDb$ = createEffect(() =>
     this.actions$.pipe(
@@ -78,7 +80,27 @@ export class HistoryTitleEffect {
       })
     )
   );
-
-
+  deleteHistory$ = createEffect(() => this.actions$.pipe(
+    ofType(historyTitleActions.delete),
+    concatMap(({ dataId }) => {
+      return this.store.select(selectHistoryTitle).pipe(
+        take(1),
+        mergeMap(historyTitles => {
+          const historyTitle = historyTitles.find(h => h.dataId === dataId);
+          if (!historyTitle) {
+            // 标题不存在，直接失败或跳过
+            return of(historyTitleActions.deleteFailure({error: 'HistoryTitle not found'}));
+          }
+          // 串行执行多个异步请求
+          return from(this.historyTitleService.deleteHistoryTitle(historyTitle)).pipe(
+            mergeMap(() => from(this.sendService.deleteHistory(historyTitle.dataId))),
+            mergeMap(() => from(this.chatDataService.deleteHistoriesByTitleId(historyTitle.dataId))),
+            map(() => historyTitleActions.deleteSuccess({ dataId })),
+            catchError(error => of(historyTitleActions.deleteFailure({error})))
+          )
+        })
+      )
+    })
+  ));
 
 }

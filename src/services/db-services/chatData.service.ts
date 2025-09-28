@@ -11,7 +11,7 @@ export class ChatDataService{
     try {
       const data = await this.dbService.getHistory(dataId);
       if(!data) return undefined;
-      let list = (data!.chatList.map(async (chatModelId:any) => {
+      let list = (data!.chatList.map(async (chatModelId) => {
         let chatInterface = await this.dbService.getChatInterface(chatModelId);
         if(chatInterface === undefined) return undefined;
         return new ChatModel(
@@ -84,9 +84,7 @@ export class ChatDataService{
             userId: history.userId
           });
         } catch (e) {
-          console.log(e)
           return 1;
-          // throw e;
         }
       })
       .catch((error) => {
