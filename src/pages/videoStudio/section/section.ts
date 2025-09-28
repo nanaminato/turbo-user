@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FramePrompt} from "../../../models/videos";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {NzPopoverDirective} from "ng-zorro-antd/popover";
-import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 
 @Component({
   selector: 'app-section',
@@ -14,24 +14,21 @@ import {TranslateModule} from "@ngx-translate/core";
   standalone: true,
   imports: [
     NzIconDirective,
-    IonicModule,
     FormsModule,
     NzPopoverDirective,
-    TranslateModule
+    TranslateModule,
+    NzOptionComponent,
+    NzSelectComponent,
+    NzInputNumberComponent
   ]
 })
-export class Section implements OnInit {
+export class Section{
   @Input()
   section: FramePrompt | undefined;
   @Input()
   id: number|undefined;
   @Output()
   delete = new EventEmitter<number>();
-  constructor() { }
-
-  ngOnInit() {
-    console.log()
-  }
 
   emitDelete() {
     this.delete.emit(this.id);

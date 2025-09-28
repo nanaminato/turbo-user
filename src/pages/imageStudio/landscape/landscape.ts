@@ -1,16 +1,9 @@
 import {
-  AfterViewChecked,
   Component,
-  DoCheck,
   ElementRef,
-  HostListener,
-  input,
   Input,
-  OnInit,
   ViewChild
 } from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {NzCardComponent} from "ng-zorro-antd/card";
 
 @Component({
   selector: 'app-landscape',
@@ -18,7 +11,6 @@ import {NzCardComponent} from "ng-zorro-antd/card";
   styleUrls: ['./landscape.scss'],
   standalone: true,
   imports: [
-    IonicModule,
   ]
 })
 export class Landscape

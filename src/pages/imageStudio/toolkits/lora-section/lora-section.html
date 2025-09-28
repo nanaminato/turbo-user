@@ -12,11 +12,11 @@
 <div
   class="bg-theme text-theme my-1 border-1-standard d-flex flex-row justify-content-between p-2 rounded-3">
   <div class="d-flex flex-column">
-    <ion-label class="ion-color-light">{{'universal.modelName' | translate}}</ion-label>
+    <div class="ion-color-light">{{'universal.modelName' | translate}}</div>
     <span class="text-break fs-6 bold border-theme rounded-3 px-1" style="min-height: 30px;width: 100%;" (click)="loraModalVisible = true">{{lora!.model_name}}</span>
   </div>
   <div class="m-1 d-flex flex-column">
-    <ion-label  nz-tooltip [nzTooltipTitle]="'有效值区间['+min+','+max+'],float'">{{'universal.strength' | translate}}</ion-label>
+    <div  nz-tooltip [nzTooltipTitle]="'有效值区间['+min+','+max+'],float'">{{'universal.strength' | translate}}</div>
     <nz-input-number [nzMin]="min" [nzMax]="max" [nzStep]="step"
       [(ngModel)]="lora!.strength"></nz-input-number>
   </div>

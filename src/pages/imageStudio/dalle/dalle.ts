@@ -1,6 +1,5 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
 import {Gallery} from "../gallery/gallery";
-import {IonicModule, MenuController} from "@ionic/angular";
 import {TranslateModule} from "@ngx-translate/core";
 import {DallE3Response, TaskImage, UrlImage} from "../../../models/images";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -14,6 +13,7 @@ import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
   selector: 'app-dalle',
@@ -22,7 +22,6 @@ import {OpenaiService} from "../../../services/fetch_services";
   standalone: true,
   imports: [
     Gallery,
-    IonicModule,
     TranslateModule,
     NzButtonComponent,
     NzIconDirective,
@@ -30,13 +29,14 @@ import {OpenaiService} from "../../../services/fetch_services";
     NzInputNumberComponent,
     NzSliderComponent,
     NzAutosizeDirective,
-    NzInputDirective
+    NzInputDirective,
+    NzSelectComponent,
+    NzOptionComponent
   ]
 })
 export class Dalle implements OnInit,DoCheck{
 
   constructor(private menuAbleService: MenuAbleService,
-              private menuCtrl: MenuController,
               private notification: NzNotificationService,
               private universalService: UniversalService,
               private openaiService: OpenaiService,
@@ -127,7 +127,6 @@ export class Dalle implements OnInit,DoCheck{
   }
 
   showImageMenu() {
-    this.menuCtrl.open("image-menu");
   }
 
   private dalleInit() {

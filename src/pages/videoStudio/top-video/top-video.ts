@@ -1,7 +1,11 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
-import {IonicModule} from "@ionic/angular";
-import {RouterOutlet} from "@angular/router";
+import {Component, } from '@angular/core';
+import {RouterLink, RouterOutlet} from "@angular/router";
+import {AccountLabel} from "../../accounts/account-label/account-label";
+import {NgTemplateOutlet} from "@angular/common";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-top-video',
@@ -10,14 +14,16 @@ import {RouterOutlet} from "@angular/router";
   standalone: true,
   imports:
     [
-      IonicModule,
-      RouterOutlet
+      RouterOutlet,
+      AccountLabel,
+      NgTemplateOutlet,
+      NzButtonComponent,
+      NzSkeletonComponent,
+      NzWaveDirective,
+      RouterLink,
+      TranslatePipe
     ]
 })
 export class TopVideo {
-  private menuAble: MenuAbleService = inject(MenuAbleService);
-  constructor() {
-    this.menuAble.enableVideo();
-  }
 
 }

@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Embedding} from "../../../../models/images";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {IonicModule} from "@ionic/angular";
 import {EmbeddingSection} from "../embedding-section/embedding-section";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {TranslateModule} from "@ngx-translate/core";
@@ -13,7 +12,6 @@ import {TranslateModule} from "@ngx-translate/core";
   standalone: true,
   imports: [
     NzIconDirective,
-    IonicModule,
     EmbeddingSection,
     NzModalModule,
     TranslateModule

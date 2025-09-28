@@ -12,11 +12,8 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
 import {NzNotificationService} from "ng-zorro-antd/notification";
-import {IonicModule} from "@ionic/angular";
 import {NzModalComponent, NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
-import {TtsFileEditor} from "../openai-text-to-speech/tts-file-editor/tts-file-editor";
 import {JsonCodeViewer} from "./json-code-viewer/json-code-viewer";
-import {Bs64Handler} from "../../../services/handlers";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 
 @Component({
@@ -37,7 +34,6 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzButtonComponent,
     NzAutosizeDirective,
     NzInputDirective,
-    IonicModule,
     NzModalComponent,
     NzModalContentDirective,
     JsonCodeViewer,

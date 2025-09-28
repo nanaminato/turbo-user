@@ -1,6 +1,5 @@
-import {Component, inject, Inject} from '@angular/core';
+import {Component, inject, } from '@angular/core';
 import {NzNotificationService} from "ng-zorro-antd/notification";
-import {Observable} from "rxjs";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {ExportPrompts} from "./export-prompts/export-prompts";
 import {ImportPrompts} from "./import-prompts/import-prompts";
@@ -15,7 +14,6 @@ import {FormsModule} from "@angular/forms";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {TranslateModule} from "@ngx-translate/core";
-import {IonicModule} from "@ionic/angular";
 import {SystemPromptItem} from "../../models";
 import {SizeReportService} from "../../services/normal-services";
 import {SystemPromptService} from "../../services/db-services/system-prompt.service";
@@ -41,7 +39,6 @@ import {selectPrompt} from "../../systems/store/system-prompts/prompts.selectors
     NzSkeletonModule,
     NzInputModule,
     TranslateModule,
-    IonicModule
   ],
   standalone: true
 })

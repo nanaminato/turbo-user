@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {UrlImage} from "../../../models/images";
 import {Landscape} from "../landscape/landscape";
-import {NgClass, NgForOf} from "@angular/common";
-import {IonicModule} from "@ionic/angular";
-import {NzCardComponent} from "ng-zorro-antd/card";
+import {NgClass,} from "@angular/common";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {TranslateModule} from "@ngx-translate/core";
 
@@ -15,7 +13,6 @@ import {TranslateModule} from "@ngx-translate/core";
   imports: [
     Landscape,
     NgClass,
-    IonicModule,
     NzSpinComponent,
     TranslateModule
   ]

@@ -1,12 +1,9 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Embedding} from "../../../../models/images";
 import {NovitaModel} from "../../../../models/media";
-import {IonicModule} from "@ionic/angular";
 import {NovitaModelSelector} from "../../../media/novita-model-selector/novita-model-selector";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
-import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {FormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
 
@@ -16,7 +13,6 @@ import {TranslateModule} from "@ngx-translate/core";
   styleUrls: ['./embedding-section.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     NovitaModelSelector,
     NzIconDirective,
     NzModalComponent,

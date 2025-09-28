@@ -1,7 +1,5 @@
-import {Component, DoCheck, inject, OnInit} from '@angular/core';
+import {Component, DoCheck, inject} from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
-import {Gallery} from "../../imageStudio/gallery/gallery";
-import {IonicModule, MenuController} from "@ionic/angular";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
@@ -25,6 +23,7 @@ import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
   selector: 'app-novita-text2-video',
@@ -32,7 +31,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-text2-video.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     NzButtonComponent,
     NzIconDirective,
     NzInputNumberComponent,
@@ -46,6 +44,8 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     NzSpinComponent,
     TranslateModule,
     NzSwitchComponent,
+    NzSelectComponent,
+    NzOptionComponent,
   ]
 })
 export class NovitaText2Video implements DoCheck, NovitaInit {
@@ -64,7 +64,6 @@ export class NovitaText2Video implements DoCheck, NovitaInit {
   loading: boolean = false;
   videoUrl: string | undefined = '';
   menuAble: MenuAbleService = inject(MenuAbleService);
-  menuCtrl: MenuController = inject(MenuController);
   notification: NzNotificationService = inject(NzNotificationService);
   novitaService: NovitaService = inject(NovitaService);
   novitaCheck: NovitaCheck = inject(NovitaCheck);
@@ -235,9 +234,6 @@ export class NovitaText2Video implements DoCheck, NovitaInit {
   }
   showVideo: boolean = true;
   nsfw: boolean = false;
-  showVideoMenu() {
-    this.menuCtrl.open("video-menu");
-  }
 
   addNewSection() {
     this.framePrompts.push({
@@ -248,5 +244,9 @@ export class NovitaText2Video implements DoCheck, NovitaInit {
 
   awareDelete($event: number) {
     this.framePrompts.splice($event, 1);
+  }
+
+  showVideoMenu() {
+
   }
 }

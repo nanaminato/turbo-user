@@ -1,6 +1,5 @@
 import {Component, DoCheck, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {Gallery} from "../gallery/gallery";
-import {IonicModule, MenuController} from "@ionic/angular";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
@@ -23,6 +22,8 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NzInputDirective} from "ng-zorro-antd/input";
 
 @Component({
   selector: 'app-novita-img2-img',
@@ -30,7 +31,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-img2-img.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     FormsModule,
     NzSliderComponent,
     NzInputNumberComponent,
@@ -43,7 +43,10 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     LoraList,
     NzTooltipDirective,
     TranslateModule,
-    NzSwitchComponent
+    NzSwitchComponent,
+    NzOptionComponent,
+    NzSelectComponent,
+    NzInputDirective
   ]
 })
 export class NovitaImg2Img implements OnInit, DoCheck, NovitaInit, CheckParameter  {
@@ -68,7 +71,6 @@ export class NovitaImg2Img implements OnInit, DoCheck, NovitaInit, CheckParamete
 
   loading: boolean = false;
   private menuAbleService: MenuAbleService = inject(MenuAbleService);
-  private menuCtrl: MenuController = inject(MenuController);
   private novitaService: NovitaService = inject(NovitaService);
   private notification: NzNotificationService = inject(NzNotificationService);
   private novitaCheck: NovitaCheck = inject(NovitaCheck);
@@ -107,7 +109,6 @@ export class NovitaImg2Img implements OnInit, DoCheck, NovitaInit, CheckParamete
   }
 
   showImageMenu() {
-    this.menuCtrl.open("image-menu");
   }
   async checkParameter(){
     return new Promise<boolean>((resolve,reject)=>{

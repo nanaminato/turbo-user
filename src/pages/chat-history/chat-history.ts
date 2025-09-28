@@ -2,7 +2,6 @@ import {Component, HostListener, inject,} from '@angular/core';
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {TranslateModule} from "@ngx-translate/core";
-import {MenuController} from "@ionic/angular";
 import {ChatHistoryTitle, } from "../../models";
 import {SizeReportService} from "../../services/normal-services";
 import {Store} from "@ngrx/store";
@@ -28,7 +27,6 @@ export class ChatHistory
 {
   historyTitles: ChatHistoryTitle[] | undefined;
   selectId: number | undefined;
-  menuCtrl: MenuController = inject(MenuController);
   sizeReportService: SizeReportService = inject(SizeReportService);
   store = inject(Store);
   constructor() {
@@ -41,7 +39,6 @@ export class ChatHistory
   }
   miniPhoneAction(){
     if(this.sizeReportService.miniPhoneView()){
-      this.menuCtrl.close();
     }
   }
 

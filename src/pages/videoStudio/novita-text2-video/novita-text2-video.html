@@ -11,15 +11,15 @@
         </div>
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
-        <ion-label>{{'video.video-model' | translate}}</ion-label>
+        <div>{{'video.video-model' | translate}}</div>
         <div class="d-flex mb-2">
-          <ion-select interface="popover" fill="outline" [(ngModel)]="model">
+          <nz-select [(ngModel)]="model">
             @for(videoModel of videoModelChoice; track videoModel){
-              <ion-select-option [value]="videoModel">{{videoModel}}</ion-select-option>
+              <nz-option [nzValue]="videoModel">{{videoModel}}</nz-option>
             }
-          </ion-select>
+          </nz-select>
         </div>
-        <ion-label  nz-tooltip nzTooltipTitle="支持的帧数合计最大为128帧">{{'video.prompt'|translate}}</ion-label>
+        <div  nz-tooltip nzTooltipTitle="支持的帧数合计最大为128帧">{{'video.prompt'|translate}}</div>
         @for(section of framePrompts; track section){
           <app-section [section]="section" [id]="$index" (delete)="awareDelete($event)"></app-section>
         }
@@ -28,65 +28,45 @@
                   (click)="addNewSection()"
                   class="bg-theme text-theme border-theme d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
         </div>
-        <ion-label nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'video.negative-prompt'|translate}}</ion-label>
-        <ion-textarea auto-grow="true" fill="outline" [(ngModel)]="negative_prompt"></ion-textarea>
-        <ion-label>{{'video.width'|translate}}(256-1024)</ion-label>
-        <ion-row>
-          <ion-col>
-            <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-slider>
-          </ion-col>
-          <ion-col class="d-flex flex-row-reverse">
-            <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-input-number>
-          </ion-col>
-        </ion-row>
+        <div nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'video.negative-prompt'|translate}}</div>
+        <textarea [(ngModel)]="negative_prompt"></textarea>
+        <div>{{'video.width'|translate}}(256-1024)</div>
+        <div class="d-flex flex-row">
+          <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-slider>
+          <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-input-number>
+        </div>
 
-        <ion-label>{{'video.height'|translate}}(256-1024)</ion-label>
-        <ion-row>
-          <ion-col>
-            <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-slider>
-          </ion-col>
-          <ion-col class="d-flex flex-row-reverse">
-            <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-input-number>
-          </ion-col>
-        </ion-row>
+        <div>{{'video.height'|translate}}(256-1024)</div>
+        <div class="d-flex flex-row">
+          <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-slider>
+          <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-input-number>
+        </div>
         <app-lora-list [nsfw]="nsfw" [min]="0" [max]="1" [step]="0.1" [default]="0.5" [loras]="loras"></app-lora-list>
         <app-embedding-list [nsfw]="nsfw" [embeddings]="embeddings"></app-embedding-list>
-        <ion-label>{{'video.guidance-scale'|translate}}</ion-label>
-        <ion-row>
-          <ion-col>
-            <nz-slider [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
-          </ion-col>
-          <ion-col class="d-flex flex-row-reverse">
-            <nz-input-number [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-input-number>
-          </ion-col>
-        </ion-row>
-        <ion-label>{{'video.steps'|translate}}</ion-label>
-        <ion-row>
-          <ion-col>
-            <nz-slider [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
-          </ion-col>
-          <ion-col class="d-flex flex-row-reverse">
-            <nz-input-number [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-input-number>
-          </ion-col>
-        </ion-row>
-        <ion-label>{{'video.seed'|translate}}</ion-label>
-        <ion-label>
+        <div>{{'video.guidance-scale'|translate}}</div>
+        <div class="d-flex flex-row">
+          <nz-slider [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
+          <nz-input-number [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-input-number>
+        </div>
+        <div>{{'video.steps'|translate}}</div>
+        <div class="d-flex flex-row">
+          <nz-slider [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
+          <nz-input-number [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-input-number>
+        </div>
+        <div>{{'video.seed'|translate}}</div>
+        <div>
           <nz-input-number class="w-100" [(ngModel)]="seeds"></nz-input-number>
-        </ion-label>
-        <ion-label>
+        </div>
+        <div>
           {{'video.clip-skip'|translate}}
-        </ion-label>
-        <ion-row>
-          <ion-col>
-            <nz-slider [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-slider>
-          </ion-col>
-          <ion-col class="d-flex flex-row-reverse">
-            <nz-input-number [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-input-number>
-          </ion-col>
-        </ion-row>
+        </div>
+        <div class="d-flex flex-row">
+          <nz-slider [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-slider>
+          <nz-input-number [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-input-number>
+        </div>
       </div>
       <div class="sticky-bottom">
-        <ion-button expand="block" (click)="generateVideo()">{{'universal.generate'|translate}}</ion-button>
+        <button nz-button (click)="generateVideo()">{{'universal.generate'|translate}}</button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 flex-column overflow-y-scroll overflow-x-scroll">

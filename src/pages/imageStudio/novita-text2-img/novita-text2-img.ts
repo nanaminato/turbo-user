@@ -1,9 +1,7 @@
-import {Component, DoCheck, HostListener, inject, OnInit} from '@angular/core';
+import {Component, DoCheck, inject, OnInit} from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
-import {IonicModule, MenuController} from "@ionic/angular";
 import {NovitaService} from "../../../services/fetch_services";
 import {Embedding, Lora, NovitaTask, UrlImage} from "../../../models/images";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {FormsModule} from "@angular/forms";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
@@ -13,9 +11,6 @@ import {Gallery} from "../gallery/gallery";
 import {samplers} from "../../../models/images/fields/samplers";
 import {TaskResult} from "../../../models/images";
 import {CheckParameter, NovitaInit} from "../toolkits";
-import {ModelCenter} from "../../settings/model-center/model-center";
-import {NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
-import {NovitaModelSelector} from "../../media/novita-model-selector/novita-model-selector";
 import {ImageModel} from "../toolkits/image-model/image-model";
 import {EmbeddingList} from "../toolkits/embedding-list/embedding-list";
 import {LoraList} from "../toolkits/lora-list/lora-list";
@@ -27,6 +22,8 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
   selector: 'app-novita-text2-img',
@@ -34,7 +31,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-text2-img.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     FormsModule,
     NzSliderComponent,
     NzInputNumberComponent,
@@ -46,7 +42,10 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     LoraList,
     NzTooltipDirective,
     TranslateModule,
-    NzSwitchComponent
+    NzSwitchComponent,
+    NzInputDirective,
+    NzSelectComponent,
+    NzOptionComponent
   ]
 })
 export class NovitaText2Img implements OnInit,DoCheck,
@@ -70,7 +69,6 @@ export class NovitaText2Img implements OnInit,DoCheck,
   loading: boolean = false;
   nsfw: boolean = false;
   menuAbleService: MenuAbleService = inject(MenuAbleService);
-  menuCtrl: MenuController = inject(MenuController);
   novitaService: NovitaService = inject(NovitaService);
   notification: NzNotificationService = inject(NzNotificationService);
   novitaCheck: NovitaCheck = inject(NovitaCheck);
@@ -110,10 +108,6 @@ export class NovitaText2Img implements OnInit,DoCheck,
   ngOnInit() {
     this.setSize(this.image_num);
 
-  }
-
-  showImageMenu() {
-    this.menuCtrl.open("image-menu");
   }
   async checkParameter(){
     return new Promise<boolean>((resolve,reject)=>{
@@ -256,5 +250,9 @@ export class NovitaText2Img implements OnInit,DoCheck,
 
   modelChange($event: any) {
     this.model = $event;
+  }
+
+  showImageMenu() {
+
   }
 }

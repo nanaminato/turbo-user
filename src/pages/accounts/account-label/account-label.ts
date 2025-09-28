@@ -2,7 +2,6 @@ import {Component, inject} from '@angular/core';
 import {Router} from "@angular/router";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {TranslateModule} from "@ngx-translate/core";
-import {MenuController} from "@ionic/angular";
 import {AuthService} from "../../../auth_module";
 import {SizeReportService} from "../../../services/normal-services";
 import {user_routes} from "../../../roots/routes";
@@ -20,7 +19,6 @@ import {user_routes} from "../../../roots/routes";
   standalone: true
 })
 export class AccountLabel {
-  menuCtrl: MenuController = inject(MenuController);
   sizeReportService: SizeReportService = inject(SizeReportService);
   router: Router = inject(Router);
   authService: AuthService = inject(AuthService);
@@ -32,7 +30,6 @@ export class AccountLabel {
     this.router.navigate(user_routes.sign_in).then(
       ()=>{
         if(this.sizeReportService.miniPhoneView()){
-          this.menuCtrl.close();
         }
       }
     );
@@ -40,9 +37,6 @@ export class AccountLabel {
 
   openAccount() {
     if(this.sizeReportService.miniPhoneView()){
-      this.menuCtrl.close().then(r => {
-
-      })
     }
     this.router.navigate(user_routes.account_info).then(
       ()=>{

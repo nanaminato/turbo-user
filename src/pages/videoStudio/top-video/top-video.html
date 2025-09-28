@@ -1,3 +1,33 @@
-<ion-content [fullscreen]="true">
-  <router-outlet></router-outlet>
-</ion-content>
+<div class="d-flex flex-row w-100 h-100">
+  <ng-template #studios>
+    <div class="w-100 d-flex flex-column">
+      <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/chat"><img height="25" width="25" src="assets/icon/aichat_11zon.jpg">{{'universal.aiChat' | translate}}</button>
+      <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/image-studio"><img height="25" width="25" src="assets/icon/aipainting_11zon.jpg">{{'universal.aiPainting' | translate}}</button>
+      <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/video-studio"><img height="25" width="25" src="assets/icon/aivideo_11zon.jpg">{{'universal.aiVideo' | translate}}</button>
+      <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/media-studio"><span nz-icon nzType="node-index" nzTheme="outline"></span>多媒体工作室</button>
+    </div>
+  </ng-template>
+  <div>
+    <div class="bg-theme p-0 m-0 d-flex flex-column h-100 z-2">
+      <div  class="mt-4 mx-2">
+        <div>
+          <img src="assets/icon/image-studio_11zon.jpg">
+        </div>
+        <div>{{'universal.video-studio' | translate}}</div>
+      </div>
+      <div class="d-flex flex-column p-3">
+        <button class="m-2 rounded-2" nz-button [routerLink]="['video-studio/novita-text2video']">{{'video.novita-text2video'|translate}}</button>
+        <button class="m-2 rounded-2" nz-button [routerLink]="['video-studio/task-lib']">{{'universal.storeHouse'| translate}}</button>
+      </div>
+    </div>
+    <div class="bg-theme sticky-bottom z-0">
+      <ng-container *ngTemplateOutlet="studios"></ng-container>
+      @defer (on viewport) {
+        <app-account-label></app-account-label>
+      } @placeholder {
+        <nz-skeleton></nz-skeleton>
+      }
+    </div>
+  </div>
+  <router-outlet id="main-content"></router-outlet>
+</div>

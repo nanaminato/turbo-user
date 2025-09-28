@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Lora} from "../../../../models/images";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {IonicModule} from "@ionic/angular";
 import {LoraSection} from "../lora-section/lora-section";
-import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {TranslateModule} from "@ngx-translate/core";
 
@@ -14,7 +12,6 @@ import {TranslateModule} from "@ngx-translate/core";
   standalone: true,
   imports: [
     NzIconDirective,
-    IonicModule,
     LoraSection,
     NzModalModule,
     TranslateModule

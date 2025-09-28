@@ -17,7 +17,6 @@ import {FormsModule} from "@angular/forms";
 import {NzImageModule} from "ng-zorro-antd/image";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {TranslateModule} from "@ngx-translate/core";
-import {IonicModule} from "@ionic/angular";
 import {
   ChatContext,
   ContextMemoryService,
@@ -74,7 +73,6 @@ import {historyTitleActions} from "../../systems/store/history-title/history-tit
     NzImageModule,
     NzSkeletonModule,
     TranslateModule,
-    IonicModule,
   ],
   providers: [
   ]

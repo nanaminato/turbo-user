@@ -1,6 +1,5 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {NzModalComponent, NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
-import {IonicModule} from "@ionic/angular";
 import {NovitaModelSelector} from "../../../media/novita-model-selector/novita-model-selector";
 import {NovitaModel} from "../../../../models/media";
 import {TranslateModule} from "@ngx-translate/core";
@@ -12,7 +11,6 @@ import {TranslateModule} from "@ngx-translate/core";
   standalone: true,
   imports: [
     NzModalComponent,
-    IonicModule,
     NovitaModelSelector,
     NzModalContentDirective,
     NzModalModule,

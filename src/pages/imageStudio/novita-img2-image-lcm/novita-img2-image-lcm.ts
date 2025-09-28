@@ -1,6 +1,5 @@
 import {Component, DoCheck, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {Gallery} from "../gallery/gallery";
-import {IonicModule, MenuController} from "@ionic/angular";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
@@ -29,7 +28,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-img2-image-lcm.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     FormsModule,
     NzSliderComponent,
     NzInputNumberComponent,
@@ -65,7 +63,6 @@ export class NovitaImg2ImageLcm implements OnInit, DoCheck, NovitaInit,CheckPara
 
   loading: boolean = false;
   menuAbleService: MenuAbleService = inject(MenuAbleService);
-  menuCtrl: MenuController = inject(MenuController);
   novitaService: NovitaService = inject(NovitaService);
   notification: NzNotificationService = inject(NzNotificationService);
   novitaCheck: NovitaCheck = inject(NovitaCheck);
@@ -103,7 +100,6 @@ export class NovitaImg2ImageLcm implements OnInit, DoCheck, NovitaInit,CheckPara
   }
 
   showImageMenu() {
-    this.menuCtrl.open("image-menu");
   }
   async checkParameter(): Promise<boolean>{
     return new Promise((resolve, reject)=>{

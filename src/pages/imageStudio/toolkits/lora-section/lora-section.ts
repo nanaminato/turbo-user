@@ -1,7 +1,6 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Lora} from "../../../../models/images";
 import {NovitaModel} from "../../../../models/media";
-import {IonicModule} from "@ionic/angular";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {NovitaModelSelector} from "../../../media/novita-model-selector/novita-model-selector";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
@@ -16,7 +15,6 @@ import {TranslateModule} from "@ngx-translate/core";
   styleUrls: ['./lora-section.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     NzModalComponent,
     NovitaModelSelector,
     NzModalContentDirective,
@@ -25,7 +23,6 @@ import {TranslateModule} from "@ngx-translate/core";
     NzIconDirective,
     NzTooltipDirective,
     TranslateModule
-
   ]
 })
 export class LoraSection implements OnInit {

@@ -4,7 +4,6 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzCardModule} from "ng-zorro-antd/card";
 import {NzIconModule} from "ng-zorro-antd/icon";
-import {IonicModule} from "@ionic/angular";
 import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
@@ -18,7 +17,6 @@ import {SizeReportService} from "../../../services/normal-services";
     NzCardModule,
     NzIconModule,
     RouterLink,
-    IonicModule
   ],
   standalone: true
 })

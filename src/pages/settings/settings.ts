@@ -1,6 +1,5 @@
-import {Component, ElementRef, inject, Inject, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, Renderer2, ViewChild} from '@angular/core';
 import {NzNotificationService} from "ng-zorro-antd/notification";
-import {Subject} from "rxjs";
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzCardModule} from "ng-zorro-antd/card";
@@ -20,7 +19,6 @@ import {ConfigExport} from "./config-export/config-export";
 import {ConfigImport} from "./config-import/config-import";
 import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {IonicModule} from "@ionic/angular";
 import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "../../services/normal-services";
 import {Configuration, DynamicConfig} from "../../models";
 import {ConfigurationService} from "../../services/db-services";
@@ -50,7 +48,7 @@ export const displayLanguages: { value: string, label: string }[] = [
     NzInputModule, RouterLink, NgStyle,
     NzSelectModule, NzSwitchModule, NzSkeletonModule,
     ConfigExport, ConfigImport,
-    NzTooltipModule, TranslateModule, IonicModule, ModelCenter,
+    NzTooltipModule, TranslateModule, ModelCenter,
   ],
   providers: [
     ThemeSwitcherService,

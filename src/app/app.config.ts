@@ -11,7 +11,6 @@ import { provideStore } from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {jwtInterceptor} from "../systems/interceptors/jwt.interceptor";
 import {routes} from "./app.routes";
-import {IonicModule, IonicRouteStrategy} from "@ionic/angular";
 import {NZ_I18N, zh_CN} from "ng-zorro-antd/i18n";
 import {provideServiceWorker} from "@angular/service-worker";
 import {provideTranslateService} from "@ngx-translate/core";
@@ -58,12 +57,10 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    importProvidersFrom(IonicModule.forRoot()),
     provideHttpClient(),
     provideHttpClient(withInterceptors([jwtInterceptor])),
     provideNoopAnimations(),
     provideAnimations(),
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: NZ_I18N, useValue: zh_CN },
     provideStore({
         "config": configurationReducer,

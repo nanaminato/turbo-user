@@ -42,19 +42,19 @@
 <!-- 球状助手 -->
 
 <ng-template #ballHelper>
-  <ion-fab slot="fixed" size="small"
-           class="fab-control" vertical="top"
+  <div size="small"
+           class="fab-control"
            [class.m-px]="miniPhone()"
-           horizontal="end" >
+  >
 <!--    [edge]="true"-->
-    <ion-fab-button>
+    <button nz-button>
       <nz-icon nzType="down" nzTheme="outline" />
-    </ion-fab-button>
-    <ion-fab-list side="bottom">
+    </button>
+    <div >
       <button class="rounded-2 my-2" nz-button (click)="manageSystemContext()">{{'ball.manageSystemContext' | translate}}</button>
       <button class="rounded-2" nz-button (click)="addSystemInfo()">{{'ball.addSystemInfo' | translate}}</button>
-    </ion-fab-list>
-  </ion-fab>
+    </div>
+  </div>
 
 </ng-template>
 <ng-template #logo>
@@ -78,13 +78,13 @@
   </div>
 </ng-template>
 <ng-template #miniHead>
-  <ion-header class="sticky-top" [translucent]="true">
-    <ion-toolbar>
+  <div class="sticky-top" >
+    <div>
       <div class="sticky-top z-1">
         <nz-row class="d-flex flex-row justify-content-between bg-theme2 align-items-center">
-          <ion-buttons slot="start">
-            <ion-menu-button menu="chat-menu"></ion-menu-button>
-          </ion-buttons>
+          <div>
+            <button nz-button ></button>
+          </div>
           <div>
             @defer (on immediate) {
               <app-model-selector class=""></app-model-selector>
@@ -101,8 +101,8 @@
           }
         </nz-row>
       </div>
-    </ion-toolbar>
-  </ion-header>
+    </div>
+  </div>
 </ng-template>
 <ng-container *ngTemplateOutlet="ballHelper"></ng-container>
 <div class="d-flex flex-column w-100 h-100 bg-theme2 text-theme2">

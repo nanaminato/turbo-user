@@ -1,5 +1,5 @@
 <div class="bg-theme text-theme w-100">
-  <ion-label>{{'media.loras' | translate}}</ion-label>
+  <div>{{'media.loras' | translate}}</div>
   @for(lora of loras; track lora){
     <app-lora-section [nsfw]="nsfw" [min]="min" [max]="max" [step]="step" [lora]="lora" [index]="$index" (delete)="awareDelete($event)"></app-lora-section>
   }

@@ -9,11 +9,11 @@
         </div>
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
-        <ion-label>模型</ion-label>
-        <ion-select interface="popover" fill="outline" [(ngModel)]="model">
-          <ion-select-option [value]="'dall-e-3'">dall-e-3</ion-select-option>
-        </ion-select>
-        <ion-label>提示词</ion-label>
+        <div>模型</div>
+        <nz-select [(ngModel)]="model">
+          <nz-option [nzValue]="'dall-e-3'">dall-e-3</nz-option>
+        </nz-select>
+        <div>提示词</div>
         <textarea
           nz-input
           style=""
@@ -21,42 +21,38 @@
           [(ngModel)]="prompt"
           [nzAutosize]="{ minRows: 2, maxRows: 6 }"
         ></textarea>
-        <ion-label>生成数量</ion-label>
-        <ion-row>
-          <ion-col>
-            <nz-slider [nzMin]="1" [nzMax]="10" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
-          </ion-col>
-          <ion-col class="d-flex flex-row-reverse">
-            <nz-input-number [nzMin]="1" [nzMax]="16" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
-          </ion-col>
-        </ion-row>
-        <ion-label>生成大小</ion-label>
-        <ion-select interface="popover" fill="outline" [(ngModel)]="size">
+        <div>生成数量</div>
+        <div class="d-flex flex-row">
+          <nz-slider [nzMin]="1" [nzMax]="10" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
+          <nz-input-number [nzMin]="1" [nzMax]="16" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
+        </div>
+        <div>生成大小</div>
+        <nz-select [(ngModel)]="size">
           @for(size of sizes;track size){
-            <ion-select-option [value]="size">{{ size }}</ion-select-option>
+            <nz-option [nzValue]="size">{{ size }}</nz-option>
           }
-        </ion-select>
-        <ion-label>质量</ion-label>
-        <ion-select interface="popover" fill="outline" [(ngModel)]="quality">
+        </nz-select>
+        <div>质量</div>
+        <nz-select [(ngModel)]="quality">
           @for(quality of qualities;track quality){
-            <ion-select-option [value]="quality">{{ quality }}</ion-select-option>
+            <nz-option [nzValue]="quality">{{ quality }}</nz-option>
           }
-        </ion-select>
-        <ion-label>风格</ion-label>
-        <ion-select interface="popover" fill="outline" [(ngModel)]="style">
+        </nz-select>
+        <div>风格</div>
+        <nz-select [(ngModel)]="style">
           @for(style of styles;track style){
-            <ion-select-option [value]="style">{{ style }}</ion-select-option>
+            <nz-option [nzValue]="style">{{ style }}</nz-option>
           }
-        </ion-select>
-        <ion-label>数据格式</ion-label>
-        <ion-select interface="popover" fill="outline" [(ngModel)]="response_format">
+        </nz-select>
+        <div>数据格式</div>
+        <nz-select [(ngModel)]="response_format">
           @for(response_format of image_response_formats;track response_format){
-            <ion-select-option [value]="response_format">{{ response_format }}</ion-select-option>
+            <nz-option [nzValue]="response_format">{{ response_format }}</nz-option>
           }
-        </ion-select>
+        </nz-select>
       </div>
       <div class="sticky-bottom">
-        <ion-button expand="block" (click)="generateImages()">{{ 'universal.generate'|translate }}</ion-button>
+        <button nz-button expand="block" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 overflow-y-scroll overflow-x-scroll">

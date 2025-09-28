@@ -1,7 +1,5 @@
-import {Component, DoCheck, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, DoCheck, inject, OnInit, } from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
-import {IonicModule, MenuController} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
@@ -20,6 +18,7 @@ import {AuthService} from "../../../auth_module";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzInputDirective} from "ng-zorro-antd/input";
 
 @Component({
   selector: 'app-image-main',
@@ -27,7 +26,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
   styleUrls: ['./novita-text2-image-lcm.scss'],
   standalone: true,
   imports: [
-    IonicModule,
     FormsModule,
     NzSliderComponent,
     NzInputNumberComponent,
@@ -38,7 +36,8 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     LoraList,
     EmbeddingList,
     TranslateModule,
-    NzSwitchComponent
+    NzSwitchComponent,
+    NzInputDirective
   ]
 })
 export class NovitaText2ImageLcm implements OnInit, DoCheck,NovitaInit,CheckParameter {
@@ -61,7 +60,6 @@ export class NovitaText2ImageLcm implements OnInit, DoCheck,NovitaInit,CheckPara
   loading: boolean = false;
   nsfw: boolean = false;
   menuAbleService: MenuAbleService = inject(MenuAbleService);
-  menuCtrl: MenuController = inject(MenuController);
   novitaService: NovitaService = inject(NovitaService);
   notification: NzNotificationService = inject(NzNotificationService);
   novitaCheck: NovitaCheck = inject(NovitaCheck);
@@ -101,7 +99,6 @@ export class NovitaText2ImageLcm implements OnInit, DoCheck,NovitaInit,CheckPara
     this.setSize(this.image_num);
   }
   showImageMenu() {
-    this.menuCtrl.open("image-menu");
   }
   checkParameter():Promise<boolean> {
     return new Promise((resolve, reject)=>{

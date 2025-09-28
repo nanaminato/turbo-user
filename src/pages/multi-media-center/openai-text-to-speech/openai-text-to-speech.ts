@@ -5,8 +5,6 @@ import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzOptionComponent, NzOptionGroupComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
-import {IonicModule} from "@ionic/angular";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -17,14 +15,10 @@ import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {Bs64Handler} from "../../../services/handlers";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {OpenaiService, ParseService} from "../../../services/fetch_services";
+import {OpenaiService} from "../../../services/fetch_services";
 import {TtsResponse} from "../../../models/media/tts";
 import {TtsFileEditor} from "./tts-file-editor/tts-file-editor";
-import {ModelEditor} from "../../chat-main/model-editor/model-editor";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
-import {ChatModel} from "../../../models";
-import {forkJoin, map} from "rxjs";
-import {NzNotificationService} from "ng-zorro-antd/notification";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 
 @Component({
@@ -40,8 +34,6 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzOptionGroupComponent,
     NzOptionComponent,
     FormsModule,
-    NgForOf,
-    IonicModule,
     NzInputNumberComponent,
     NzSliderComponent,
     NzIconDirective,
