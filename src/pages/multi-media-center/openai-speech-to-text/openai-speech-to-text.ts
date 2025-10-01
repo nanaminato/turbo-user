@@ -12,7 +12,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
 import {NzNotificationService} from "ng-zorro-antd/notification";
-import {NzModalComponent, NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
+import {NzModalModule} from "ng-zorro-antd/modal";
 import {JsonCodeViewer} from "./json-code-viewer/json-code-viewer";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 
@@ -34,8 +34,7 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzButtonComponent,
     NzAutosizeDirective,
     NzInputDirective,
-    NzModalComponent,
-    NzModalContentDirective,
+    NzModalModule,
     JsonCodeViewer,
     NzModalModule
   ],

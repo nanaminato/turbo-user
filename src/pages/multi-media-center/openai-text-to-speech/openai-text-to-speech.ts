@@ -18,7 +18,7 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {OpenaiService} from "../../../services/fetch_services";
 import {TtsResponse} from "../../../models/media/tts";
 import {TtsFileEditor} from "./tts-file-editor/tts-file-editor";
-import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
+import {NzModalModule} from "ng-zorro-antd/modal";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 
 @Component({
@@ -43,8 +43,7 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzInputDirective,
     NzSpinComponent,
     TtsFileEditor,
-    NzModalComponent,
-    NzModalContentDirective,
+    NzModalModule,
   ],
   providers: [
     Bs64Handler

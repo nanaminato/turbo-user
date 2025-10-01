@@ -4,12 +4,10 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzImageDirective} from "ng-zorro-antd/image";
-import { NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
+import {NzModalModule} from "ng-zorro-antd/modal";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
 import {TtsFileEditor} from "../openai-text-to-speech/tts-file-editor/tts-file-editor";
-import {ParseService} from "../../../services/fetch_services";
-import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TtsFile} from "../../../models/media";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 
@@ -27,7 +25,6 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     ReactiveFormsModule,
     TranslateModule,
     TtsFileEditor,
-    NzModalContentDirective
   ],
     standalone: true
 })

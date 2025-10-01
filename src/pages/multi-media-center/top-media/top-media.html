@@ -10,12 +10,11 @@
   <div type="overlay"
   >
     <div class="bg-theme p-0 m-0 d-flex flex-column h-100 z-2">
-      <div  class="mt-4 mx-2">
-        <div>
-          <span nz-icon nzType="node-index" nzTheme="outline"></span>
-        </div>
+      <div class="d-flex flex-row justify-content-start pt-3 px-3 align-items-center">
+        <span nz-icon nzType="node-index" nzTheme="outline"></span>
         <div>多媒体</div>
       </div>
+
       <div class="d-flex flex-column p-3">
         <button class="m-2 rounded-2" nz-button [routerLink]="['media-studio/openai-text-to-speech']">openai 文字转语音</button>
         <button class="m-2 rounded-2" nz-button [routerLink]="['media-studio/openai-speech-to-text']">openai 语音转文字</button>

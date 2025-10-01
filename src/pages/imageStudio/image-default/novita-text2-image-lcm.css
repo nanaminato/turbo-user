@@ -1,12 +1,17 @@
-:host{
+@charset "UTF-8";
+:host {
   display: block;
   width: 100%;
   height: 100%;
 }
-.te{
+
+.te {
   text-overflow: ellipsis;
   white-space: nowrap; /* 禁止文字换行 */
 }
-.ht-40{
+
+.ht-40 {
   height: 40px;
 }
+
+/*# sourceMappingURL=novita-text2-image-lcm.css.map */

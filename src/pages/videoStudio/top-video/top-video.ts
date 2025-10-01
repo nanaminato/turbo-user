@@ -6,6 +6,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {TranslatePipe} from "@ngx-translate/core";
+import {NzIconDirective} from "ng-zorro-antd/icon";
 
 @Component({
   selector: 'app-top-video',
@@ -21,7 +22,8 @@ import {TranslatePipe} from "@ngx-translate/core";
       NzSkeletonComponent,
       NzWaveDirective,
       RouterLink,
-      TranslatePipe
+      TranslatePipe,
+      NzIconDirective
     ]
 })
 export class TopVideo {
