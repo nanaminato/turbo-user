@@ -67,10 +67,6 @@ export class Dialogue {
   get chatModel(): ChatModel | undefined {
     return this._chatModel;
   }
-
-  protected readonly UserRole = UserRole;
-
-
   getIcon(role: string | undefined) {
     if(role===undefined) return "assets/svgs/chat-gpt_11zon.jpg";
     if(role===UserRole){
@@ -113,23 +109,6 @@ export class Dialogue {
       return "You";
     }
     return chatModel.model;
-  }
-
-  getWidth() {
-    let part = -269;
-    if(this.sizeReportService.width! <=606){
-      return "width: "+(this.sizeReportService.width!-16)!+"px;";
-    }
-    else if(this.sizeReportService.width!<800){
-      return "width: "+(this.sizeReportService.width!+part-16)+"px;";
-    }else{
-      if(this.sizeReportService.width!+part-32>=800){
-        // 减去sideBar 之后剩余宽度大于800，使用800
-        return "width: "+800+"px;";
-      }
-      // 减去sideBar 之后剩余宽度小于800，使用实际的宽度
-      return "width: "+(this.sizeReportService.width!+part-16)+"px;";
-    }
   }
 
   copyAllContent() {

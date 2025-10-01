@@ -7,6 +7,15 @@
     </app-tts-file-editor>
   </ng-container>
 </nz-modal>
+<header>
+  <button nz-button class="m-2">
+    @if(menuVisible()){
+      <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+    }@else{
+      <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+    }
+  </button>
+</header>
 <nz-card>
   <nz-row class="align-items-center my-1 bg-theme2 text-theme2">
     <nz-col class="m-2">

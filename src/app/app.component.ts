@@ -37,7 +37,6 @@ import {Store} from "@ngrx/store";
 })
 export class AppComponent implements OnInit{
   config: Configuration | undefined;
-  menuAble = inject(MenuAbleService);
   sizeReportService = inject(SizeReportService);
   router = inject(Router);
   auth = inject(AuthService);
@@ -45,23 +44,15 @@ export class AppComponent implements OnInit{
   store = inject(Store);
 
   async ngOnInit() {
-    this.setMenu();
+    this.setMenu(window);
   }
-  setMenu(){
-    this.sizeReportService.width = window.innerWidth;
-    this.sizeReportService.height = window.innerHeight;
+  setMenu(obj: any){
+    this.sizeReportService.width = obj.innerWidth;
+    this.sizeReportService.height = obj.innerHeight;
+    this.sizeReportService.menuVisible = !this.sizeReportService.miniPhoneView();
   }
   @HostListener('window:resize',['$event'])
   onResize(event: any){
-    this.sizeReportService.width = event.target.innerWidth;
-    this.sizeReportService.height = event.target.innerHeight;
+    this.setMenu(event.target);
   }
-
-  openSettingPage() {
-    this.router.navigate(user_routes.settings);
-  }
-  openPromptPage() {
-    this.router.navigate(user_routes.prompts);
-  }
-
 }

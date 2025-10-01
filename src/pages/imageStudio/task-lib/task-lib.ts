@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {GenerateTask} from "../../../models/media";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {AuthService} from "../../../auth_module";
@@ -7,6 +7,9 @@ import {TaskItem} from "./task-item/task-item";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
   selector: 'app-task-lib',
@@ -17,12 +20,15 @@ import {TranslateModule} from "@ngx-translate/core";
     NzCardComponent,
     TaskItem,
     NzButtonComponent,
-    TranslateModule
+    TranslateModule,
+    NzIconDirective,
+    NzWaveDirective
 
   ]
 })
 export class TaskLib implements OnInit {
   generateTasks: GenerateTask[] = [];
+  private sizeReportService = inject(SizeReportService);
   constructor(private universalService: UniversalService,
               private authService: AuthService,
               private notification: NzNotificationService) {
@@ -41,5 +47,13 @@ export class TaskLib implements OnInit {
 
   awareDeleteItem($event: number) {
     this.generateTasks.splice($event,1);
+  }
+
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }

@@ -3,6 +3,16 @@
   width: 100%;
   height: 100%;
 }
+.chat-main{
+  display: flex;
+  flex-direction: column;
+}
+.header-content{
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  flex-grow: 1;
+}
 .center-input{
   margin: auto;
   width: 80%;

@@ -24,6 +24,8 @@ import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
   selector: 'app-novita-text2-video',
@@ -46,6 +48,7 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
     NzSwitchComponent,
     NzSelectComponent,
     NzOptionComponent,
+    NzWaveDirective,
   ]
 })
 export class NovitaText2Video implements DoCheck, NovitaInit {
@@ -69,6 +72,7 @@ export class NovitaText2Video implements DoCheck, NovitaInit {
   novitaCheck: NovitaCheck = inject(NovitaCheck);
   universalService: UniversalService = inject(UniversalService);
   authService: AuthService = inject(AuthService);
+  sizeReportService: SizeReportService = inject(SizeReportService);
   constructor() {
     this.menuAble.enableVideo()
     this.videoModelChoice = videoModels;
@@ -245,8 +249,11 @@ export class NovitaText2Video implements DoCheck, NovitaInit {
   awareDelete($event: number) {
     this.framePrompts.splice($event, 1);
   }
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
 
-  showVideoMenu() {
-
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }

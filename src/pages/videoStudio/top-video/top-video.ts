@@ -1,4 +1,4 @@
-import {Component, } from '@angular/core';
+import {Component, inject,} from '@angular/core';
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {AccountLabel} from "../../accounts/account-label/account-label";
 import {NgTemplateOutlet} from "@angular/common";
@@ -7,6 +7,7 @@ import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {TranslatePipe} from "@ngx-translate/core";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
   selector: 'app-top-video',
@@ -27,5 +28,8 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
     ]
 })
 export class TopVideo {
-
+  sizeReportService = inject(SizeReportService);
+  visible() {
+    return this.sizeReportService.menuVisible;
+  }
 }

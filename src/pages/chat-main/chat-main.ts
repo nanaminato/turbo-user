@@ -550,6 +550,13 @@ export class ChatMainComponent implements OnDestroy{
     this.handleFinalization();
   }
 
+  expanded = false;
+  collapse() {
+    this.expanded = false;
+  }
+  expand() {
+    this.expanded = !this.expanded;
+  }
   showLogo() {
     return this.chatHistoryModel===undefined || this.chatHistoryModel.chatList?.chatModel?.length===0;
   }
@@ -698,5 +705,13 @@ export class ChatMainComponent implements OnDestroy{
     const textarea = this.promptBox.nativeElement;
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
     this.inputText = textarea.value.substring(0, textarea.selectionStart) + '`' + selectedText + '`' + textarea.value.substring(textarea.selectionEnd);
+  }
+
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }

@@ -40,27 +40,40 @@
   <div></div>
 }
 <!-- 球状助手 -->
-
 <ng-template #ballHelper>
-  <div size="small"
-           class="fab-control"
-           [class.m-px]="miniPhone()"
+  <div
+    class="fab-control"
+    [class.m-px]="miniPhone()"
+    style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"
+    (click)="expand()"
+    (mouseleave)="collapse()"
   >
-<!--    [edge]="true"-->
-    <button nz-button>
-      <nz-icon nzType="down" nzTheme="outline" />
-    </button>
-    <div >
-      <button class="rounded-2 my-2" nz-button (click)="manageSystemContext()">{{'ball.manageSystemContext' | translate}}</button>
-      <button class="rounded-2" nz-button (click)="addSystemInfo()">{{'ball.addSystemInfo' | translate}}</button>
+    <div class="d-flex flex-row-reverse">
+      <button nz-button nzShape="circle">
+        @if(expanded){
+          <nz-icon nzType="close" nzTheme="outline" />
+        }@else{
+          <nz-icon nzType="down" nzTheme="outline"></nz-icon>
+        }
+
+      </button>
     </div>
+    @if(expanded){
+      <div class="d-flex flex-column" style="margin-top: 8px;">
+        <button class="rounded-2 my-2" nz-button (click)="manageSystemContext()">
+          {{'ball.manageSystemContext' | translate}}
+        </button>
+        <button class="rounded-2" nz-button (click)="addSystemInfo()">
+          {{'ball.addSystemInfo' | translate}}
+        </button>
+      </div>
+    }
   </div>
 
 </ng-template>
 <ng-template #logo>
   <div
     class="w-100 h-100 d-flex position-relative align-items-center justify-content-center">
-<!--    <ng-container *ngTemplateOutlet="ballHelper"></ng-container>-->
     <div class="d-flex flex-column">
       <div class="mb-3 h-[72px] w-[72px]">
         <div class="d-flex align-items-center justify-content-center rounded-full text-black">
@@ -83,7 +96,13 @@
       <div class="sticky-top z-1">
         <nz-row class="d-flex flex-row justify-content-between bg-theme2 align-items-center">
           <div>
-            <button nz-button ></button>
+            <button nz-button class="mx-2">
+              @if(menuVisible()){
+                <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+              }@else{
+                <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+              }
+            </button>
           </div>
           <div>
             @defer (on immediate) {
@@ -105,44 +124,55 @@
   </div>
 </ng-template>
 <ng-container *ngTemplateOutlet="ballHelper"></ng-container>
-<div class="d-flex flex-column w-100 h-100 bg-theme2 text-theme2">
-  <div class="position-relative d-flex flex-column overflow-y-scroll flex-grow-1" #chatPanel>
+<div class="chat-main w-100 h-100 bg-theme2 text-theme2">
+  <div class="header-content" #chatPanel>
     @if (showLogo()) {
+      <!--      无对话历史-->
       @if (miniPhone()) {
         <ng-container *ngTemplateOutlet="miniHead">
         </ng-container>
       } @else {
-        <div class="position-fixed z-1">
-          <app-model-selector class="opacity-75 position-sticky"></app-model-selector>
+        <div class="d-flex flex-row">
+          <button nz-button class="ms-3 mt-3">
+            @if(menuVisible()){
+              <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+            }@else{
+              <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+            }
+          </button>
+          <app-model-selector></app-model-selector>
         </div>
       }
       <ng-container *ngTemplateOutlet="logo"></ng-container>
     } @else {
-      <div
-        class="flex-grow-1 position-relative">
-        @if (miniPhone()) {
-          <ng-container *ngTemplateOutlet="miniHead">
-          </ng-container>
-        } @else {
-          <div class="bg-theme2 sticky-top p-0 z-1">
-            <app-model-selector></app-model-selector>
-          </div>
-        }
-        <div class="position-relative">
-<!--          <ng-container *ngTemplateOutlet="ballHelper"></ng-container>-->
-          @for (chat of chatModels; track chat.dataId) {
-            <app-dialogue
-              (reGenerateSignal)="reGenerateHandle($event)"
-              (userTask)="handleUserTask($event)" [chatModel]="chat" [content]="chat.content"
-              [active]="isActive(chat!)"></app-dialogue>
-          }
+      <!--      有对话历史-->
+      @if (miniPhone()) {
+        <ng-container *ngTemplateOutlet="miniHead">
+        </ng-container>
+      } @else {
+        <div class="d-flex flex-row">
+          <button nz-button class="ms-3 mt-3">
+            @if(menuVisible()){
+              <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+            }@else{
+              <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+            }
+          </button>
+          <app-model-selector></app-model-selector>
         </div>
+      }
+      <div class="d-flex flex-column overflow-y-auto flex-grow-1">
+        @for (chat of chatModels; track chat.dataId) {
+          <app-dialogue
+            (reGenerateSignal)="reGenerateHandle($event)"
+            (userTask)="handleUserTask($event)" [chatModel]="chat" [content]="chat.content"
+            [active]="isActive(chat!)"></app-dialogue>
+        }
       </div>
     }
-
-
   </div>
-  <div class="d-flex flex-grow-0">
+  <!--  对话页面下部分的组件， 包含输入框等-->
+  <div class="d-flex">
     <div class="center-input rounded-2" style="border: 1px solid #ccc;">
       <div class="d-flex flex-row">
         <div class="select-box mx-1 my-1 rounded-4">
@@ -194,21 +224,16 @@
                     nzTheme="outline"></span>
             }@else{
               <span data-state="closed"><svg width="24" height="24" viewBox="0 0 24 24"
-                                                                class="text-white dark:text-black"><path
+                                             class="text-white dark:text-black"><path
                 d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
             }
-
-
           </button>
         </div>
-
       </div>
     </div>
-
   </div>
-
-  <div class="d-flex flex-grow-0">
+  <div class="d-flex">
     <div class="center fs-mini overflow-hidden">
       {{'chat-main.potentialErrorNotice' | translate}}
     </div>

@@ -13,6 +13,7 @@ import {AuthService} from "../../../auth_module";
 import {ServiceProvider} from "../../../roots";
 import {Store} from "@ngrx/store";
 import {user_routes} from "../../../roots/routes";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
   selector: 'app-top-image',
@@ -37,11 +38,8 @@ export class TopImage {
   auth = inject(AuthService);
   provider = inject(ServiceProvider);
   store = inject(Store);
-  openSettingPage() {
-    this.router.navigate(user_routes.settings);
+  sizeReportService = inject(SizeReportService);
+  visible() {
+    return this.sizeReportService.menuVisible;
   }
-  openPromptPage() {
-    this.router.navigate(user_routes.prompts);
-  }
-
 }

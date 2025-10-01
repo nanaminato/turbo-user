@@ -15,6 +15,8 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {JsonCodeViewer} from "./json-code-viewer/json-code-viewer";
 import {FileHandler} from "../../../services/handlers/fileHandler";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
     selector: 'app-openai-speech-to-text',
@@ -36,7 +38,8 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzInputDirective,
     NzModalModule,
     JsonCodeViewer,
-    NzModalModule
+    NzModalModule,
+    NzWaveDirective
   ],
   providers: [
 
@@ -65,6 +68,7 @@ export class OpenaiSpeechToText {
   openaiService: OpenaiService = inject(OpenaiService);
   notification: NzNotificationService = inject(NzNotificationService);
   fileHandler: FileHandler = inject(FileHandler);
+  private sizeReportService = inject(SizeReportService);
   constructor() {
     this.menuAble.enableMedia()
   }
@@ -190,5 +194,13 @@ export class OpenaiSpeechToText {
       this.outputText = result.text;
     }
     this.result = result;
+  }
+
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }

@@ -7,6 +7,15 @@
     </app-tts-file-editor>
   </ng-container>
 </nz-modal>
+<header>
+  <button nz-button class="m-2">
+    @if(menuVisible()){
+      <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+    }@else{
+      <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+    }
+  </button>
+</header>
 <div class="border rounded-2 d-flex justify-content-end">
   <button nz-button (click)="reparseAll()" class="m-2">解析所有文件</button>
 </div>

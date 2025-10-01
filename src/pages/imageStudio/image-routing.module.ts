@@ -14,7 +14,7 @@ const routes: Routes = [
       },
       {
         path: 'novita-lcm-txt2img',
-        loadComponent: ()=>import("./image-default/novita-text2-image-lcm")
+        loadComponent: ()=>import("./novita-text2-image/novita-text2-image-lcm")
           .then(c=>c.NovitaText2ImageLcm)
       },
       {

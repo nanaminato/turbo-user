@@ -1,10 +1,14 @@
 <div class="bg-theme text-theme w-100 h-100 d-flex flex-row">
   <div class="w-100 d-flex flex-row">
     <div class="h-100 flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 316px;">
-      <div class="sticky-top px-3">
+      <div class="px-3">
         <div class="d-flex flex-row">
-          <button nz-button class="m-2" (click)="showImageMenu()">
-            <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
+          <button nz-button class="mx-2">
+            @if(menuVisible()){
+              <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+            }@else{
+              <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+            }
           </button>
           <div class="m-2">
             <span>{{ 'universal.nsfw'|translate }}</span>

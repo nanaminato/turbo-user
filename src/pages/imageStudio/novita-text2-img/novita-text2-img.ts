@@ -24,6 +24,8 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {SizeReportService} from "../../../services/normal-services";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 
 @Component({
   selector: 'app-novita-text2-img',
@@ -45,7 +47,8 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
     NzSwitchComponent,
     NzInputDirective,
     NzSelectComponent,
-    NzOptionComponent
+    NzOptionComponent,
+    NzWaveDirective
   ]
 })
 export class NovitaText2Img implements OnInit,DoCheck,
@@ -252,7 +255,12 @@ export class NovitaText2Img implements OnInit,DoCheck,
     this.model = $event;
   }
 
-  showImageMenu() {
+  sizeReportService: SizeReportService = inject(SizeReportService);
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
 
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }

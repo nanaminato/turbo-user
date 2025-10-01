@@ -10,6 +10,8 @@ import {TranslateModule} from "@ngx-translate/core";
 import {TtsFileEditor} from "../openai-text-to-speech/tts-file-editor/tts-file-editor";
 import {TtsFile} from "../../../models/media";
 import {FileHandler} from "../../../services/handlers/fileHandler";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
     selector: 'app-media-extractor',
@@ -25,12 +27,14 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     ReactiveFormsModule,
     TranslateModule,
     TtsFileEditor,
+    NzWaveDirective,
   ],
     standalone: true
 })
 export class MediaExtractor {
   private menuAble: MenuAbleService = inject(MenuAbleService);
   private fileHandler: FileHandler = inject(FileHandler);
+  private sizeReportService = inject(SizeReportService);
   constructor() {
     this.menuAble.enableMedia()
   }
@@ -112,6 +116,11 @@ export class MediaExtractor {
     await Promise.all(promises);
   }
 
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
 
-
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
+  }
 }

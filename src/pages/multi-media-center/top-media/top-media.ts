@@ -1,4 +1,4 @@
-import {Component,} from '@angular/core';
+import {Component, inject,} from '@angular/core';
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {NzImageService} from "ng-zorro-antd/image";
 import {AccountLabel} from "../../accounts/account-label/account-label";
@@ -8,6 +8,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzSkeletonComponent} from "ng-zorro-antd/skeleton";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {TranslatePipe} from "@ngx-translate/core";
+import {SizeReportService} from "../../../services/normal-services";
 
 @Component({
   selector: 'app-top-media',
@@ -30,5 +31,8 @@ import {TranslatePipe} from "@ngx-translate/core";
   ]
 })
 export class TopMedia {
-
+  sizeReportService = inject(SizeReportService);
+  visible() {
+    return this.sizeReportService.menuVisible;
+  }
 }

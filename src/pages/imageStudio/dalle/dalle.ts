@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, DoCheck, inject, OnInit} from '@angular/core';
 import {Gallery} from "../gallery/gallery";
 import {TranslateModule} from "@ngx-translate/core";
 import {DallE3Response, TaskImage, UrlImage} from "../../../models/images";
@@ -14,6 +14,8 @@ import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
+import {SizeReportService} from "../../../services/normal-services";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 
 @Component({
   selector: 'app-dalle',
@@ -31,7 +33,8 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
     NzAutosizeDirective,
     NzInputDirective,
     NzSelectComponent,
-    NzOptionComponent
+    NzOptionComponent,
+    NzWaveDirective
   ]
 })
 export class Dalle implements OnInit,DoCheck{
@@ -149,5 +152,13 @@ export class Dalle implements OnInit,DoCheck{
       this.setSize(this.image_num);
       this.image_num_old = this.image_num;
     }
+  }
+  sizeReportService: SizeReportService = inject(SizeReportService);
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }

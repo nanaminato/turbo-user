@@ -20,6 +20,8 @@ import {TtsResponse} from "../../../models/media/tts";
 import {TtsFileEditor} from "./tts-file-editor/tts-file-editor";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {FileHandler} from "../../../services/handlers/fileHandler";
+import {SizeReportService} from "../../../services/normal-services";
+import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 
 @Component({
   selector: 'app-openai-text-to-speech',
@@ -44,6 +46,7 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
     NzSpinComponent,
     TtsFileEditor,
     NzModalModule,
+    NzWaveDirective,
   ],
   providers: [
     Bs64Handler
@@ -73,6 +76,7 @@ export class OpenaiTextToSpeech {
   bs64Handler: Bs64Handler = inject(Bs64Handler);
   openaiService: OpenaiService = inject(OpenaiService);
   fileHandler: FileHandler = inject(FileHandler);
+  private sizeReportService = inject(SizeReportService);
   constructor() {
     this.menuAble.enableMedia()
   }
@@ -240,5 +244,11 @@ export class OpenaiTextToSpeech {
     await Promise.all(promises);
   }
 
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
 
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
+  }
 }

@@ -6,6 +6,15 @@
     <app-json-code-viewer [jsonCode]="result"></app-json-code-viewer>
   </ng-container>
 </nz-modal>
+<header>
+  <button nz-button class="m-2">
+    @if(menuVisible()){
+      <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+    }@else{
+      <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+    }
+  </button>
+</header>
 <div class="file-drop rounded-2 border d-flex justify-content-center align-items-center" style="height: 150px;"
      (click)="fileInput.click()"
      (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">

@@ -37,12 +37,14 @@ import {Store} from "@ngrx/store";
 })
 export class ChatPage {
   config: Configuration | undefined;
-  menuAble = inject(MenuAbleService);
   sizeReportService = inject(SizeReportService);
   router = inject(Router);
   auth = inject(AuthService);
   provider = inject(ServiceProvider);
   store = inject(Store);
+  visible(){
+    return this.sizeReportService.menuVisible;
+  }
   openSettingPage() {
     this.router.navigate(user_routes.settings);
   }
