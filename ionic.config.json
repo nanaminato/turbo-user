@@ -1,7 +1,0 @@
-{
-  "name": "turbo-ai-client",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
