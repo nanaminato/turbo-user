@@ -3,12 +3,16 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
+
 .image-wrapper {
   width: 40%;
   padding: 5px;
   box-sizing: border-box;
 }
+
 .full-width {
   width: 70%;
   max-width: 100vh;
 }
+
+/*# sourceMappingURL=gallery.css.map */

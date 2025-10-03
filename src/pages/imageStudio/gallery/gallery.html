@@ -7,7 +7,9 @@
   }
   <div class="w-100 d-flex flex-wrap flex-row justify-content-evenly">
     @for(image of images;track image){
-      <app-landscape class="image-wrapper" [ngClass]="{'full-width': images!.length === 1}" [loading]="loading" [src]="image.image_url" ></app-landscape>
+      <app-landscape class="image-wrapper"
+                     [ngClass]="{'full-width': images!.length === 1}"
+                     [loading]="loading" [src]="image.image_url" ></app-landscape>
     }
   </div>
 
