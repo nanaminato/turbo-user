@@ -1,22 +1,24 @@
 <div
-  class="my-1 border-1-standard d-flex flex-row justify-content-between p-2 rounded-3">
+  class="my-1 border-1 border d-flex flex-row justify-content-between p-2 rounded-3">
   <div class="" style="width: 120px;">
     <div nz-popover nzPopoverTitle="片段的帧数" nzPopoverContent="片段的帧数需要在8-64之间">{{'video.frames'|translate}}:</div>
     <nz-input-number style="" [nzMin]="8" [nzMax]="64" [(ngModel)]="section!.frames"></nz-input-number>
     <nz-select class="my-1"  [(ngModel)]="section!.frames">
-      <nz-option [nzValue]="8">8</nz-option>
-      <nz-option [nzValue]="16">16</nz-option>
-      <nz-option [nzValue]="24">24</nz-option>
-      <nz-option [nzValue]="32">32</nz-option>
-      <nz-option [nzValue]="40">40</nz-option>
-      <nz-option [nzValue]="48">48</nz-option>
-      <nz-option [nzValue]="56">56</nz-option>
-      <nz-option [nzValue]="64">64</nz-option>
+      <nz-option [nzValue]="8"  [nzLabel]="8" ></nz-option>
+      <nz-option [nzValue]="16" [nzLabel]="16" ></nz-option>
+      <nz-option [nzValue]="24" [nzLabel]="24" ></nz-option>
+      <nz-option [nzValue]="32" [nzLabel]="32" ></nz-option>
+      <nz-option [nzValue]="40" [nzLabel]="40" ></nz-option>
+      <nz-option [nzValue]="48" [nzLabel]="48" ></nz-option>
+      <nz-option [nzValue]="56" [nzLabel]="56" ></nz-option>
+      <nz-option [nzValue]="64" [nzLabel]="64" ></nz-option>
     </nz-select>
   </div>
   <div style="width: 200px;">
     <div>{{'video.prompt'|translate}}:</div>
-    <textarea [rows]="4" fill="outline" [(ngModel)]="section!.prompt"></textarea>
+    <textarea [rows]="4"  [(ngModel)]="section!.prompt"></textarea>
   </div>
-  <button class="bg-theme text-theme" (click)="emitDelete()"><span nz-icon nzType="close" nzTheme="outline"></span></button>
+  <div class="">
+    <button nz-button class="bg-theme text-theme" (click)="emitDelete()"><span nz-icon nzType="close" nzTheme="outline"></span></button>
+  </div>
 </div>

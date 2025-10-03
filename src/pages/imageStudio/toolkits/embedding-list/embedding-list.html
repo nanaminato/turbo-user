@@ -4,7 +4,7 @@
     <app-embedding-section [nsfw]="nsfw" [embedding]="embedding" [index]="$index" (delete)="awareDelete($event)"></app-embedding-section>
   }
   <div class="d-flex justify-content-center my-1">
-    <button style="width: 100px;" (click)="addNewEmbedding()"
+    <button nz-button style="width: 100px;" (click)="addNewEmbedding()"
             class="bg-theme text-theme border-theme d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
   </div>
 </div>

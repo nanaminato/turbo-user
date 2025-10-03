@@ -6,6 +6,7 @@ import {NzPopoverDirective} from "ng-zorro-antd/popover";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
+import {NzButtonComponent} from "ng-zorro-antd/button";
 
 @Component({
   selector: 'app-section',
@@ -19,7 +20,8 @@ import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
     TranslateModule,
     NzOptionComponent,
     NzSelectComponent,
-    NzInputNumberComponent
+    NzInputNumberComponent,
+    NzButtonComponent
   ]
 })
 export class Section{

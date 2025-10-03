@@ -39,9 +39,9 @@ export class ChatHistory
   }
   miniPhoneAction(){
     if(this.sizeReportService.miniPhoneView()){
+      this.sizeReportService.hideMenu()
     }
   }
-
   async newChat() {
     this.selectId = -1;
     this.miniPhoneAction();
@@ -64,6 +64,7 @@ export class ChatHistory
 
   selectHistory(dataId: number) {
     this.selectId = dataId;
+    this.miniPhoneAction()
     this.store.dispatch(chatHistoryActions.loadSession({sessionId: dataId}))
   }
   // 点击页面其他位置，关闭菜单

@@ -39,102 +39,97 @@
   </ng-container>
 </nz-modal>
 <div class="d-flex flex-column w-100 h-100 bg-theme text-theme">
-  <div class="overflow-auto flex-grow-1 position-relative" #settingPanel>
-    <div class="sticky-top">
-      <div>
-        <div class="d-flex flex-row justify-content-between p-2">
-          @if(miniPhone()){
-            <div >
-              <button nz-button menu="chat-menu"></button>
-            </div>
-          }
-          <div class="d-flex flex-column p-2 mx-2">
-            <div style="font-size: 20px;font-weight: bold;">
-              {{ 'prompts.presetManagement' | translate }}
-            </div>
-          </div>
-          <div class="p-2 mx-0 my-auto px-4">
-            <button nz-button class="border-1 rounded-2" [routerLink]="['/chat']">
-              <span nz-icon nzType="close" nzTheme="outline"></span>
-            </button>
-          </div>
-        </div>
+  <div class="d-flex flex-row justify-content-between p-2">
+    <button nz-button class="mx-2">
+      @if(menuVisible()){
+        <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+      }@else{
+        <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+      }
+    </button>
+    <div class="d-flex flex-column p-2 mx-2">
+      <div style="font-size: 20px;font-weight: bold;">
+        {{ 'prompts.presetManagement' | translate }}
       </div>
     </div>
-
-    <nz-card class="d-flex flex-column rounded-2">
-      <nz-card class="rounded-2">
-        <div class="d-flex flex-row-reverse mb-2">
-          <nz-row>
-            <nz-col>
-              <button nz-button class="rounded-3"
-                      (click)="exportVisible = true"
-              >
-                {{ 'prompts.export' | translate }}
-              </button>
-            </nz-col>
-            <nz-col class="ms-2">
-              <button nz-button class="rounded-3"
-                      (click)="importVisible = true"
-              >
-                {{ 'prompts.import' | translate }}
-              </button>
-            </nz-col>
-          </nz-row>
-        </div>
-        <div class="d-flex flex-row align-items-center">
-          <input nz-input [(ngModel)]="filterText"
-                 (ngModelChange)="filter()"
-                 class="flex-grow-1 h-input" [placeholder]="'prompts.keywordSearch' | translate">
-          <button (click)="createVisible = true"
-                  nz-button class="flex-grow-0 ms-2 rounded-3">
-            {{'prompts.createNew' | translate}}
+    <div class="p-2 my-auto px-4">
+      <button nz-button class="border-1 rounded-2" [routerLink]="['/chat']">
+        <span nz-icon nzType="close" nzTheme="outline"></span>
+      </button>
+    </div>
+  </div>
+  <nz-card class="d-flex flex-column rounded-2 flex-grow-1 overflow-y-auto">
+    <nz-card class="rounded-2">
+      <div class="d-flex flex-row-reverse mb-2">
+        <nz-row>
+          <nz-col>
+            <button nz-button class="rounded-3"
+                    (click)="exportVisible = true"
+            >
+              {{ 'prompts.export' | translate }}
+            </button>
+          </nz-col>
+          <nz-col class="ms-2">
+            <button nz-button class="rounded-3"
+                    (click)="importVisible = true"
+            >
+              {{ 'prompts.import' | translate }}
+            </button>
+          </nz-col>
+        </nz-row>
+      </div>
+      <div class="d-flex flex-row align-items-center">
+        <input nz-input [(ngModel)]="filterText"
+               (ngModelChange)="filter()"
+               class="flex-grow-1 h-input" [placeholder]="'prompts.keywordSearch' | translate">
+        <button (click)="createVisible = true"
+                nz-button class="flex-grow-0 ms-2 rounded-3">
+          {{'prompts.createNew' | translate}}
+        </button>
+      </div>
+    </nz-card>
+    <nz-card class="rounded-2">
+      <div class="d-flex flex-row-reverse m-2">
+        <div>
+          <button nz-button (click)="deleteAllFilterPrompts()">
+            {{'prompts.deleteAll' | translate}}
           </button>
         </div>
-      </nz-card>
-      <nz-card class="rounded-2">
-        <div class="d-flex flex-row-reverse m-2">
-          <div>
-            <button nz-button (click)="deleteAllFilterPrompts()">
-              {{'prompts.deleteAll' | translate}}
-            </button>
-          </div>
-        </div>
-        @if (filterPrompts.length === 0) {
-          {{'prompts.nothing' | translate}}
-          <nz-skeleton></nz-skeleton>
+      </div>
+      @if (filterPrompts.length === 0) {
+        {{'prompts.nothing' | translate}}
+        <nz-skeleton></nz-skeleton>
+      }
+      <div class="d-flex flex-column">
+        @for (prompt of filterPrompts; track prompt.id) {
+          <nz-card>
+            <div class="d-flex flex-row align-items-center justify-content-between">
+              <nz-col>
+                <div>
+                  {{ prompt.title }}
+                </div>
+                <div>
+                  {{ prompt.content.substring(0, 20) }}...
+                </div>
+              </nz-col>
+              <nz-col>
+                <nz-row>
+                  <button nz-button class="rounded-3 ms-1 mb-1"
+                          (click)="lookModalOpen(prompt.id)"
+                  >
+                    {{'prompts.view' | translate}}
+                  </button>
+                  <button nz-button class="rounded-3 ms-1 mb-1"
+                          (click)="deletePrompt(prompt.id)"
+                  >
+                    {{'prompts.delete' | translate}}
+                  </button>
+                </nz-row>
+              </nz-col>
+            </div>
+          </nz-card>
         }
-        <div class="d-flex flex-column">
-          @for (prompt of filterPrompts; track prompt.id) {
-            <nz-card>
-              <div class="d-flex flex-row align-items-center justify-content-between">
-                <nz-col>
-                  <div>
-                    {{ prompt.title }}
-                  </div>
-                  <div>
-                    {{ prompt.content.substring(0, 20) }}...
-                  </div>
-                </nz-col>
-                <nz-col>
-                  <nz-row>
-                    <button nz-button class="rounded-3 ms-1 mb-1"
-                            (click)="lookModalOpen(prompt.id)"
-                    >
-                      {{'prompts.view' | translate}}
-                    </button>
-                    <button nz-button class="rounded-3 ms-1 mb-1"
-                            (click)="deletePrompt(prompt.id)"
-                    >
-                      {{'prompts.delete' | translate}}
-                    </button>
-                  </nz-row>
-                </nz-col>
-              </div>
-            </nz-card>
-          }
-        </div>
-      </nz-card>
+      </div>
     </nz-card>
-  </div>
+  </nz-card>
 </div>

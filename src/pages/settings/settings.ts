@@ -162,4 +162,12 @@ export class Settings {
   }
 
   protected readonly details = details;
+
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
+  }
 }

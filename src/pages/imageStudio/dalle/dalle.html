@@ -12,49 +12,48 @@
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
         <div>模型</div>
-        <nz-select [(ngModel)]="model">
-          <nz-option [nzValue]="'dall-e-3'">dall-e-3</nz-option>
+        <nz-select class="w-100" [(ngModel)]="model">
+          <nz-option [nzValue]="'dall-e-3'" [nzLabel]="'dall-e-3'"></nz-option>
         </nz-select>
         <div>提示词</div>
         <textarea
           nz-input
-          style=""
-          class="fs-6"
+          class="fs-6 w-100"
           [(ngModel)]="prompt"
-          [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+          [nzAutosize]="{ minRows: 2, maxRows: 10 }"
         ></textarea>
         <div>生成数量</div>
         <div class="d-flex flex-row">
-          <nz-slider [nzMin]="1" [nzMax]="10" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
+          <nz-slider class="normal me-2" [nzMin]="1" [nzMax]="10" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
           <nz-input-number [nzMin]="1" [nzMax]="16" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
         </div>
         <div>生成大小</div>
-        <nz-select [(ngModel)]="size">
+        <nz-select class="w-100" [(ngModel)]="size">
           @for(size of sizes;track size){
-            <nz-option [nzValue]="size">{{ size }}</nz-option>
+            <nz-option [nzValue]="size" [nzLabel]="size"></nz-option>
           }
         </nz-select>
         <div>质量</div>
-        <nz-select [(ngModel)]="quality">
+        <nz-select class="w-100" [(ngModel)]="quality">
           @for(quality of qualities;track quality){
-            <nz-option [nzValue]="quality">{{ quality }}</nz-option>
+            <nz-option [nzValue]="quality" [nzLabel]="quality"></nz-option>
           }
         </nz-select>
         <div>风格</div>
-        <nz-select [(ngModel)]="style">
+        <nz-select class="w-100" [(ngModel)]="style">
           @for(style of styles;track style){
-            <nz-option [nzValue]="style">{{ style }}</nz-option>
+            <nz-option [nzValue]="style" [nzLabel]="style"></nz-option>
           }
         </nz-select>
         <div>数据格式</div>
-        <nz-select [(ngModel)]="response_format">
+        <nz-select class="w-100" [(ngModel)]="response_format">
           @for(response_format of image_response_formats;track response_format){
-            <nz-option [nzValue]="response_format">{{ response_format }}</nz-option>
+            <nz-option [nzValue]="response_format" [nzLabel]="response_format"></nz-option>
           }
         </nz-select>
       </div>
-      <div class="sticky-bottom">
-        <button nz-button expand="block" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>
+      <div class="sticky-bottom d-flex justify-content-center w-100 mb-3">
+        <button nz-button class="w-100" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 overflow-y-scroll overflow-x-scroll">

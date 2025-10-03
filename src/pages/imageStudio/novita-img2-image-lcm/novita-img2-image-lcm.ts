@@ -8,7 +8,6 @@ import {FormsModule} from "@angular/forms";
 import {Embedding, Lora, NovitaImg2LcmResponse, TaskImage, UrlImage} from "../../../models/images";
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {NovitaService} from "../../../services/fetch_services";
-import {NgOptimizedImage} from "@angular/common";
 import {NzImageModule} from "ng-zorro-antd/image";
 import {CheckParameter, NovitaInit} from "../toolkits";
 import {ImageModel} from "../toolkits/image-model/image-model";
@@ -43,7 +42,6 @@ import {NzWaveDirective} from "ng-zorro-antd/core/wave";
     NzTooltipDirective,
     TranslateModule,
     NzSwitchComponent,
-    NgOptimizedImage,
     NzWaveDirective
   ]
 })

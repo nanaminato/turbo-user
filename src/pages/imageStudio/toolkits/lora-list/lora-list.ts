@@ -4,6 +4,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {LoraSection} from "../lora-section/lora-section";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzButtonComponent} from "ng-zorro-antd/button";
 
 @Component({
   selector: 'app-lora-list',
@@ -14,7 +15,8 @@ import {TranslateModule} from "@ngx-translate/core";
     NzIconDirective,
     LoraSection,
     NzModalModule,
-    TranslateModule
+    TranslateModule,
+    NzButtonComponent
   ]
 })
 export class LoraList {

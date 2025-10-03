@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
-import {Router, RouterLink, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {AccountLabel} from "../../accounts/account-label/account-label";
 import {NgTemplateOutlet} from "@angular/common";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -29,7 +29,8 @@ import {SizeReportService} from "../../../services/normal-services";
     NzSkeletonComponent,
     NzWaveDirective,
     RouterLink,
-    TranslatePipe
+    TranslatePipe,
+    RouterLinkActive
   ]
 })
 export class TopImage {

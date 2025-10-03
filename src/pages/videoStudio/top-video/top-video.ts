@@ -1,5 +1,5 @@
 import {Component, inject,} from '@angular/core';
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {AccountLabel} from "../../accounts/account-label/account-label";
 import {NgTemplateOutlet} from "@angular/common";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -24,7 +24,8 @@ import {SizeReportService} from "../../../services/normal-services";
       NzWaveDirective,
       RouterLink,
       TranslatePipe,
-      NzIconDirective
+      NzIconDirective,
+      RouterLinkActive
     ]
 })
 export class TopVideo {

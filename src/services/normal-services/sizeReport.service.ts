@@ -20,4 +20,12 @@ export class SizeReportService{
   toggleMenu() {
     this.menuVisible = !this.menuVisible;
   }
+
+  hideMenu() {
+    this.menuVisible = false;
+  }
+
+  showMenu() {
+    this.menuVisible = true;
+  }
 }

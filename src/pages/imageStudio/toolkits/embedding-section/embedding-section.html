@@ -15,5 +15,5 @@
     <div class="ion-color-light">{{'universal.modelName' | translate}}</div>
     <span class="text-break fs-6 bold border-theme rounded-3 px-1" style="min-height: 30px;width: 100%;" (click)="embeddingModalVisible = true">{{embedding!.model_name}}</span>
   </div>
-  <button class="bg-theme text-theme" (click)="emitDelete()"><span nz-icon nzType="close" nzTheme="outline"></span></button>
+  <button nz-button class="bg-theme text-theme" (click)="emitDelete()"><span nz-icon nzType="close" nzTheme="outline"></span></button>
 </div>

@@ -124,4 +124,12 @@ export class PromptStore {
     this.lookPrompt = prompt;
     this.lookVisible = true;
   }
+
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
+  }
 }

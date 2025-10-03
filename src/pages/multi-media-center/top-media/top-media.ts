@@ -1,5 +1,5 @@
 import {Component, inject,} from '@angular/core';
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {NzImageService} from "ng-zorro-antd/image";
 import {AccountLabel} from "../../accounts/account-label/account-label";
 import {NgTemplateOutlet} from "@angular/common";
@@ -25,6 +25,7 @@ import {SizeReportService} from "../../../services/normal-services";
     NzWaveDirective,
     RouterLink,
     TranslatePipe,
+    RouterLinkActive,
   ],
   providers: [
     NzImageService

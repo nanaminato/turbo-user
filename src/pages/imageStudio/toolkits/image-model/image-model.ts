@@ -1,5 +1,5 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import {NzModalComponent, NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
+import {NzModalModule} from "ng-zorro-antd/modal";
 import {NovitaModelSelector} from "../../../media/novita-model-selector/novita-model-selector";
 import {NovitaModel} from "../../../../models/media";
 import {TranslateModule} from "@ngx-translate/core";
@@ -10,9 +10,7 @@ import {TranslateModule} from "@ngx-translate/core";
   styleUrls: ['./image-model.scss'],
   standalone: true,
   imports: [
-    NzModalComponent,
     NovitaModelSelector,
-    NzModalContentDirective,
     NzModalModule,
     TranslateModule
   ]

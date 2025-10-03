@@ -4,6 +4,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {EmbeddingSection} from "../embedding-section/embedding-section";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzButtonComponent} from "ng-zorro-antd/button";
 
 @Component({
   selector: 'app-embedding-list',
@@ -14,7 +15,8 @@ import {TranslateModule} from "@ngx-translate/core";
     NzIconDirective,
     EmbeddingSection,
     NzModalModule,
-    TranslateModule
+    TranslateModule,
+    NzButtonComponent
   ]
 })
 export class EmbeddingList{

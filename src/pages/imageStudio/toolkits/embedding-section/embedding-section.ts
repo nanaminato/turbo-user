@@ -6,6 +6,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {FormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
+import {NzButtonComponent} from "ng-zorro-antd/button";
 
 @Component({
   selector: 'app-embedding-section',
@@ -18,7 +19,8 @@ import {TranslateModule} from "@ngx-translate/core";
     NzModalComponent,
     FormsModule,
     NzModalContentDirective,
-    TranslateModule
+    TranslateModule,
+    NzButtonComponent
 
   ]
 })

@@ -1,3 +1,4 @@
+
 ::-webkit-scrollbar {
   width: 6px; /* 滚动条宽度 */
   height: 6px;
@@ -14,7 +15,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #aaa; /* 鼠标悬停时滑块颜色 */
 }
-
+nz-select.normal, nz-slider.normal {
+  width: 100px;
+}
+nz-select.long, nz-slider.long {
+  width: 200px;
+}
+nz-select.longest, nz-slider.longest {
+  width: 300px;
+}
 .border-box{
   box-sizing: border-box;
 }
@@ -29,4 +38,14 @@ input.ng-dirty.ng-valid{
 }
 .menu{
   max-width: 250px;
+}
+button.active {
+  background-color: #1890ff; /* 你想要的激活色 */
+  color: white;
+}
+.sticky-bottom{
+  z-index: 999!important;
+}
+.sticky-top {
+  z-index: 999!important;
 }

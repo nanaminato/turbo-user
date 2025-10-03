@@ -1,7 +1,7 @@
 <div class="bg-theme text-theme w-100 h-100 d-flex flex-row">
   <div class="w-100 d-flex flex-row">
     <div class="h-100 flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 416px;">
-      <div class="sticky-top px-3">
+      <div class="px-3">
         <button nz-button class="mx-2">
           @if(menuVisible()){
             <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
@@ -17,9 +17,9 @@
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
         <div>{{'video.video-model' | translate}}</div>
         <div class="d-flex mb-2">
-          <nz-select [(ngModel)]="model">
+          <nz-select class="w-100" [(ngModel)]="model">
             @for(videoModel of videoModelChoice; track videoModel){
-              <nz-option [nzValue]="videoModel">{{videoModel}}</nz-option>
+              <nz-option [nzValue]="videoModel" [nzLabel]="videoModel"></nz-option>
             }
           </nz-select>
         </div>
@@ -28,33 +28,35 @@
           <app-section [section]="section" [id]="$index" (delete)="awareDelete($event)"></app-section>
         }
         <div class="d-flex justify-content-center my-1">
-          <button style="width: 100px;"  nz-tooltip nzTooltipTitle="添加新的片段"
+          <button nz-button style="width: 100px;"  nz-tooltip nzTooltipTitle="添加新的片段"
                   (click)="addNewSection()"
-                  class="bg-theme text-theme border-theme d-flex justify-content-center py-3 rounded-3"><span nz-icon nzType="plus" nzTheme="outline"></span></button>
+                  class="bg-theme text-theme border-theme d-flex justify-content-center py-3 rounded-3">
+            <span nz-icon nzType="plus" nzTheme="outline"></span>
+          </button>
         </div>
         <div nz-tooltip nzTooltipTitle="必须提供,至少提供一个,使用,分割">{{'video.negative-prompt'|translate}}</div>
-        <textarea [(ngModel)]="negative_prompt"></textarea>
+        <textarea class="w-100" [(ngModel)]="negative_prompt"></textarea>
         <div>{{'video.width'|translate}}(256-1024)</div>
         <div class="d-flex flex-row">
-          <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-slider>
+          <nz-slider class="normal" [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-slider>
           <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="width"></nz-input-number>
         </div>
 
         <div>{{'video.height'|translate}}(256-1024)</div>
         <div class="d-flex flex-row">
-          <nz-slider [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-slider>
+          <nz-slider class="normal" [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-slider>
           <nz-input-number [nzMin]="256" [nzMax]="1024" [nzStep]="1" [(ngModel)]="height"></nz-input-number>
         </div>
         <app-lora-list [nsfw]="nsfw" [min]="0" [max]="1" [step]="0.1" [default]="0.5" [loras]="loras"></app-lora-list>
         <app-embedding-list [nsfw]="nsfw" [embeddings]="embeddings"></app-embedding-list>
         <div>{{'video.guidance-scale'|translate}}</div>
         <div class="d-flex flex-row">
-          <nz-slider [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
+          <nz-slider class="normal" [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-slider>
           <nz-input-number [nzMin]="2.0" [nzMax]="14.0" [nzStep]="0.1" [(ngModel)]="guidance_scale"></nz-input-number>
         </div>
         <div>{{'video.steps'|translate}}</div>
         <div class="d-flex flex-row">
-          <nz-slider [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
+          <nz-slider class="normal" [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-slider>
           <nz-input-number [nzMin]="1.0" [nzMax]="8.0" [nzStep]="1" [(ngModel)]="steps"></nz-input-number>
         </div>
         <div>{{'video.seed'|translate}}</div>
@@ -65,12 +67,12 @@
           {{'video.clip-skip'|translate}}
         </div>
         <div class="d-flex flex-row">
-          <nz-slider [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-slider>
+          <nz-slider class="normal" [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-slider>
           <nz-input-number [nzMin]="1.0" [nzMax]="12.0" [nzStep]="1" [(ngModel)]="clipSkip"></nz-input-number>
         </div>
       </div>
-      <div class="sticky-bottom">
-        <button nz-button (click)="generateVideo()">{{'universal.generate'|translate}}</button>
+      <div class="w-100 d-flex sticky-bottom justify-content-center mb-3">
+        <button class="w-100" nz-button (click)="generateVideo()">{{'universal.generate'|translate}}</button>
       </div>
     </div>
     <div class="h-100 d-flex flex-grow-1 flex-column overflow-y-scroll overflow-x-scroll">
@@ -80,14 +82,14 @@
           {{'video.running' | translate}}
         }
       </div>
-      <nz-card class="w-100 flex-grow-1 d-flex justify-content-center">
+      <div class="w-100 flex-grow-1 d-flex justify-content-center">
         @if(showVideo){
-          <video controls>
+          <video class="w-75" controls>
             <source [src]="videoUrl" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         }
-      </nz-card>
+      </div>
     </div>
   </div>
 </div>
