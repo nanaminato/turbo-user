@@ -1,35 +1,32 @@
-.history-title {
+.history-title{
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 5px 10px;
+  padding: 5px 10px ;
   font-size: 1em;
   cursor: pointer;
+  .delete-btn {
+    position: absolute;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
 }
-.history-title .delete-btn {
-  position: absolute;
-  right: 10px;
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.selected {
+.selected{
   background: lightblue !important;
 }
-
-.show-delete {
+.show-delete{
   border: 1px solid red;
 }
-
 .context-menu {
   position: fixed;
   background: white;
   border: 1px solid #ccc;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
   z-index: 1000;
   width: 100px;
   user-select: none;
@@ -43,5 +40,3 @@
 .context-menu-item:hover {
   background-color: #eee;
 }
-
-/*# sourceMappingURL=chat-history.css.map */

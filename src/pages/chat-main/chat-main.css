@@ -22,6 +22,7 @@
 }
 .fab-control{
   position: fixed;
+  max-height: 50px;
   top: 28px;
   right: 100px;
 }

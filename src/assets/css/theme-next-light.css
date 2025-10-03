@@ -23,8 +23,7 @@
   color: black !important;
 }
 
-.button-hover:hover,
-.selected {
+.button-hover:hover{
   background-color: #f3f3f3 !important;
 }
 .ant-card

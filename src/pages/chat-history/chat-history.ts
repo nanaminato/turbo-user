@@ -10,16 +10,18 @@ import {historyTitleActions} from "../../systems/store/history-title/history-tit
 import {NgStyle} from "@angular/common";
 import {chatHistoryActions} from "../../systems/store/chat-history/chat-history.actions";
 import {chatActions} from "../../systems/store/system.actions";
+import {SwipeDeleteDirective} from "../../directives/SwipeDeleteDirective";
 
 @Component({
   selector: 'app-chat-history',
   templateUrl: './chat-history.html',
-  styleUrl: './chat-history.css',
+  styleUrl: './chat-history.scss',
   imports: [
     NzButtonModule,
     NzIconModule,
     TranslateModule,
-    NgStyle
+    NgStyle,
+    SwipeDeleteDirective
   ],
   standalone: true
 })
@@ -71,5 +73,17 @@ export class ChatHistory
   @HostListener('document:click')
   onDocumentClick() {
     this.contextMenuVisible = false;
+  }
+
+  deleteButtonsVisible: { [key: number]: boolean } = {};
+
+  showDeleteButton(dataId: number) {
+    // 仅移动端有效
+    this.deleteButtonsVisible = {}
+    this.deleteButtonsVisible[dataId] = true;
+  }
+
+  hideDeleteButton() {
+    this.deleteButtonsVisible = {}
   }
 }

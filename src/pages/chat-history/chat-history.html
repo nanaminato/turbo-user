@@ -14,12 +14,22 @@
   </div>
   <div class="m-2"></div>
   @for(history of historyTitles; track history.dataId){
-    <div class="history-title bg-theme text-theme "
+    <div class="history-title bg-theme text-theme d-flex justify-content-start"
          [class.selected]="selectId===history.dataId"
+         [class.show-delete]="deleteButtonsVisible[history.dataId]"
          (click)="selectHistory(history.dataId)"
          (contextmenu)="onRightClick($event, history.dataId)"
+         appSwipeDelete
+         (swipeLeft)="showDeleteButton(history.dataId)"
+         (swipeRight)="hideDeleteButton()"
     >
-      {{history.title}}
+      <span>
+        {{history.title}}
+      </span>
+      @if(deleteButtonsVisible[history.dataId]){
+        <button class="delete-btn"
+                (click)="deleteHistory(history.dataId)">删除</button>
+      }
     </div>
   }
 </div>
