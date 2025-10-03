@@ -42,7 +42,6 @@ import {SizeReportService} from "../../../services/normal-services";
     EmbeddingList,
     LoraList,
     NzTooltipDirective,
-    NzCardComponent,
     NzSpinComponent,
     TranslateModule,
     NzSwitchComponent,

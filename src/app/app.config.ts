@@ -27,6 +27,7 @@ import {historyTitleReducers} from "../systems/store/history-title/history-title
 import {systemPromptsReducer} from "../systems/store/system-prompts/prompts.reducer";
 import {ChatHistoryEffects} from "../systems/store/chat-history/chat-history.effects";
 import {chatHistoryReducer} from "../systems/store/chat-history/chat-history.reducers";
+import {environment} from "../environments/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,7 +35,7 @@ export const appConfig: ApplicationConfig = {
       lang: 'zh',
       fallbackLang: 'zh',
       loader: provideTranslateHttpLoader({
-        prefix: '/assets/i18n/',
+        prefix: environment.assets,
         suffix: '.json'
       })
     }),
@@ -50,10 +51,6 @@ export const appConfig: ApplicationConfig = {
         sanitize: SecurityContext.HTML,
       }),
     ),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
@@ -67,7 +64,6 @@ export const appConfig: ApplicationConfig = {
         "historyTitle": historyTitleReducers,
         "prompts": systemPromptsReducer,
         "chatHistory": chatHistoryReducer,
-
       },
       {
         runtimeChecks: {
@@ -85,6 +81,9 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
-
+    provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }),
   ]
 };

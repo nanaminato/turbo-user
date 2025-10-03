@@ -22,7 +22,11 @@ import {SizeReportService} from "../../../services/normal-services";
 })
 export class Account {
   sizeReportService: SizeReportService = inject(SizeReportService);
-  miniPhone() {
-    return this.sizeReportService.miniPhoneView();
+  menuVisible() {
+    return this.sizeReportService.menuVisible;
+  }
+
+  toggleMenu() {
+    this.sizeReportService.toggleMenu()
   }
 }
