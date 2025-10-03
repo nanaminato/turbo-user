@@ -86,4 +86,8 @@ export class ChatHistory
   hideDeleteButton() {
     this.deleteButtonsVisible = {}
   }
+
+  showdeleteHistory(dataId: number) {
+    return this.deleteButtonsVisible[dataId] || dataId === this.contextMenuDataId;
+  }
 }
