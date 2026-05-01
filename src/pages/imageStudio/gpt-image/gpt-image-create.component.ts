@@ -11,11 +11,12 @@ import {AuthService} from "../../../auth_module";
 import {FormsModule} from "@angular/forms";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
-import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
+import {NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {SizeReportService} from "../../../services/normal-services";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 
 @Component({
   selector: 'app-dalle',
@@ -30,11 +31,11 @@ import {NzWaveDirective} from "ng-zorro-antd/core/wave";
     FormsModule,
     NzInputNumberComponent,
     NzSliderComponent,
-    NzAutosizeDirective,
     NzInputDirective,
     NzSelectComponent,
     NzOptionComponent,
-    NzWaveDirective
+    NzWaveDirective,
+    CdkTextareaAutosize
   ]
 })
 export class GptImageCreate implements OnInit,DoCheck{

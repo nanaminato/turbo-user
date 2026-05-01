@@ -11,7 +11,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzImageDirective} from "ng-zorro-antd/image";
 import {TtsFile} from "../../../models/media";
-import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
+import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzSpinComponent} from "ng-zorro-antd/spin";
 import {Bs64Handler} from "../../../services/handlers";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
@@ -22,6 +22,7 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 import {SizeReportService} from "../../../services/normal-services";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 
 @Component({
   selector: 'app-openai-text-to-speech',
@@ -41,12 +42,12 @@ import {NzWaveDirective} from "ng-zorro-antd/core/wave";
     NzIconDirective,
     NzButtonComponent,
     NzImageDirective,
-    NzAutosizeDirective,
     NzInputDirective,
     NzSpinComponent,
     TtsFileEditor,
     NzModalModule,
     NzWaveDirective,
+    CdkTextareaAutosize,
   ],
   providers: [
     Bs64Handler

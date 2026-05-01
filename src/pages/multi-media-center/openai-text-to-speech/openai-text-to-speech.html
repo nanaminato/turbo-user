@@ -152,7 +152,10 @@
   </div>
   <div class="d-flex justify-content-center align-items-center p-2">
     <textarea [(ngModel)]="inputText"
-      nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。" [nzAutosize]="{ minRows: 3, maxRows: 10 }"></textarea>
+      nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。"
+      cdkTextareaAutosize cdkAutosizeMinRows="3"
+      cdkAutosizeMaxRows="10"
+    ></textarea>
   </div>
   @if(loading){
     <div class="d-flex align-items-center flex-row m-5">

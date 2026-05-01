@@ -17,8 +17,8 @@
           <span>{{'dialog.retry' | translate}}</span>
         }
       </button>
-      @if(isHover){
-        <div class="d-flex flex-row">
+      @if(isHover()){
+        <div class="d-flex flex-row" animate.enter="enter-animation">
           <button nz-tooltip (click)="triggerEdit()" [nzTooltipTitle]="'dialog.edit' | translate" class="rounded-4 mx-2" nz-button>
             <span nz-icon nzType="edit" nzTheme="outline"></span>
           </button>

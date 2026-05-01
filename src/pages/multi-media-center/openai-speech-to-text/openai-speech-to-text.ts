@@ -9,7 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzAutosizeDirective, NzInputDirective} from "ng-zorro-antd/input";
+import {NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzModalModule} from "ng-zorro-antd/modal";
@@ -17,6 +17,7 @@ import {JsonCodeViewer} from "./json-code-viewer/json-code-viewer";
 import {FileHandler} from "../../../services/handlers/fileHandler";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {SizeReportService} from "../../../services/normal-services";
+import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 
 @Component({
     selector: 'app-openai-speech-to-text',
@@ -34,12 +35,12 @@ import {SizeReportService} from "../../../services/normal-services";
     NzInputNumberComponent,
     NzSliderComponent,
     NzButtonComponent,
-    NzAutosizeDirective,
     NzInputDirective,
     NzModalModule,
     JsonCodeViewer,
     NzModalModule,
-    NzWaveDirective
+    NzWaveDirective,
+    CdkTextareaAutosize
   ],
   providers: [
 

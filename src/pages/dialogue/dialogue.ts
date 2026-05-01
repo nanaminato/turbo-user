@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output, signal} from '@angular/core';
 import {ClipboardService} from "ngx-clipboard";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzImageModule} from "ng-zorro-antd/image";
@@ -76,14 +76,14 @@ export class Dialogue {
     }
     return "assets/svgs/chat-gpt_11zon.jpg";
   }
-  isHover: boolean = false;
+  isHover = signal(false);
 
   onMouseEnter() {
-    this.isHover = true;
+    this.isHover.update(() => true);
   }
 
   onMouseLeave() {
-    this.isHover = false;
+    this.isHover.update(() => false);
   }
 
   triggerEdit() {

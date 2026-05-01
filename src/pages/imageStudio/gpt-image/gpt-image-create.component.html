@@ -23,7 +23,9 @@
           nz-input
           class="fs-6 w-100"
           [(ngModel)]="prompt"
-          [nzAutosize]="{ minRows: 2, maxRows: 10 }"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="10"
         ></textarea>
         <div>生成数量</div>
         <div class="d-flex flex-row">

@@ -1,12 +1,11 @@
 import {
-  ApplicationConfig, importProvidersFrom,
+  ApplicationConfig,
   isDevMode,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection, SecurityContext
+  provideZoneChangeDetection,
 } from '@angular/core';
 import {PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading} from '@angular/router';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
-import {provideAnimations, provideNoopAnimations} from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {jwtInterceptor} from "../systems/interceptors/jwt.interceptor";
@@ -14,7 +13,7 @@ import {routes} from "./app.routes";
 import {NZ_I18N, zh_CN} from "ng-zorro-antd/i18n";
 import {provideServiceWorker} from "@angular/service-worker";
 import {provideTranslateService} from "@ngx-translate/core";
-import {CLIPBOARD_OPTIONS, ClipboardButtonComponent, MarkdownModule} from "ngx-markdown";
+import {CLIPBOARD_OPTIONS, ClipboardButtonComponent,  provideMarkdown} from "ngx-markdown";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AuthEffects} from "../systems/store/auth/auth.effects";
 import {HistoryTitleEffect} from "../systems/store/history-title/history-title.effects";
@@ -31,6 +30,12 @@ import {environment} from "../environments/environment";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideHttpClient(
+      withInterceptors([jwtInterceptor])
+    ),
     provideTranslateService({
       lang: 'zh',
       fallbackLang: 'zh',
@@ -40,24 +45,15 @@ export const appConfig: ApplicationConfig = {
       })
     }),
 
-    importProvidersFrom(
-      MarkdownModule.forRoot({
-        clipboardOptions: {
-          provide: CLIPBOARD_OPTIONS,
-          useValue: {
-            buttonComponent: ClipboardButtonComponent,
-          },
+    provideMarkdown({
+      clipboardOptions: {
+        provide: CLIPBOARD_OPTIONS,
+        useValue: {
+          buttonComponent: ClipboardButtonComponent,
         },
-        sanitize: SecurityContext.HTML,
-      }),
-    ),
-    provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient(),
-    provideHttpClient(withInterceptors([jwtInterceptor])),
-    provideNoopAnimations(),
-    provideAnimations(),
+      },
+    }),
+
     { provide: NZ_I18N, useValue: zh_CN },
     provideStore({
         "config": configurationReducer,

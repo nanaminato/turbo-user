@@ -34,7 +34,7 @@ const routes: Routes = [
       },
       {
         path: "dalle",
-        loadComponent: ()=> import("./dalle/gpt-image-create.component")
+        loadComponent: ()=> import("./gpt-image/gpt-image-create.component")
           .then(c=>c.GptImageCreate)
       },
       {

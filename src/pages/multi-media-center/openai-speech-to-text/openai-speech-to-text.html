@@ -90,7 +90,11 @@
   <div>提示词</div>
   <div class="d-flex justify-content-center align-items-center p-2 mb-5">
     <textarea [(ngModel)]="prompt"
-              nz-input placeholder="请在这里输入一些提示词" [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+              nz-input placeholder="请在这里输入一些提示词"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="3"
+              cdkAutosizeMaxRows="5"
+    ></textarea>
   </div>
   <div class="d-flex justify-content-end">
     <div class="d-flex">
@@ -105,7 +109,11 @@
   }
   <div class="d-flex justify-content-center align-items-center p-2">
     <textarea [(ngModel)]="outputText"
-              nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。" [nzAutosize]="{ minRows: 3, maxRows: 20 }"></textarea>
+              nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="3"
+              cdkAutosizeMaxRows="20"
+    ></textarea>
   </div>
   <div class="justify-content-end d-flex mb-5">
     <button nz-button (click)="viewSourceVisible = true">查看源结果</button>
