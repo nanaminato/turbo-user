@@ -7,4 +7,4 @@ export type {NovitaImg2LcmResponse} from "./novita-img2-lcm-Response";
 export type {DirectImage,UrlImage,ExtraImage} from "./direct-image";
 export type {NovitaTask} from "./novita-task";
 export type {TaskResult, TaskInfo,TaskVideo,TaskExtra,TaskImage} from "./task-result";
-export type {DallE,DallE3Response,ImageDataResult} from "./dalle"
+export type {GptImageCreateRequest,GptImageResponse,ImageDataResult} from "./gpt-image"

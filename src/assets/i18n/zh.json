@@ -236,8 +236,8 @@
     "translation": "翻译"
   },
   "chat-main": {
-    "askChatGPT": "向 ChatGPT 提问...",
-    "potentialErrorNotice": "ChatGPT 可能会出错。考虑检查重要信息。",
+    "askChatGPT": "向 GPT 提问...",
+    "potentialErrorNotice": "GPT 可能会出错。考虑检查重要信息。",
     "ctrlEnterShortcut": "使用快捷键 Ctrl + Enter，快人一步",
     "clearContext": "清空上下文",
     "clear": "清空",

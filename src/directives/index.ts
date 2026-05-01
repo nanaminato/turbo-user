@@ -1,0 +1,1 @@
+export {SwipeDeleteDirective} from "./SwipeDeleteDirective";

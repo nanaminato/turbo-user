@@ -46,6 +46,7 @@ export class ChatHistory
   }
   async newChat() {
     this.selectId = -1;
+    this.contextMenuDataId = null;
     this.miniPhoneAction();
     this.store.dispatch(chatActions.startNewChat());
   }
@@ -60,12 +61,12 @@ export class ChatHistory
   }
   async deleteHistory(dataId: number) {
     this.contextMenuVisible = false;
-    this.contextMenuVisible = false;
     this.store.dispatch(historyTitleActions.delete({ dataId }));
   }
 
   selectHistory(dataId: number) {
     this.selectId = dataId;
+    this.contextMenuDataId = null;
     this.miniPhoneAction()
     this.store.dispatch(chatHistoryActions.loadSession({sessionId: dataId}))
   }

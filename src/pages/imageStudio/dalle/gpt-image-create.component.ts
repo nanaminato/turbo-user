@@ -1,7 +1,7 @@
 import {Component, DoCheck, inject, OnInit} from '@angular/core';
 import {Gallery} from "../gallery/gallery";
 import {TranslateModule} from "@ngx-translate/core";
-import {DallE3Response, TaskImage, UrlImage} from "../../../models/images";
+import {GptImageCreateRequest, GptImageResponse, TaskImage, UrlImage} from "../../../models/images";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
@@ -19,8 +19,8 @@ import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 
 @Component({
   selector: 'app-dalle',
-  templateUrl: './dalle.html',
-  styleUrls: ['./dalle.scss'],
+  templateUrl: './gpt-image-create.component.html',
+  styleUrls: ['./gpt-image-create.component.scss'],
   standalone: true,
   imports: [
     Gallery,
@@ -37,7 +37,7 @@ import {NzWaveDirective} from "ng-zorro-antd/core/wave";
     NzWaveDirective
   ]
 })
-export class Dalle implements OnInit,DoCheck{
+export class GptImageCreate implements OnInit,DoCheck{
 
   constructor(private menuAbleService: MenuAbleService,
               private notification: NzNotificationService,
@@ -51,6 +51,7 @@ export class Dalle implements OnInit,DoCheck{
   loading: boolean = false;
   image_num: number = 1;
   image_num_old: number = 1;
+  image_num_max: number = 1;
   model: string = "dall-e-3";
   prompt: string = "";
   // n: number = 1; image_num
@@ -58,58 +59,87 @@ export class Dalle implements OnInit,DoCheck{
   quality: string = "standard";
   style: string = "vivid";
   response_format: string = "url";
+  background: string = "auto";
+  moderation: string = "auto";
+  output_format: string = "png";
+
+  //gpt-image only
+  backgrounds: string[] = [
+    "transparent",
+    "opaque",
+    "auto"
+  ]
+  //gpt-image only
+  moderations: string[] = [
+    "low",
+    "auto"
+  ]
+  output_formats: string[] = [
+    "png","jpeg","webq"
+  ]
+  //dall3
+  qualities: string[] = [
+    "hd","standard"
+  ];
+  image_response_formats: string[] = [
+    "url",
+    "b64_json"
+  ];
+  //dalle3
   sizes: string[] = [
     "1024x1024",
     "1024x1792",
     "1792x1024"
   ];
-  image_response_formats: string[] = [
-    "url",
-    // "b64_json"
-  ];
-  qualities: string[] = [
-    "hd","standard"
-  ];
+  //dall3
   styles: string[] = [
     "vivid","natural"
   ];
 
   async generateImages() {
     this.loading = true;
-    let result :DallE3Response | undefined;
+    let result :GptImageResponse | undefined;
     try{
-      result = await this.openaiService.dalle({
+      let createRequest: GptImageCreateRequest = {
         model: this.model,
         prompt: this.prompt,
         n: this.image_num,
         size: this.size,
         quality: this.quality,
+        moderation: this.moderation,
+        output_format: this.output_format,
         response_format: this.response_format,
         style: this.style
-      });
+      };
+      if(createRequest.model!.startsWith("dall")){
+        result = await this.openaiService.dallImageCreate(createRequest);
+      }else{
+        result = await this.openaiService.gptImageCreate(createRequest);
+      }
+
     }catch (e:any){
       this.loading = false;
       this.notification.error("生成失败",e.error)
       return;
     }
-    if(result===null||result.results.length===0){
+    if(result===null||result.data===null ||result.data.length===0){
       this.loading = false;
       this.notification.error("生成失败","")
       return;
     }
     this.loading = false;
     this.images!.length = 0;
-    result.results.forEach(image=>{
+    result.data.forEach(image=>{
       this.images?.push({
-        image_url: image.url.length===0? `data:image/png;base64,${image.b64}`: image.url,
+        image_url: this.getImageUrl(image),
         image_url_ttl: "3600",
         image_type: "any"
       })
     });
     let taskImage: TaskImage[] = [];
-    result.results.forEach(image=>{
+    result.data.forEach(image=>{
       taskImage.push({
-        image_url: image.url.length===0? `data:image/png;base64,${image.b64}`: image.url,
+        image_url: this.getImageUrl(image),
         image_url_ttl: 3600,
         image_type: "any"
       })
@@ -128,10 +158,6 @@ export class Dalle implements OnInit,DoCheck{
       date: new Date(),
     });
   }
-
-  showImageMenu() {
-  }
-
   private dalleInit() {
     if(this.image_num_old!==this.image_num){
       this.setSize(this.image_num);
@@ -160,5 +186,53 @@ export class Dalle implements OnInit,DoCheck{
 
   toggleMenu() {
     this.sizeReportService.toggleMenu()
+  }
+  getImageUrl(image: any): string {
+    if (image.url && image.url.length > 0) {
+      return image.url;
+    }
+    if (image.b64Json) {
+      if (image.b64Json.startsWith('data:image/')) {
+        return image.b64Json;
+      }
+      return `data:image/png;base64,${image.b64Json}`;
+    }
+    return '';
+  }
+  //模型切换
+  protected modelChange(event: string) {
+    if(this.model.startsWith("dall")){
+      if(this.model==="dall-e-3"){
+        this.sizes = [
+          "1024x1024",
+          "1024x1792",
+          "1792x1024"
+        ];
+        this.qualities = ["auto","hd","standard"];
+      }else if(this.model==="dall-e-2"){
+        this.sizes = [
+          "256x256",
+          "512x512",
+          "1024x1024"
+        ];
+        this.qualities = ["auto","standard"];
+      }
+    }else{
+      this.sizes = [
+        "1024x1024",
+        "1024x1536",
+        "1536x1024",
+        "auto"
+      ];
+      this.qualities = ["auto","high","medium","low"];
+    }
+    this.size = this.sizes[0];
+    this.quality = this.qualities[0];
+    if(this.model==="dall-e-3"){
+      this.image_num_max = 1;
+      this.image_num = 1;
+    }else{
+      this.image_num_max = 10;
+    }
   }
 }

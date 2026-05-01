@@ -145,8 +145,8 @@
     "translation": "翻訳"
   },
   "chat-main": {
-    "askChatGPT": "ChatGPTに質問する...",
-    "potentialErrorNotice": "ChatGPTにはエラーが発生する可能性があります。重要な情報を確認することを考えてください。",
+    "askChatGPT": "GPTに質問する...",
+    "potentialErrorNotice": "GPTにはエラーが発生する可能性があります。重要な情報を確認することを考えてください。",
     "ctrlEnterShortcut": "Ctrl + Enterキーを使用して素早く送信",
     "clearContext": "コンテキストをクリア",
     "clear": "クリア",

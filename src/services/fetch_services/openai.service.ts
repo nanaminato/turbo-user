@@ -1,6 +1,6 @@
 import {HttpClient} from "@angular/common/http";
 import {ServiceProvider} from "../../roots";
-import {DallE, DallE3Response} from "../../models/images";
+import {GptImageCreateRequest, GptImageResponse} from "../../models/images";
 import {inject, Injectable} from "@angular/core";
 import {TtsRequest, TtsResponse} from "../../models/media/tts";
 import {OpenAiTranslationRequest} from "../../models/media/stt-translation";
@@ -50,11 +50,24 @@ export class OpenaiService{
         })
     })
   }
-  dalle(dalle: DallE){
-    return new Promise<DallE3Response>((resolve,reject)=>{
-      this.http.post<DallE3Response>(`${this.provider.apiUrl}api/media/dall-e-3`,dalle)
+  dallImageCreate(dalle: GptImageCreateRequest){
+    return new Promise<GptImageResponse>((resolve, reject)=>{
+      this.http.post<GptImageResponse>(`${this.provider.apiUrl}api/media/dall-e`,dalle)
         .subscribe({
-          next: (res:DallE3Response)=>{
+          next: (res:GptImageResponse)=>{
+            resolve(res)
+          },
+          error: error=>{
+            reject(error)
+          }
+        })
+    })
+  }
+  gptImageCreate(dalle: GptImageCreateRequest){
+    return new Promise<GptImageResponse>((resolve, reject)=>{
+      this.http.post<GptImageResponse>(`${this.provider.apiUrl}api/media/gpt-image`,dalle)
+        .subscribe({
+          next: (res:GptImageResponse)=>{
             resolve(res)
           },
           error: error=>{

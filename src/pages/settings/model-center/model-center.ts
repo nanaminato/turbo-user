@@ -1,14 +1,12 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
 import {Configuration, DisplayModel, displayModels} from "../../../models";
 import {NumerService} from "../../../services/fetch_services";
-import {ConfigurationService} from "../../../services/db-services";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalContentDirective, NzModalModule} from "ng-zorro-antd/modal";
 import {ModelCustomAdd} from "./model-custom-add/model-custom-add";
 import {UniversalService} from "../../../services/db-services/universal.service";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {NzPopoverDirective} from "ng-zorro-antd/popover";
 import {Store} from "@ngrx/store";
 import {selectConfig} from "../../../systems/store/configuration/configuration.selectors";
@@ -35,11 +33,12 @@ export class ModelCenter implements OnInit {
   config: Configuration | null = null;
   store = inject(Store);
   constructor() {
+    //本地已经设置为可用的模型
     this.store.select(selectConfig).subscribe(config => {
       this.config = config;
       if(config){
         config.chatConfiguration.models.forEach(m=>{
-          this.selectableModels.push(m);
+          this.selectedModels.push(m);
         })
       }
     });
@@ -48,15 +47,18 @@ export class ModelCenter implements OnInit {
   selectedModels: DisplayModel[] = [];
 
   ngOnInit() {
+    //本地预设模型
     displayModels.forEach(e=>{
       this.pushSelectableModel(e);
     });
+    //本地数据库中的可选择模型
     this.universalService.getSelectableModels().then(models=>{
       models?.forEach((m: DisplayModel)=>{
         this.pushSelectableModel(m);
         // console.log("push",m.modelName," local")
       })
     })
+    //服务端支持的所有模型
     this.numerService.getChatModels().subscribe({
       next: models=>{
         models.forEach(m=>{

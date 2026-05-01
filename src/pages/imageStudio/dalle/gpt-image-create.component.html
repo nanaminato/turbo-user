@@ -1,0 +1,91 @@
+<div class="bg-theme text-theme w-100 h-100 d-flex flex-row">
+  <div class="w-100 d-flex flex-row">
+    <div class="h-100 flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 316px;">
+      <div class="px-3">
+        <button nz-button class="mx-2">
+          @if(menuVisible()){
+            <nz-icon nzType="menu-fold" nzTheme="outline" (click)="toggleMenu()"/>
+          }@else{
+            <nz-icon nzType="menu-unfold" nzTheme="outline" (click)="toggleMenu()" />
+          }
+        </button>
+      </div>
+      <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
+        <div>模型</div>
+        <nz-select class="w-100" [(ngModel)]="model" (ngModelChange)="modelChange($event)">
+          <nz-option [nzValue]="'dall-e-3'" [nzLabel]="'dall-e-3'"></nz-option>
+          <nz-option [nzValue]="'dall-e-2'" [nzLabel]="'dall-e-2'"></nz-option>
+          <nz-option [nzValue]="'gpt-image-1.5'" [nzLabel]="'gpt-image-1.5'"></nz-option>
+          <nz-option [nzValue]="'gpt-image-2'" [nzLabel]="'gpt-image-2'"></nz-option>
+        </nz-select>
+        <div>提示词</div>
+        <textarea
+          nz-input
+          class="fs-6 w-100"
+          [(ngModel)]="prompt"
+          [nzAutosize]="{ minRows: 2, maxRows: 10 }"
+        ></textarea>
+        <div>生成数量</div>
+        <div class="d-flex flex-row">
+          <nz-slider class="normal me-2" [nzMin]="1" [nzMax]="image_num_max" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
+          <nz-input-number [nzMin]="1" [nzMax]="image_num_max" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
+        </div>
+        @if(this.model.startsWith("gpt")){
+          <div>背景</div>
+          <nz-select class="w-100" [(ngModel)]="background">
+            @for(background of backgrounds; track background){
+              <nz-option [nzValue]="background" [nzLabel]="background"></nz-option>
+            }
+          </nz-select>
+          <div>调节</div>
+          <nz-select class="w-100" [(ngModel)]="moderation">
+            @for(moderation of moderations; track moderation){
+              <nz-option [nzValue]="moderation" [nzLabel]="moderation"></nz-option>
+            }
+          </nz-select>
+        }
+        <div>生成大小</div>
+        <nz-select class="w-100" [(ngModel)]="size">
+          @for(size of sizes;track size){
+            <nz-option [nzValue]="size" [nzLabel]="size"></nz-option>
+          }
+        </nz-select>
+        <div>质量</div>
+        <nz-select class="w-100" [(ngModel)]="quality">
+          @for(quality of qualities;track quality){
+            <nz-option [nzValue]="quality" [nzLabel]="quality"></nz-option>
+          }
+        </nz-select>
+
+        @if(this.model.startsWith("dall-e-3")){
+          <div>风格</div>
+          <nz-select class="w-100" [(ngModel)]="style">
+            @for(style of styles;track style){
+              <nz-option [nzValue]="style" [nzLabel]="style"></nz-option>
+            }
+          </nz-select>
+        }
+        <div>图片格式</div>
+        <nz-select class="w-100" [(ngModel)]="output_format">
+          @for(output_format of output_formats;track output_format){
+            <nz-option [nzValue]="output_format" [nzLabel]="output_format"></nz-option>
+          }
+        </nz-select>
+        @if(this.model.startsWith("dall")){
+          <div>数据格式</div>
+          <nz-select class="w-100" [(ngModel)]="response_format">
+            @for(response_format of image_response_formats;track response_format){
+              <nz-option [nzValue]="response_format" [nzLabel]="response_format"></nz-option>
+            }
+          </nz-select>
+        }
+      </div>
+      <div class="sticky-bottom d-flex justify-content-center w-100 mb-3">
+        <button nz-button class="w-100" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>
+      </div>
+    </div>
+    <div class="h-100 d-flex flex-grow-1 overflow-y-scroll overflow-x-scroll">
+      <app-gallery class="w-100" #gallery [loading]="loading" [images]="images"></app-gallery>
+    </div>
+  </div>
+</div>

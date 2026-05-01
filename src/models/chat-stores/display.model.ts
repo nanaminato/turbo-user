@@ -28,7 +28,6 @@ export const displayModels =
     generator.generate("gpt-3.5-turbo-16k"),
     generator.generate("gemini-pro",true),
     generator.generate("claude-2.1"),
-    generator.generateWithName("gemini(转接)","gemini-pro_o",true),
     generator.generate("claude-3-opus-20240229"),
     generator.generate("claude-3-sonnet-20240229"),
     generator.generate("claude-3-haiku-20240307"),

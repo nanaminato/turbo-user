@@ -9,6 +9,7 @@ import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {UniversalService} from "../../../../services/db-services/universal.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
+import {ImagePresentPipe} from "../../../../pipes";
 
 @Component({
   selector: 'app-task-item',
@@ -21,7 +22,8 @@ import {TranslateModule} from "@ngx-translate/core";
     NzImageModule,
     NzButtonComponent,
     NzPopconfirmDirective,
-    TranslateModule
+    TranslateModule,
+    ImagePresentPipe
   ]
 })
 export class TaskItem {
@@ -48,15 +50,6 @@ export class TaskItem {
         }
       );
     });
-  }
-  present(image: TaskImage) {
-    if (image.image_url!.startsWith('http')) {
-      return image.image_url!;
-    }
-    if (image.image_url!?.startsWith("asset")) {
-      return image.image_url!;
-    }
-    return "data:image/png;base64," + image.image_url!;
   }
 
   protected readonly confirm = confirm;

@@ -4,6 +4,7 @@ import {
   Input,
   ViewChild
 } from '@angular/core';
+import {ImageService} from "../../../services/util-service";
 
 @Component({
   selector: 'app-landscape',
@@ -24,7 +25,7 @@ export class Landscape
   @ViewChild('imgEle')
   imgEle: ElementRef | undefined;
 
-  constructor() {
+  constructor(private imageService: ImageService) {
 
   }
 
@@ -32,13 +33,7 @@ export class Landscape
     if (this.loading) {
       return "assets/placeholders/loading.png";
     }
-    if (this.source?.startsWith('http')) {
-      return this.source;
-    }
-    if (this.source?.startsWith("asset")) {
-      return this.source;
-    }
-    return "data:image/png;base64," + this.source;
+    return this.imageService.format(this.source);
   }
 
   @Input()

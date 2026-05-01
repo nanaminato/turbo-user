@@ -29,7 +29,7 @@
     @if(task?.taskResult!==undefined){
       @if(task?.task_type==='image'){
         @for(image of task!.taskResult?.images; track image){
-          <img nz-image class="m-1" width="200" height="200" [nzSrc]="present(image)"/>
+          <img nz-image class="m-1" width="200" height="200" [nzSrc]="image.image_url | imagePresent"/>
         }
       }
       @else if(task?.task_type==='video'){

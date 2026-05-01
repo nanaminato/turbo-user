@@ -224,8 +224,8 @@
     "translation": "Translation"
   },
   "chat-main": {
-    "askChatGPT": "Ask ChatGPT...",
-    "potentialErrorNotice": "ChatGPT might encounter errors. Consider checking important information.",
+    "askChatGPT": "Ask GPT...",
+    "potentialErrorNotice": "GPT might encounter errors. Consider checking important information.",
     "ctrlEnterShortcut": "Use Ctrl + Enter shortcut for quick action",
     "clearContext": "Clear Context",
     "clear": "Clear",

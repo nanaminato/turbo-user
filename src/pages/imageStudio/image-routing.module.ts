@@ -34,8 +34,8 @@ const routes: Routes = [
       },
       {
         path: "dalle",
-        loadComponent: ()=> import("./dalle/dalle")
-          .then(c=>c.Dalle)
+        loadComponent: ()=> import("./dalle/gpt-image-create.component")
+          .then(c=>c.GptImageCreate)
       },
       {
         path: "task-lib",
