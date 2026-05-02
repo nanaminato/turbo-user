@@ -84,7 +84,7 @@ export class APIMartImage implements OnInit,DoCheck{
   ]
   prompt: string = "";
   size: string = "1:1";
-  sizes: string[] = [
+  sizes_normal: string[] = [
     "1:1",
     "3:2",
     "2:3",
@@ -99,6 +99,7 @@ export class APIMartImage implements OnInit,DoCheck{
     "21:9",
     "9:21"
   ]
+  sizes = this.sizes_normal;
   resolution: string = "1k";
   resolutions: string[] = [
     "1k",
@@ -359,6 +360,7 @@ export class APIMartImage implements OnInit,DoCheck{
   ]
   protected resolutionChange() {
     if(this.resolution==="4k" ){
+      this.sizes = this.highResolutionAvailableSize;
       let index = this.highResolutionAvailableSize.indexOf(this.size);
       if(index > -1){
 
@@ -367,6 +369,9 @@ export class APIMartImage implements OnInit,DoCheck{
         let sizes = this.highResolutionAvailableSize.join(", ")
         this.notification.warning("图像的比例自动改变了",`4k模式下支持的比例为${sizes}, 由于之前的比例不被支持, 自动替换为${this.size}`)
       }
+    }else{
+      this.sizes = this.sizes_normal;
     }
   }
+
 }

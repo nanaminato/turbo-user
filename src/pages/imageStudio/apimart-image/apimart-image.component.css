@@ -33,7 +33,7 @@
 
 .image-item {
   position: relative;
-  width: 100px;
+  width: auto;
   height: 100px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -41,9 +41,9 @@
 }
 
 .image-item img {
-  width: 100%;
+  width: auto;
+  max-width: 200px;
   height: 100%;
-  object-fit: cover;
 }
 
 .delete-overlay {
