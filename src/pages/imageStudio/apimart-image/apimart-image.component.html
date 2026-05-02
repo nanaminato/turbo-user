@@ -40,7 +40,7 @@
         <div>
           分辨率
         </div>
-        <nz-select class="w-100" [(ngModel)]="resolution">
+        <nz-select class="w-100" [(ngModel)]="resolution" (ngModelChange)="resolutionChange()">
           @for(resolution of resolutions;track resolution){
             <nz-option [nzValue]="resolution" [nzLabel]="resolution"></nz-option>
           }
@@ -147,8 +147,6 @@
             }
           </div>
         </div>
-
-
       </div>
       <div class="sticky-bottom d-flex justify-content-center w-100 mb-3">
         <button nz-button class="w-100" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>

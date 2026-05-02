@@ -310,11 +310,7 @@ export class APIMartImage implements OnInit,DoCheck{
     return false; // 返回 false 停止上传流程
   };
   private async handleLocalFile(nzFile: NzUploadFile, type: 'list' | 'mask') {
-    // nz-upload 包装后的 File 对象在 originFileObj 中
     const file = nzFile as unknown as File;
-    // 注意：有些版本可能是 nzFile.originFileObj，如果 nzFile 直接传进来不行，就用下面这行：
-    // const file = (nzFile as any).originFileObj || nzFile;
-
     try {
       const base64 = await fileToBase64(file);
       if (type === 'list') {
@@ -352,5 +348,25 @@ export class APIMartImage implements OnInit,DoCheck{
       }
     ];
     this.nzImageService.preview(images);
+  }
+  highResolutionAvailableSize: string[] = [
+    "16:9",
+    "9:16",
+    "2:1",
+    "1:2",
+    "21:9",
+    "9:21"
+  ]
+  protected resolutionChange() {
+    if(this.resolution==="4k" ){
+      let index = this.highResolutionAvailableSize.indexOf(this.size);
+      if(index > -1){
+
+      }else{
+        this.size = this.highResolutionAvailableSize[0];
+        let sizes = this.highResolutionAvailableSize.join(", ")
+        this.notification.warning("图像的比例自动改变了",`4k模式下支持的比例为${sizes}, 由于之前的比例不被支持, 自动替换为${this.size}`)
+      }
+    }
   }
 }
