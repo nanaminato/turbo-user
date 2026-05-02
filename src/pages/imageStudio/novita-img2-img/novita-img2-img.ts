@@ -211,7 +211,7 @@ export class NovitaImg2Img implements OnInit, DoCheck, NovitaInit, CheckParamete
       task_id: novitaTask.task_id,
       account_id: this.authService.user!.id,
       date: new Date(),
-      task_type: "image"
+      task_type: "novita => image"
     };
     this.universalService.addOrUpdateGenerateTask(generateTask).then(t=>{
       this.notification.info("获取到task_id","");

@@ -9,6 +9,7 @@ import {AuthService, RequestService, SendService} from "../../../auth_module";
 import {ChatHistoryTitle} from "../../../models";
 import {selectHistoryTitle} from "./history-title.selectors";
 import {authActions} from "../system.actions";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Injectable()
 export class HistoryTitleEffect {
@@ -37,9 +38,11 @@ export class HistoryTitleEffect {
             const merged = addWithMerge(historyTitles, safeDbTitles);
             return historyTitleActions.loadSuccess({ historyTitles: merged });
           }),
-          catchError(() =>
-            of(historyTitleActions.loadFailure()) // 你需要定义 loadFailure Action
-          )
+          catchError((err) => {
+            // 提取具体的错误信息
+            const errorMessage = err.error?.message || err.message || '服务器连接失败，请稍后再试';
+            return of(historyTitleActions.loadFailure({ error: errorMessage }));
+          })
         );
       })
     )
@@ -53,7 +56,7 @@ export class HistoryTitleEffect {
     )
   );
   requestService = inject(RequestService)
-  loadHistoryFromHttpSuccess$ = createEffect(() =>
+  loadHistoryFromHttp$ = createEffect(() =>
     this.actions$.pipe(
       ofType(historyTitleActions.loadFromHttp),
       withLatestFrom(
@@ -75,7 +78,11 @@ export class HistoryTitleEffect {
             const merged = addWithMerge(historyTitles, safeResponse);
             return historyTitleActions.loadSuccess({ historyTitles: merged });
           }),
-          catchError(() => of(historyTitleActions.loadFailure()))
+          catchError((err) => {
+            // 提取具体的错误信息
+            const errorMessage = err.error?.message || err.message || '服务器连接失败，请稍后再试';
+            return of(historyTitleActions.loadFailure({ error: errorMessage }));
+          })
         );
       })
     )
@@ -102,5 +109,18 @@ export class HistoryTitleEffect {
       )
     })
   ));
+  messageService: NzMessageService = inject(NzMessageService);
+  loadFailure$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(historyTitleActions.loadFailure),
+        // 使用 tap 执行副作用（弹窗），不改变流
+        tap(({ error }) => {
+          this.messageService.error(`加载历史记录失败: ${error}`, {
+            nzDuration: 3000 // 持续3秒
+          });
+        })
+      ),
+    { dispatch: false } // 必须设置，因为这里不返回新的 Action
+  );
 
 }

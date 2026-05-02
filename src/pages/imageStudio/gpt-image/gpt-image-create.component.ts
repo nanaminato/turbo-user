@@ -154,7 +154,7 @@ export class GptImageCreate implements OnInit,DoCheck{
     this.universalService.addOrUpdateGenerateTask({
       task_id: Date.now()+'',
       account_id: this.authService.user!.id!,
-      task_type: "image",
+      task_type: "any => image",
       taskResult: taskResult,
       date: new Date(),
     });

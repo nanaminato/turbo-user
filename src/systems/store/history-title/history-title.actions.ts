@@ -8,7 +8,7 @@ export const historyTitleActions = createActionGroup({
     'load from db': emptyProps(),
     'load from http': emptyProps(),
     "load success":  props<{ historyTitles: ChatHistoryTitle[] }>(),
-    'load failure': emptyProps(),
+    'load failure': props<{ error: string }>(),
     'new historyTitle': props<{title: ChatHistoryTitle}>(),
     'clear': emptyProps(),
     'delete': props<{dataId: number}>(),  // 触发删除

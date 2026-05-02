@@ -33,9 +33,14 @@ const routes: Routes = [
           .then(c=>c.NovitaImg2Img)
       },
       {
-        path: "dalle",
+        path: "gpt-image",
         loadComponent: ()=> import("./gpt-image/gpt-image-create.component")
           .then(c=>c.GptImageCreate)
+      },
+      {
+        path: 'APIMart-image',
+        loadComponent: ()=> import("./apimart-image/apimart-image.component")
+          .then((m)=>m.APIMartImage),
       },
       {
         path: "task-lib",

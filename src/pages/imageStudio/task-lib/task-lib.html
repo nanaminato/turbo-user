@@ -13,7 +13,7 @@
       {{'universal.reload'|translate}}
     </button>
   </div>
-  <nz-card class="rounded-3 tasks m-2">
+  <nz-card class="rounded-3 tasks m-2 overflow-auto">
     @for(task of generateTasks; track task){
       <nz-card class="my-1">
         <app-task-item [task]="task" [index]="$index" (delete)="awareDeleteItem($event)"></app-task-item>

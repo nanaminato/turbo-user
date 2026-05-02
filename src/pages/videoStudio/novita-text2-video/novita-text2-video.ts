@@ -198,7 +198,7 @@ export class NovitaText2Video implements DoCheck, NovitaInit {
       task_id: novitaTask.task_id,
       account_id: this.authService.user!.id,
       date: new Date(),
-      task_type: "video"
+      task_type: "novita => video"
     };
     this.universalService.addOrUpdateGenerateTask(generateTask).then(t => {
       this.notification.info("获取到task_id", "");

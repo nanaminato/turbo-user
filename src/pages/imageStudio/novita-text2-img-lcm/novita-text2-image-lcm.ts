@@ -213,7 +213,7 @@ export class NovitaText2ImageLcm implements OnInit, DoCheck,NovitaInit,CheckPara
     this.universalService.addOrUpdateGenerateTask({
       task_id: Date.now()+'',
       account_id: this.authService.user!.id!,
-      task_type: "image",
+      task_type: "novita => image",
       taskResult: result,
       date: new Date(),
     });

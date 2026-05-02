@@ -23,6 +23,8 @@ export class AccountInformation implements OnInit{
   authService: AuthService = inject(AuthService);
   call: AuthCallService = inject(AuthCallService);
   roles: Role[] | undefined;
+  constructor(private msg: NzMessageService) {
+  }
   get user(){
     return this.authService.user;
   }
@@ -35,6 +37,9 @@ export class AccountInformation implements OnInit{
     this.call.getRolesWithUserId(this.user?.id!).subscribe({
       next: (roles: Role[]) =>{
         this.roles = roles;
+      },
+      error: err => {
+        this.msg.error(err.message);
       }
     })
   }

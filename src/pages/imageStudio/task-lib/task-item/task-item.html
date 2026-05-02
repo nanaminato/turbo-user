@@ -20,19 +20,19 @@
   <div class="d-flex flex-row-reverse">
     <button nz-button nz-popconfirm
             class="mx-2"
-            [nzPopconfirmTitle]="'Are you sure delete this task? task_id='+task?.task_id"
+            [nzPopconfirmTitle]="'确定要删除该项目吗? task_id='+task?.task_id"
             nzPopconfirmPlacement="bottom"
             (nzOnConfirm)="deleteItem(task!)">{{'universal.delete' | translate}}</button>
-    <button nz-button (click)="recheck_task_status(task!.task_id!)">{{'storeHouse.get-task-result' | translate}}</button>
+    <button nz-button (click)="recheck_task_status(task!)">{{'storeHouse.get-task-result' | translate}}</button>
   </div>
   <div class="w-100 d-flex flex-wrap flex-row">
     @if(task?.taskResult!==undefined){
-      @if(task?.task_type==='image'){
+      @if(getFormat(task!.task_type)==='image'){
         @for(image of task!.taskResult?.images; track image){
           <img nz-image class="m-1" width="200" height="200" [nzSrc]="image.image_url | imagePresent"/>
         }
       }
-      @else if(task?.task_type==='video'){
+      @else if(getFormat(task!.task_type)==='video'){
         @for(video of task!.taskResult?.videos;track video){
           <video controls>
             <source [src]="video.video_url!" type="video/mp4">

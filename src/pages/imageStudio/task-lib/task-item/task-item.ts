@@ -10,6 +10,7 @@ import {UniversalService} from "../../../../services/db-services/universal.servi
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
 import {ImagePresentPipe} from "../../../../pipes";
+import {ApimartService} from "../../../../services/fetch_services/apimart.service";
 
 @Component({
   selector: 'app-task-item',
@@ -31,25 +32,52 @@ export class TaskItem {
 
   constructor(private notification: NzNotificationService,
               private novitaService: NovitaService,
-              private universalService: UniversalService) { }
+              private universalService: UniversalService,
+              private apiMartService: ApimartService) { }
 
   @Input()
   index: number | undefined;
   @Output()
   delete = new EventEmitter<number>();
-  recheck_task_status(task_id: string) {
-    if(task_id.indexOf('-')===-1){
-      this.notification.error("不符合的类型","");
+  recheck_task_status(task: GenerateTask) {
+    if(task.taskResult?.images!==undefined || task.taskResult?.videos!==undefined){
+      this.notification.warning("警告","已经取得到了结果，无需再次取得。")
       return;
     }
-    this.novitaService.novitaTask(task_id).then(res=>{
-      this.task!.taskResult = res;
-      this.universalService.addOrUpdateGenerateTask(this.task!).then(
-        c=>{
-          this.notification.info("获取结果成功，并保存到数据库中","")
+    let task_id = task.task_id??"";
+    if(task.task_type!.startsWith("apimart")){
+      this.apiMartService.getApiMartTask(task_id).then(res=>{
+        if(res.data?.completed!==0){
+          const resultData = res?.data?.result?.images?.[0];
+          const imageUrls: string[] = resultData?.url || [];
+          const taskImages: TaskImage[] = imageUrls.map(url => ({
+            image_url: url,
+            image_url_ttl: 3600,
+            nsfw_detection_result: ""
+          }));
+          task.taskResult = {
+            images: taskImages
+          };
+          this.universalService.addOrUpdateGenerateTask(this.task!).then(
+            c=>{
+              this.notification.info("获取结果成功，并保存到数据库中","")
+            }
+          );
+        }else{
+          this.notification.info(res.data.status,`please wait! ${res.data.status}`);
         }
-      );
-    });
+      });
+    }else if (task.task_type!.startsWith("novita")){
+      this.novitaService.novitaTask(task_id).then(res=>{
+        this.task!.taskResult = res;
+        this.universalService.addOrUpdateGenerateTask(this.task!).then(
+          c=>{
+            this.notification.info("获取结果成功，并保存到数据库中","")
+          }
+        );
+      });
+    }
+
   }
 
   protected readonly confirm = confirm;
@@ -59,5 +87,15 @@ export class TaskItem {
       this.notification.success("删除成功","")
     });
     this.delete.emit(this.index);
+  }
+  getFormat(taskType?: string) {
+    if(!taskType){
+      return "undefined";
+    }
+    let index = taskType.indexOf(">");
+    if(index > -1){
+      return taskType.substring(index + 1).trim();
+    }
+    return taskType.trim();
   }
 }

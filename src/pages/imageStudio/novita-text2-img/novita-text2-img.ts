@@ -202,7 +202,7 @@ export class NovitaText2Img implements OnInit,DoCheck,
       return;
     }
     if(novitaTask.task_id==="null"){
-      this.notification.error("生成视频失败,task_id=null","");
+      this.notification.error("生成图片失败,task_id=null","");
       return;
     }
 
@@ -210,7 +210,7 @@ export class NovitaText2Img implements OnInit,DoCheck,
       task_id: novitaTask.task_id,
       account_id: this.authService.user!.id,
       date: new Date(),
-      task_type: "image"
+      task_type: "novita => image"
     };
     this.universalService.addOrUpdateGenerateTask(generateTask).then(t=>{
       this.notification.info("获取到task_id","");

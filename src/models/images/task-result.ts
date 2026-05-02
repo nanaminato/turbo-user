@@ -1,7 +1,7 @@
 export interface TaskResult {
   extra?: TaskExtra;
   images?: TaskImage[];
-  videos: TaskVideo[];
+  videos?: TaskVideo[];
 }
 
 export interface TaskExtra {
