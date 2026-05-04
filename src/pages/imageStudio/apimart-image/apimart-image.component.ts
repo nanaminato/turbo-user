@@ -227,9 +227,7 @@ export class APIMartImage implements OnInit,DoCheck{
     }));
 
     // 3. 更新 generateTask 并调用服务
-    generateTask.taskResult = {
-      images: taskImages
-    };
+    generateTask.images = imageUrls;
     this.universalService.addOrUpdateGenerateTask(generateTask).then(() => {
       this.notification.info("存储响应结果", "");
     });
@@ -242,8 +240,6 @@ export class APIMartImage implements OnInit,DoCheck{
       image_url_ttl: String(expiresAt),
       image_type: "image",
     }));
-
-
   }
   private apiMartImageInit() {
     if(this.image_num_old!==this.image_num){

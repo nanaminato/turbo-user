@@ -1,9 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {GenerateTask} from "../../../../models/media";
 import {NzColDirective} from "ng-zorro-antd/grid";
 import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
-import {TaskImage} from "../../../../models/images";
-import {NovitaService} from "../../../../services/fetch_services";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {UniversalService} from "../../../../services/db-services/universal.service";
@@ -31,7 +29,6 @@ export class TaskItem {
   @Input() task: GenerateTask | undefined;
 
   constructor(private notification: NzNotificationService,
-              private novitaService: NovitaService,
               private universalService: UniversalService,
               private apiMartService: ApimartService) { }
 
@@ -39,8 +36,9 @@ export class TaskItem {
   index: number | undefined;
   @Output()
   delete = new EventEmitter<number>();
+
   recheck_task_status(task: GenerateTask) {
-    if(task.taskResult?.images!==undefined || task.taskResult?.videos!==undefined){
+    if(task.images!==undefined || task.videos!==undefined){
       this.notification.warning("警告","已经取得到了结果，无需再次取得。")
       return;
     }
@@ -49,15 +47,7 @@ export class TaskItem {
       this.apiMartService.getApiMartTask(task_id).then(res=>{
         if(res.data?.completed!==0){
           const resultData = res?.data?.result?.images?.[0];
-          const imageUrls: string[] = resultData?.url || [];
-          const taskImages: TaskImage[] = imageUrls.map(url => ({
-            image_url: url,
-            image_url_ttl: 3600,
-            nsfw_detection_result: ""
-          }));
-          task.taskResult = {
-            images: taskImages
-          };
+          task.images = resultData?.url || [];
           this.universalService.addOrUpdateGenerateTask(this.task!).then(
             c=>{
               this.notification.info("获取结果成功，并保存到数据库中","")
@@ -67,21 +57,9 @@ export class TaskItem {
           this.notification.info(res.data.status,`please wait! ${res.data.status}`);
         }
       });
-    }else if (task.task_type!.startsWith("novita")){
-      this.novitaService.novitaTask(task_id).then(res=>{
-        this.task!.taskResult = res;
-        this.universalService.addOrUpdateGenerateTask(this.task!).then(
-          c=>{
-            this.notification.info("获取结果成功，并保存到数据库中","")
-          }
-        );
-      });
     }
-
   }
-
   protected readonly confirm = confirm;
-
   deleteItem(task: GenerateTask) {
     this.universalService.deleteGenerateTask(task).then(c=>{
       this.notification.success("删除成功","")

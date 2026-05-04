@@ -13,11 +13,6 @@ export const routes: Routes = [
       import('../pages/imageStudio/image.module').then(m => m.ImageModule),
   },
   {
-    path: 'video-studio',
-    loadChildren: () =>
-      import('../pages/videoStudio/video.module').then(m => m.VideoModule),
-  },
-  {
     path: 'media-studio',
     loadChildren: () =>
       import('../pages/multi-media-center/media.module').then(m => m.MediaModule),

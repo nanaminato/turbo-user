@@ -14,7 +14,8 @@
     "video-studio": "Video Studio",
     "nsfw": "nsfw",
     "modelName": "Model Name",
-    "strength": "Strength"
+    "strength": "Strength",
+    "reset": "reset"
   },
   "storeHouse": {
     "task-id": "task id",
@@ -159,7 +160,9 @@
     "standardSpeedIs1": "Standard Speed is 1",
     "speechToTextPropertiesSTT": "Speech to Text Properties (STT)",
     "samplingTemperature": "Sampling Temperature",
-    "temperatureSamplingBetweenZeroAndOne": "Temperature: Between 0 and 1"
+    "temperatureSamplingBetweenZeroAndOne": "Temperature: Between 0 and 1",
+    "resetDataBase": "Reset Local Database",
+    "resetDataBaseConfirm": "Are you sure you want to reset the local database? This will result in the loss of any data that has not been synced online. (Used to force-handle database exceptions)"
   },
   "prompts": {
     "presetManagement": "Prompts Management",

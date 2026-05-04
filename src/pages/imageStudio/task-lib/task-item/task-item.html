@@ -26,18 +26,10 @@
     <button nz-button (click)="recheck_task_status(task!)">{{'storeHouse.get-task-result' | translate}}</button>
   </div>
   <div class="w-100 d-flex flex-wrap flex-row">
-    @if(task?.taskResult!==undefined){
+    @if(task?.images!==undefined){
       @if(getFormat(task!.task_type)==='image'){
-        @for(image of task!.taskResult?.images; track image){
-          <img nz-image class="m-1 task-image" [nzSrc]="image.image_url | imagePresent"/>
-        }
-      }
-      @else if(getFormat(task!.task_type)==='video'){
-        @for(video of task!.taskResult?.videos;track video){
-          <video controls>
-            <source [src]="video.video_url!" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
+        @for(url of task!.images; track url){
+          <img nz-image class="m-1 task-image" [nzSrc]="url | imagePresent"/>
         }
       }
     }

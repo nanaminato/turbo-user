@@ -1,5 +1,5 @@
 import {inject, Injectable} from "@angular/core";
-import {DBSchema, IDBPDatabase, openDB} from "idb";
+import {DBSchema, deleteDB, IDBPDatabase, openDB} from "idb";
 import {
   ChatHistory,
   ChatHistoryTitle,
@@ -12,6 +12,7 @@ import {CONFIGURATION} from "../../models/chat-stores/configuration.interface";
 import {GenerateTask} from "../../models/media";
 import {Store} from "@ngrx/store";
 import {dbActions} from "../../systems/store/system.actions";
+const DB_VERSION = 2;
 @Injectable({
   providedIn: "root"
 })
@@ -23,51 +24,40 @@ export class DbService{
       this.store.dispatch(dbActions.loadSuccess());
     });
   }
+
   async initDb(){
-    this.idbDb = await openDB('chatDb-v1', 1, {
-      upgrade(db) {
-        // 删除所有旧版本的数据（与本版本有关联的数据表）
-        if (db.objectStoreNames.contains("chatHistories")) {
-          db.deleteObjectStore("chatHistories");
-        }
-        db.createObjectStore("chatHistories",
-          { keyPath: 'dataId'});
+    this.idbDb = await openDB('chatDb-v1', DB_VERSION, {
+      upgrade(db, oldVersion, newVersion, transaction) {
+        console.log(`Updating DB from ${oldVersion} to ${newVersion}`);
 
-        if (db.objectStoreNames.contains("chatHistoryTitles")) {
-          db.deleteObjectStore("chatHistoryTitles");
-        }
-        db.createObjectStore("chatHistoryTitles",
-          { keyPath: 'dataId' });
+        // --- 基础初始化：如果表不存在则创建 ---
+        const ensureStore = (name: string, options?: IDBObjectStoreParameters) => {
+          // @ts-ignore
+          if (!db.objectStoreNames.contains(name)) {
+            // @ts-ignore
+            db.createObjectStore(name, options);
+          }
+        };
 
-        if (db.objectStoreNames.contains("configuration")) {
-          db.deleteObjectStore("configuration")
-        }
-        db.createObjectStore("configuration")
+        ensureStore("chatHistories", { keyPath: 'dataId' });
+        ensureStore("chatHistoryTitles", { keyPath: 'dataId' });
+        ensureStore("configuration");
+        ensureStore("chatInterface", { keyPath: 'dataId' });
+        ensureStore("systemPrompt", { keyPath: "id" });
+        ensureStore("selectableModel", { keyPath: "modelValue" });
 
-        if(db.objectStoreNames.contains("chatInterface")){
-          db.deleteObjectStore("chatInterface")
+        // --- 针对 generateTask 的专门重构逻辑 ---
+        if (oldVersion < 2) {
+          // 如果版本小于 2，说明需要更新 generateTask
+          if (db.objectStoreNames.contains("generateTask")) {
+            // 如果你只是改了对象内部属性，不需要删除 store
+            // 但如果你改了 keyPath，则必须删除重建
+            db.deleteObjectStore("generateTask");
+          }
+          db.createObjectStore("generateTask", { keyPath: "task_id" });
+
+          console.log("generateTask store has been refactored.");
         }
-        db.createObjectStore("chatInterface",{
-          keyPath: 'dataId'
-        });
-        if(db.objectStoreNames.contains("systemPrompt")){
-          db.deleteObjectStore("systemPrompt");
-        }
-        db.createObjectStore("systemPrompt",{
-          keyPath: "id"
-        });
-        if(db.objectStoreNames.contains("selectableModel")){
-          db.deleteObjectStore("selectableModel");
-        }
-        db.createObjectStore("selectableModel",{
-          keyPath: "modelValue"
-        });
-        if(db.objectStoreNames.contains("generateTask")){
-          db.deleteObjectStore("generateTask");
-        }
-        db.createObjectStore("generateTask",{
-          keyPath: "task_id"
-        })
       },
     });
   }
@@ -161,6 +151,25 @@ export class DbService{
       }
     }
     return id;
+  }
+  /**
+   * 彻底重置数据库：删除所有数据并应用最新架构
+   */
+  async forceFactoryReset() {
+    if (this.idbDb) {
+      this.idbDb.close(); // 必须先关闭连接，否则删除操作会卡死
+    }
+
+    console.warn("Deleting database...");
+    await deleteDB('chatDb-v1');
+
+    // 重新初始化
+    await this.initDb();
+
+    // 通知 Store 或 UI 刷新状态
+    this.store.dispatch(dbActions.loadSuccess());
+
+    console.log("Database has been reset to the latest schema.");
   }
 
 }

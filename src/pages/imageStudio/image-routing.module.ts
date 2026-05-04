@@ -9,28 +9,8 @@ const routes: Routes = [
       {
         path: "",
         pathMatch:"full",
-        redirectTo:"novita-lcm-txt2img",
+        redirectTo:"gpt-image",
 
-      },
-      {
-        path: 'novita-lcm-txt2img',
-        loadComponent: ()=>import("./novita-text2-img-lcm/novita-text2-image-lcm")
-          .then(c=>c.NovitaText2ImageLcm)
-      },
-      {
-        path: "novita-lcm-img2img",
-        loadComponent: ()=> import("./novita-img2-image-lcm/novita-img2-image-lcm")
-          .then(c=>c.NovitaImg2ImageLcm)
-      },
-      {
-        path: "novita-txt2img",
-        loadComponent: ()=> import("./novita-text2-img/novita-text2-img")
-          .then(c=>c.NovitaText2Img)
-      },
-      {
-        path: "novita-img2img",
-        loadComponent: ()=> import("./novita-img2-img/novita-img2-img")
-          .then(c=>c.NovitaImg2Img)
       },
       {
         path: "gpt-image",

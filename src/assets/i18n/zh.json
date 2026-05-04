@@ -14,7 +14,10 @@
     "video-studio": "视频工作室",
     "nsfw": "无内容审查",
     "modelName": "模型名",
-    "strength": "偏向度"
+    "strength": "偏向度",
+    "reset": "重置",
+    "confirm": "确认",
+    "cancel": "取消"
   },
   "storeHouse": {
     "task-id": "生成任务Id",
@@ -171,7 +174,10 @@
     "standardSpeedIs1": "使用 1.0 是标准语速",
     "speechToTextPropertiesSTT": "语音转文字属性 (STT)",
     "samplingTemperature": "STT 采样温度 (temperature)",
-    "temperatureSamplingBetweenZeroAndOne": "采样温度，介于 0 和 1 之间。较高的值（如 0.8）将使输出更加随机，而较低的值（如 0.2）将使其更加集中和确定性。 如果设置为 0，模型将使用对数概率自动升高温度，直到达到特定阈值"
+    "temperatureSamplingBetweenZeroAndOne": "采样温度，介于 0 和 1 之间。较高的值（如 0.8）将使输出更加随机，而较低的值（如 0.2）将使其更加集中和确定性。 如果设置为 0，模型将使用对数概率自动升高温度，直到达到特定阈值",
+    "resetDataBase": "重置本地数据库",
+    "resetDataBaseConfirm": "确定要重置本地数据库吗, 这将会丢失没有联网存储的数据。(用来强制处理数据库异常)"
+
   },
   "prompts": {
     "presetManagement": "预设管理",

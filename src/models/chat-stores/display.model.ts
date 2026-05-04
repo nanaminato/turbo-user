@@ -23,17 +23,12 @@ export class DisplayModelGenerator{
 export const generator = new DisplayModelGenerator();
 export const displayModels =
   [
-    generator.generate("gpt-3.5-turbo-1106"),
-    generator.generate("gpt-3.5-turbo"),
-    generator.generate("gpt-3.5-turbo-16k"),
-    generator.generate("gemini-pro",true),
-    generator.generate("claude-2.1"),
-    generator.generate("claude-3-opus-20240229"),
-    generator.generate("claude-3-sonnet-20240229"),
-    generator.generate("claude-3-haiku-20240307"),
-    generator.generate("gpt-4"),
-    generator.generate("gpt-4-1106-preview"),
-    generator.generate("gpt-4-vision-preview",true),
-    generator.generate("gpt-4-turbo",true)
+    generator.generate("gpt-5.4-mini", true),
+    generator.generate("grok-4.3", true),
+    generator.generate("deepseek-v4-flash"),
+    generator.generate("xiaomi-mimo-v2.5", true),
+    generator.generate("claude-sonnet-4-6", true),
+    generator.generate("gemini-3.1-pro-preview", true),
+    generator.generate("gemini-3-flash-preview-free"),
   ];
 

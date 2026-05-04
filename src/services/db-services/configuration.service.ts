@@ -11,8 +11,8 @@ export class ConfigurationService {
   default_configuration(): Configuration {
     return {
       model: {
-        modelName: "gpt-3.5-turbo-16k",
-        modelValue: "gpt-3.5-turbo-16k",
+        modelName: "gpt-4.1-mini",
+        modelValue: "gpt-4.1-mini",
         vision: false
       },
       chatConfiguration: {

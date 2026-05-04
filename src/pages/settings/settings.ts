@@ -1,7 +1,7 @@
 import {Component, ElementRef, inject, Renderer2, ViewChild} from '@angular/core';
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzFormModule} from "ng-zorro-antd/form";
-import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzModalModule, NzModalService} from "ng-zorro-antd/modal";
 import {NzCardModule} from "ng-zorro-antd/card";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzIconModule} from "ng-zorro-antd/icon";
@@ -21,13 +21,14 @@ import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "../../services/normal-services";
 import {Configuration, DynamicConfig} from "../../models";
-import {ConfigurationService} from "../../services/db-services";
+import {ConfigurationService, DbService} from "../../services/db-services";
 import {ModelCenter} from "./model-center/model-center";
 import {details} from "../../models/enumerates/enum.type";
 import {ServiceProvider} from "../../roots";
 import {themes} from '../../themes/theme'
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 import {Store} from "@ngrx/store";
+import {NzMessageService} from "ng-zorro-antd/message";
 export const languages: string[] = [
   'zh','en','jp'
 ];
@@ -67,7 +68,10 @@ export class Settings {
               private renderer: Renderer2,
               private translate: TranslateService,
               private dynamicConfigService: DynamicConfigService,
-              private serviceProvider: ServiceProvider
+              private serviceProvider: ServiceProvider,
+              private modal: NzModalService,
+              private message: NzMessageService,
+              private dbService: DbService
               ) {
     this.store.select(selectConfig).subscribe(config => {
       this.config = config;
@@ -169,5 +173,30 @@ export class Settings {
 
   toggleMenu() {
     this.sizeReportService.toggleMenu()
+  }
+
+  protected isResetting: unknown;
+  protected showResetConfirm() {
+    const title = this.translate.instant('settings.resetDataBase');
+    const content = this.translate.instant('settings.resetDataBaseConfirm');
+    const okText = this.translate.instant('universal.confirm') || 'OK';
+    const cancelText = this.translate.instant('universal.cancel') || 'Cancel';
+
+    this.modal.confirm({
+      nzTitle: title,
+      nzContent: content,
+      nzOkText: okText,
+      nzOkDanger: true, // 使确认按钮显示为红色（危险操作）
+      nzCancelText: cancelText,
+      nzOnOk: async () => this.handleReset()
+    });
+  }
+
+  private async handleReset() {
+    this.isResetting = true;
+    console.log('正在执行数据库重置...');
+    this.isResetting = false;
+    await this.dbService.forceFactoryReset();
+    this.message.success(this.translate.instant('universal.success'));
   }
 }

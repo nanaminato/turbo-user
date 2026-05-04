@@ -137,25 +137,12 @@ export class GptImageCreate implements OnInit,DoCheck{
         image_type: "any"
       })
     });
-    let taskImage: TaskImage[] = [];
-    result.data.forEach(image=>{
-      taskImage.push({
-        image_url: this.getImageUrl(image),
-        image_url_ttl: 3600,
-        image_type: "any"
-      })
-    });
-    let taskResult = {
-      images: taskImage,
-      videos: [
 
-      ]
-    };
     this.universalService.addOrUpdateGenerateTask({
       task_id: Date.now()+'',
       account_id: this.authService.user!.id!,
       task_type: "any => image",
-      taskResult: taskResult,
+      images: result.data.map(f=> this.getImageUrl(f)),
       date: new Date(),
     });
   }
