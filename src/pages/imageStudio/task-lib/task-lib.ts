@@ -57,6 +57,10 @@ export class TaskLib implements OnInit {
             let findTask = this.generateTasks.find(t=>t.task_id===task.task_id);
             if(!findTask){
               this.generateTasks.push(task);
+            }else{
+              //修改引用，使得可以即时显示
+              findTask.images = task.images;
+              findTask.videos = task.videos;
             }
           });
         }
