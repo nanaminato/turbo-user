@@ -7,7 +7,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {UniversalService} from "../../../services/db-services/universal.service";
-import {AuthService} from "../../../auth_module";
+import {AuthService, SendManagerService} from "../../../auth_module";
 import {FormsModule} from "@angular/forms";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
@@ -17,6 +17,7 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {SizeReportService} from "../../../services/normal-services";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import {GenerateTask} from "../../../models/media";
 
 @Component({
   selector: 'app-dalle',
@@ -44,7 +45,8 @@ export class GptImageCreate implements OnInit,DoCheck{
               private notification: NzNotificationService,
               private universalService: UniversalService,
               private openaiService: OpenaiService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private sendService: SendManagerService) {
     this.menuAbleService.enableImage();
     this.dalleInit();
   }
@@ -137,14 +139,15 @@ export class GptImageCreate implements OnInit,DoCheck{
         image_type: "any"
       })
     });
-
-    this.universalService.addOrUpdateGenerateTask({
+    let task: GenerateTask = {
       task_id: Date.now()+'',
       account_id: this.authService.user!.id!,
       task_type: "any => image",
       images: result.data.map(f=> this.getImageUrl(f)),
       date: new Date(),
-    });
+    };
+    await this.universalService.addOrUpdateGenerateTask(task);
+    await this.sendService.sendTask(task)
   }
   private dalleInit() {
     if(this.image_num_old!==this.image_num){

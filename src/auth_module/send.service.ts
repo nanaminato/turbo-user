@@ -2,8 +2,7 @@ import {inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {ServiceProvider} from "../roots";
 import {ChatHistory, ChatHistoryTitle, ChatInterface} from "../models";
-import {AuthCallService} from "./auth-call.service";
-import {NzMessageService} from "ng-zorro-antd/message";
+import {GenerateTask} from "../models/media";
 
 @Injectable({
   providedIn: "root"
@@ -30,6 +29,9 @@ export class SendService {
         model: chatMessage.model
       });
   }
+  sendTask(task: GenerateTask){
+    return this.http.post<any>(`${this.provider.apiUrl}api/receiver/task`,task);
+  }
   updateHistory(chatHistory: ChatHistory){
     return this.http.put<any>(`${this.provider.apiUrl}api/receiver/history`,
       {
@@ -49,10 +51,16 @@ export class SendService {
         model: chatMessage.model
       });
   }
+  updateTask(task: GenerateTask){
+    return this.http.put<any>(`${this.provider.apiUrl}api/receiver/task`,task);
+  }
   deleteHistory(historyDataId: number){
     return this.http.delete<any>(`${this.provider.apiUrl}api/receiver/history/${historyDataId}`);
   }
   deleteMessage(historyDataId: number, messageDataId: number){
     return this.http.delete<any>(`${this.provider.apiUrl}api/receiver/message/${historyDataId}/${messageDataId}`);
+  }
+  deleteTask(taskId: string){
+    return this.http.delete<any>(`${this.provider.apiUrl}api/receiver/task/${taskId}`);
   }
 }

@@ -9,6 +9,7 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
 import {ImagePresentPipe} from "../../../../pipes";
 import {ApimartService} from "../../../../services/fetch_services/apimart.service";
+import {SendManagerService} from "../../../../auth_module";
 
 @Component({
   selector: 'app-task-item',
@@ -30,7 +31,8 @@ export class TaskItem {
 
   constructor(private notification: NzNotificationService,
               private universalService: UniversalService,
-              private apiMartService: ApimartService) { }
+              private apiMartService: ApimartService,
+              private sendService: SendManagerService) { }
 
   @Input()
   index: number | undefined;
@@ -38,10 +40,12 @@ export class TaskItem {
   delete = new EventEmitter<number>();
 
   recheck_task_status(task: GenerateTask) {
-    if(task.images!==undefined || task.videos!==undefined){
-      this.notification.warning("警告","已经取得到了结果，无需再次取得。")
-      return;
-    }
+    let images = task.images;
+    let videos = task.videos;
+    // if((images&&images.length > 0) || (videos && videos.length > 0)) {
+    //   this.notification.warning("警告","已经取得到了结果，无需再次取得。")
+    //   return;
+    // }
     let task_id = task.task_id??"";
     if(task.task_type!.startsWith("apimart")){
       this.apiMartService.getApiMartTask(task_id).then(res=>{
@@ -50,6 +54,7 @@ export class TaskItem {
           task.images = resultData?.url || [];
           this.universalService.addOrUpdateGenerateTask(this.task!).then(
             c=>{
+              this.sendService.updateTask(this.task!);
               this.notification.info("获取结果成功，并保存到数据库中","")
             }
           );

@@ -1,9 +1,8 @@
 import {inject, Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {ServiceProvider} from "../roots";
-import {AuthCallService} from "./auth-call.service";
-import {NzMessageService} from "ng-zorro-antd/message";
 import {ChatHistoryTitle, ChatInterface} from "../models";
+import {GenerateTask} from "../models/media";
 
 @Injectable({
   providedIn: "root"
@@ -19,5 +18,8 @@ export class RequestService{
       historyDataId: historyDataId,
       messageIds: messageIds
     });
+  }
+  requestTasks(taskIds: string[]){
+    return this.http.post<GenerateTask[]>(`${this.provider.apiUrl}api/request/tasks`,{taskIds: taskIds});
   }
 }

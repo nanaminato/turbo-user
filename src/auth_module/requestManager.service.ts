@@ -2,6 +2,7 @@ import {inject, Injectable} from "@angular/core";
 import {RequestService} from "./request.service";
 import {ChatHistoryTitle, ChatInterface} from "../models";
 import {DbService} from "../services/db-services";
+import {GenerateTask} from "../models/media";
 
 @Injectable({
   providedIn: "root"
@@ -66,6 +67,21 @@ export class RequestManagerService{
         .subscribe({
           next: async (messages: ChatInterface[])=>{
             resolve(messages);
+          },
+          error: error=>{
+            reject({
+              error: "服务错误"
+            })
+          }
+        })
+    });
+  }
+  fetchTasks(taskIds: string[]): Promise<GenerateTask[] | undefined>{
+    return new Promise(async (resolve, reject)=>{
+      this.requestService.requestTasks(taskIds)
+        .subscribe({
+          next: async (tasks: GenerateTask[])=>{
+            resolve(tasks);
           },
           error: error=>{
             reject({

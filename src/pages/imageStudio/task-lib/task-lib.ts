@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {GenerateTask} from "../../../models/media";
 import {UniversalService} from "../../../services/db-services/universal.service";
-import {AuthService} from "../../../auth_module";
+import {AuthService, RequestManagerService, RequestService} from "../../../auth_module";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {TaskItem} from "./task-item/task-item";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -31,7 +31,8 @@ export class TaskLib implements OnInit {
   private sizeReportService = inject(SizeReportService);
   constructor(private universalService: UniversalService,
               private authService: AuthService,
-              private notification: NzNotificationService) {
+              private notification: NzNotificationService,
+              private requestService: RequestManagerService) {
 
   }
   loadGenerateTasks(){
@@ -39,6 +40,27 @@ export class TaskLib implements OnInit {
       this.generateTasks.length = 0;
       this.generateTasks.push(...(tasks as GenerateTask[]));
       this.notification.success("加载成功","");
+      let taskIds = [];
+      if(tasks){
+        for(let i = 0; i < tasks.length; i++){
+          let images = tasks[i].images;
+          let videos = tasks[i].videos;
+          if((images&&images.length > 0)||(videos&&videos.length > 0)){
+            taskIds.push(tasks[i].task_id!);
+          }
+        }
+      }
+      this.requestService.fetchTasks(taskIds).then(tasks => {
+        if(tasks && tasks.length > 0){
+          tasks.forEach(task => {
+            this.universalService.addOrUpdateGenerateTask(task);
+            let findTask = this.generateTasks.find(t=>t.task_id===task.task_id);
+            if(!findTask){
+              this.generateTasks.push(task);
+            }
+          });
+        }
+      });
     })
   }
   ngOnInit() {

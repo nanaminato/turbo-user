@@ -1,6 +1,7 @@
 import {inject, Injectable} from "@angular/core";
 import {ChatHistory, ChatHistoryTitle, ChatInterface} from "../models";
 import {SendService} from "./send.service";
+import {GenerateTask} from "../models/media";
 
 @Injectable({
   providedIn: "root"
@@ -26,6 +27,19 @@ export class SendManagerService{
         .subscribe({
           next: (msg:any)=>{
             resolve("上传信息成功")
+          },
+          error: err => {
+            reject()
+          }
+        })
+    });
+  }
+  sendTask(task: GenerateTask): Promise<string>{
+    return new Promise((resolve,reject)=>{
+      this.sendService.sendTask(task)
+        .subscribe({
+          next: (msg:any)=>{
+            resolve("上传生成任务成功")
           },
           error: err => {
             reject()
@@ -59,6 +73,19 @@ export class SendManagerService{
         })
     });
   }
+  updateTask(task: GenerateTask): Promise<string>{
+    return new Promise((resolve,reject)=>{
+      this.sendService.updateTask(task)
+        .subscribe({
+          next: (msg:any)=>{
+            resolve("更新生成任务成功")
+          },
+          error: err => {
+            reject()
+          }
+        })
+    });
+  }
   deleteHistory(historyDataId: number): Promise<string>{
     return new Promise((resolve,reject)=>{
       this.sendService.deleteHistory(historyDataId)
@@ -78,6 +105,19 @@ export class SendManagerService{
         .subscribe({
           next: (msg:any)=>{
             resolve("删除消息成功")
+          },
+          error: err => {
+            reject()
+          }
+        })
+    })
+  }
+  deleteTask(taskId: string): Promise<string>{
+    return new Promise((resolve,reject)=>{
+      this.sendService.deleteTask(taskId)
+        .subscribe({
+          next: (msg:any)=>{
+            resolve("删除生成结果成功")
           },
           error: err => {
             reject()

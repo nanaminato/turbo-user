@@ -13,7 +13,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {MenuAbleService} from "../../../services/normal-services/menu-able.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {UniversalService} from "../../../services/db-services/universal.service";
-import {AuthService} from "../../../auth_module";
+import {AuthService, SendManagerService} from "../../../auth_module";
 import {FormsModule} from "@angular/forms";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
@@ -28,7 +28,6 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {fileToBase64} from "../../../services/utils";
 import {NzUploadComponent, NzUploadFile} from "ng-zorro-antd/upload";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzImageService} from "ng-zorro-antd/image";
 
 @Component({
@@ -64,7 +63,8 @@ export class APIMartImage implements OnInit,DoCheck{
               private apimartService: ApimartService,
               private authService: AuthService,
               private msg: NzMessageService,
-              private nzImageService: NzImageService) {
+              private nzImageService: NzImageService,
+              private sendService: SendManagerService) {
     this.menuAbleService.enableImage();
     this.apiMartImageInit();
   }
@@ -192,6 +192,7 @@ export class APIMartImage implements OnInit,DoCheck{
     };
     this.universalService.addOrUpdateGenerateTask(generateTask).then(t=>{
       this.notification.info("获取到task_id","");
+      this.sendService.sendTask(generateTask)
     });
 
     let taskResult: APIMartTaskResponse | undefined;
@@ -230,6 +231,7 @@ export class APIMartImage implements OnInit,DoCheck{
     generateTask.images = imageUrls;
     this.universalService.addOrUpdateGenerateTask(generateTask).then(() => {
       this.notification.info("存储响应结果", "");
+      this.sendService.updateTask(generateTask)
     });
 
     // 4. 重置并更新当前组件的展示图片 (this.images)
