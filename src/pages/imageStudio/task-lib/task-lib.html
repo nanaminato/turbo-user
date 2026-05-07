@@ -12,6 +12,9 @@
     <button nz-button class="m-3 rounded-3" (click)="loadGenerateTasks()" >
       {{'universal.reload'|translate}}
     </button>
+    <button nz-button class="m-3 rounded-3" (click)="stopAllTask()" >
+      {{'image.stopAllTasks'|translate}}
+    </button>
   </div>
   <nz-card class="rounded-3 tasks m-2 overflow-auto">
     @for(task of generateTasks; track task){

@@ -50,7 +50,8 @@
     "sampler": "采样器",
     "loraSelector": "图像Lora模型选择器",
     "modelSelector": "图像生成模型选择器",
-    "embeddingSelector": "图像嵌入模型选择器"
+    "embeddingSelector": "图像嵌入模型选择器",
+    "stopAllTasks": "停止所有任务"
   },
   "video": {
     "running": "视频正在生成中...",

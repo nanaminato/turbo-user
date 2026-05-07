@@ -10,6 +10,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {SizeReportService} from "../../../services/normal-services";
+import {ImageTaskService} from "../../../services/fetch_services";
 
 @Component({
   selector: 'app-task-lib',
@@ -32,7 +33,8 @@ export class TaskLib implements OnInit {
   constructor(private universalService: UniversalService,
               private authService: AuthService,
               private notification: NzNotificationService,
-              private requestService: RequestManagerService) {
+              private requestService: RequestManagerService,
+              public taskService: ImageTaskService) {
 
   }
   loadGenerateTasks(){
@@ -58,7 +60,6 @@ export class TaskLib implements OnInit {
             if(!findTask){
               this.generateTasks.push(task);
             }else{
-              //修改引用，使得可以即时显示
               findTask.images = task.images;
               findTask.videos = task.videos;
             }
@@ -81,5 +82,10 @@ export class TaskLib implements OnInit {
 
   toggleMenu() {
     this.sizeReportService.toggleMenu()
+  }
+
+  protected stopAllTask() {
+    this.taskService.stopAllTasks();
+    this.notification.success("已停止所有Task","");
   }
 }

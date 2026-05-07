@@ -29,6 +29,7 @@ import {fileToBase64} from "../../../services/utils";
 import {NzUploadComponent, NzUploadFile} from "ng-zorro-antd/upload";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzImageService} from "ng-zorro-antd/image";
+import {ImageTaskService} from "../../../services/fetch_services";
 
 @Component({
   selector: 'app-dalle',
@@ -64,7 +65,8 @@ export class APIMartImage implements OnInit,DoCheck{
               private authService: AuthService,
               private msg: NzMessageService,
               private nzImageService: NzImageService,
-              private sendService: SendManagerService) {
+              private sendService: SendManagerService,
+              private imageTaskService: ImageTaskService,) {
     this.menuAbleService.enableImage();
     this.apiMartImageInit();
   }
@@ -192,14 +194,20 @@ export class APIMartImage implements OnInit,DoCheck{
     };
     this.universalService.addOrUpdateGenerateTask(generateTask).then(t=>{
       this.notification.info("获取到task_id","");
-      this.sendService.sendTask(generateTask)
+      this.sendService.sendTask(generateTask);
     });
+    this.imageTaskService.registerTask(task_id);
 
     let taskResult: APIMartTaskResponse | undefined;
     let first = true;
     while(taskResult===undefined ||
         (taskResult.data?.progress !== 100 ||taskResult.data.completed===0)
       ){
+      if (!this.imageTaskService.isTaskRunning(task_id)) {
+        console.log(`任务 ${task_id} 已在外部停止`);
+        this.loading = false;
+        return;
+      }
       if(!first){
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
@@ -210,33 +218,25 @@ export class APIMartImage implements OnInit,DoCheck{
           console.log("progress...",taskResult.data?.progress);
         }
       }catch (error: any){
+        this.imageTaskService.unregisterTask(task_id);
         this.loading = false;
         this.notification.info("获取任务结果失败","");
         return;
       }
     }
-    // 1. 提取核心数据，使用可选链简化判断
     const resultData = taskResult?.data?.result?.images?.[0];
     const imageUrls: string[] = resultData?.url || [];
     const expiresAt = resultData?.expiresAt ?? '';
 
-    // 2. 构造 generateTask 所需的 images 数组
-    const taskImages: TaskImage[] = imageUrls.map(url => ({
-      image_url: url,
-      image_url_ttl: 3600,
-      nsfw_detection_result: ""
-    }));
-
-    // 3. 更新 generateTask 并调用服务
     generateTask.images = imageUrls;
     this.universalService.addOrUpdateGenerateTask(generateTask).then(() => {
       this.notification.info("存储响应结果", "");
       this.sendService.updateTask(generateTask)
     });
 
-    // 4. 重置并更新当前组件的展示图片 (this.images)
+    this.imageTaskService.unregisterTask(task_id);
     this.loading = false;
-    // 建议直接赋值，如果 this.images 必须保持引用，则使用 map 重新构造
+
     this.images = imageUrls.map(url => ({
       image_url: url,
       image_url_ttl: String(expiresAt),

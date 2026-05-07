@@ -32,7 +32,7 @@ export class TaskItem {
   constructor(private notification: NzNotificationService,
               private universalService: UniversalService,
               private apiMartService: ApimartService,
-              private sendService: SendManagerService) { }
+              private sendService: SendManagerService,) { }
 
   @Input()
   index: number | undefined;
@@ -42,10 +42,10 @@ export class TaskItem {
   recheck_task_status(task: GenerateTask) {
     let images = task.images;
     let videos = task.videos;
-    // if((images&&images.length > 0) || (videos && videos.length > 0)) {
-    //   this.notification.warning("警告","已经取得到了结果，无需再次取得。")
-    //   return;
-    // }
+    if((images&&images.length > 0) || (videos && videos.length > 0)) {
+      this.notification.warning("警告","已经取得到了结果，无需再次取得。")
+      return;
+    }
     let task_id = task.task_id??"";
     if(task.task_type!.startsWith("apimart")){
       this.apiMartService.getApiMartTask(task_id).then(res=>{
@@ -66,10 +66,12 @@ export class TaskItem {
   }
   protected readonly confirm = confirm;
   deleteItem(task: GenerateTask) {
-    this.universalService.deleteGenerateTask(task).then(c=>{
-      this.notification.success("删除成功","")
-    });
-    this.delete.emit(this.index);
+    this.sendService.deleteTask(task.task_id!).then(msg=>{
+      this.universalService.deleteGenerateTask(task).then(c=>{
+        this.notification.success(msg,"")
+      });
+      this.delete.emit(this.index);
+    })
   }
   getFormat(taskType?: string) {
     if(!taskType){
