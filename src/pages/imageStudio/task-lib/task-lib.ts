@@ -11,6 +11,9 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {SizeReportService} from "../../../services/normal-services";
 import {ImageTaskService} from "../../../services/fetch_services";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {FormsModule} from "@angular/forms";
+import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 
 @Component({
   selector: 'app-task-lib',
@@ -23,20 +26,22 @@ import {ImageTaskService} from "../../../services/fetch_services";
     NzButtonComponent,
     TranslateModule,
     NzIconDirective,
-    NzWaveDirective
+    NzWaveDirective,
+    NzSwitchComponent,
+    FormsModule,
+    NzTooltipDirective
 
   ]
 })
 export class TaskLib implements OnInit {
   generateTasks: GenerateTask[] = [];
   private sizeReportService = inject(SizeReportService);
-  constructor(private universalService: UniversalService,
-              private authService: AuthService,
-              private notification: NzNotificationService,
-              private requestService: RequestManagerService,
-              public taskService: ImageTaskService) {
+  private universalService: UniversalService = inject(UniversalService);
+  private authService: AuthService = inject(AuthService);
+  private notification: NzNotificationService = inject(NzNotificationService);
+  private requestService: RequestManagerService = inject(RequestManagerService);
+  private taskService: ImageTaskService = inject(ImageTaskService);
 
-  }
   loadGenerateTasks(){
     this.universalService.getAllGenerateTaskOfUser(this.authService.user!.id).then(tasks=>{
       this.generateTasks.length = 0;
@@ -70,6 +75,7 @@ export class TaskLib implements OnInit {
   }
   ngOnInit() {
     this.loadGenerateTasks();
+    this.loadProxySettings();
   }
 
   awareDeleteItem($event: number) {
@@ -87,5 +93,13 @@ export class TaskLib implements OnInit {
   protected stopAllTask() {
     this.taskService.stopAllTasks();
     this.notification.success("已停止所有Task","");
+  }
+  imageProxyKey: string = "imageProxy";
+  protected useProxy: boolean = false;
+  protected changeProxySetting() {
+    localStorage.setItem(this.imageProxyKey, this.useProxy?"1":"0");
+  }
+  loadProxySettings(): void {
+    this.useProxy = localStorage.getItem(this.imageProxyKey) === "1";
   }
 }

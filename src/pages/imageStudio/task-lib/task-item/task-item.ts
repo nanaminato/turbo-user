@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, input, Input, isDevMode, Output} from '@angular/core';
 import {GenerateTask} from "../../../../models/media";
 import {NzColDirective} from "ng-zorro-antd/grid";
 import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
@@ -10,6 +10,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {ImagePresentPipe} from "../../../../pipes";
 import {ApimartService} from "../../../../services/fetch_services/apimart.service";
 import {SendManagerService} from "../../../../auth_module";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-task-item',
@@ -27,18 +28,16 @@ import {SendManagerService} from "../../../../auth_module";
   ]
 })
 export class TaskItem {
-  @Input() task: GenerateTask | undefined;
-
-  constructor(private notification: NzNotificationService,
-              private universalService: UniversalService,
-              private apiMartService: ApimartService,
-              private sendService: SendManagerService,) { }
-
+  private notification: NzNotificationService = inject(NzNotificationService)
+  private universalService: UniversalService = inject(UniversalService)
+  private apiMartService: ApimartService = inject(ApimartService)
+  private sendService: SendManagerService = inject(SendManagerService)
   @Input()
   index: number | undefined;
   @Output()
   delete = new EventEmitter<number>();
-
+  useProxy = input(false);
+  @Input() task: GenerateTask | undefined;
   recheck_task_status(task: GenerateTask) {
     let images = task.images;
     let videos = task.videos;
@@ -65,6 +64,7 @@ export class TaskItem {
     }
   }
   protected readonly confirm = confirm;
+
   deleteItem(task: GenerateTask) {
     this.sendService.deleteTask(task.task_id!).then(msg=>{
       this.universalService.deleteGenerateTask(task).then(c=>{
@@ -82,5 +82,31 @@ export class TaskItem {
       return taskType.substring(index + 1).trim();
     }
     return taskType.trim();
+  }
+  getImageUrl(url: string): string {
+    if (this.useProxy() && url&&url.startsWith("http")) {
+      try {
+        const urlObj = new URL(url);
+        let imageServerBaseUrl = window.location.origin;
+        if(isDevMode()) {
+          let plainUrl = environment.baseUrl;
+          if (plainUrl.endsWith("/")) {
+            plainUrl = plainUrl.substring(0, plainUrl.length - 1);
+          }
+
+          imageServerBaseUrl = `http://${plainUrl}`
+        }
+        if (urlObj.hostname.includes('apimart')) {
+          return `${imageServerBaseUrl}/api/apimart${urlObj.pathname}${urlObj.search}`;
+        }
+
+        // 如果未来有其他 CDN，可以在这里继续写 else if
+        return url;
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return url;
   }
 }

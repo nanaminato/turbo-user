@@ -15,11 +15,15 @@
     <button nz-button class="m-3 rounded-3" (click)="stopAllTask()" >
       {{'image.stopAllTasks'|translate}}
     </button>
+    <div class="m-3 rounded-3">
+      <label class="me-1" [nz-tooltip]="'在http环境下,访问图片可能会被拒绝。使用代理模式来可避免。'">代理</label>
+      <nz-switch  [(ngModel)]="useProxy" (ngModelChange)="changeProxySetting()"></nz-switch>
+    </div>
   </div>
   <nz-card class="rounded-3 tasks m-2 overflow-auto">
     @for(task of generateTasks; track task){
       <nz-card class="my-1">
-        <app-task-item [task]="task" [index]="$index" (delete)="awareDeleteItem($event)"></app-task-item>
+        <app-task-item [task]="task" [useProxy]="useProxy" [index]="$index" (delete)="awareDeleteItem($event)"></app-task-item>
       </nz-card>
     }
   </nz-card>
