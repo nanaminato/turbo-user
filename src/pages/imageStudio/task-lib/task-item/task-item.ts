@@ -96,12 +96,7 @@ export class TaskItem {
 
           imageServerBaseUrl = `http://${plainUrl}`
         }
-        if (urlObj.hostname.includes('apimart')) {
-          return `${imageServerBaseUrl}/api/apimart${urlObj.pathname}${urlObj.search}`;
-        }
-
-        // 如果未来有其他 CDN，可以在这里继续写 else if
-        return url;
+        return `${imageServerBaseUrl}/api/image_proxy/get?url=${encodeURIComponent(url)}`;
 
       } catch (e) {
         console.error(e);
