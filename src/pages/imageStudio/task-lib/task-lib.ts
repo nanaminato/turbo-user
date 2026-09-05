@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {GenerateTask} from "../../../models/media";
 import {UniversalService} from "../../../services/db-services/universal.service";
-import {AuthService, RequestManagerService, RequestService} from "../../../auth_module";
+import {AuthService, RequestManagerService, SendManagerService} from "../../../auth_module";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {TaskItem} from "./task-item/task-item";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -14,6 +14,11 @@ import {ImageTaskService} from "../../../services/fetch_services";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {FormsModule} from "@angular/forms";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
+import {NzListModule} from "ng-zorro-antd/list";
+import {NzEmptyComponent} from "ng-zorro-antd/empty";
+import {NzColDirective} from "ng-zorro-antd/grid";
 
 @Component({
   selector: 'app-task-lib',
@@ -29,8 +34,12 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
     NzWaveDirective,
     NzSwitchComponent,
     FormsModule,
-    NzTooltipDirective
-
+    NzTooltipDirective,
+    NzModalModule,
+    NzCheckboxComponent,
+    NzListModule,
+    NzEmptyComponent,
+    NzColDirective
   ]
 })
 export class TaskLib implements OnInit {
@@ -40,6 +49,7 @@ export class TaskLib implements OnInit {
   private authService: AuthService = inject(AuthService);
   private notification: NzNotificationService = inject(NzNotificationService);
   private requestService: RequestManagerService = inject(RequestManagerService);
+  private sendManagerService: SendManagerService = inject(SendManagerService);
   private taskService: ImageTaskService = inject(ImageTaskService);
   private localization = inject(LocalizationService);
 
@@ -102,5 +112,179 @@ export class TaskLib implements OnInit {
   }
   loadProxySettings(): void {
     this.useProxy = localStorage.getItem(this.imageProxyKey) === "1";
+  }
+
+  /* ===================== 批量删除 ===================== */
+
+  /** 批量删除对话框是否可见 */
+  batchDeleteVisible: boolean = false;
+  /** 批量删除过程中用于禁用按钮 / 显示 loading */
+  batchDeleteRunning: boolean = false;
+  /** 已勾选的任务 ID 集合 */
+  selectedTaskIds: Set<string> = new Set<string>();
+
+  /** 打开批量删除对话框 */
+  openBatchDelete(): void {
+    this.selectedTaskIds = new Set<string>();
+    this.batchDeleteVisible = true;
+  }
+
+  /** 关闭批量删除对话框 */
+  closeBatchDelete(): void {
+    if (this.batchDeleteRunning) {
+      return;
+    }
+    this.batchDeleteVisible = false;
+    this.selectedTaskIds = new Set<string>();
+  }
+
+  /** 单个任务勾选状态切换 */
+  toggleTaskSelection(taskId: string | undefined, checked: boolean): void {
+    if (!taskId) {
+      return;
+    }
+    if (checked) {
+      this.selectedTaskIds.add(taskId);
+    } else {
+      this.selectedTaskIds.delete(taskId);
+    }
+  }
+
+  /** 是否所有任务都已选中（用于显示 selectAll/deselectAll） */
+  isAllSelected(): boolean {
+    if (this.generateTasks.length === 0) {
+      return false;
+    }
+    return this.generateTasks.every(t => !!t.task_id && this.selectedTaskIds.has(t.task_id));
+  }
+
+  /** 全选 / 取消全选 */
+  toggleSelectAll(): void {
+    if (this.isAllSelected()) {
+      this.selectedTaskIds = new Set<string>();
+    } else {
+      const next = new Set<string>();
+      for (const t of this.generateTasks) {
+        if (t.task_id) {
+          next.add(t.task_id);
+        }
+      }
+      this.selectedTaskIds = next;
+    }
+  }
+
+  /**
+   * 确认批量删除：逐条调用 deleteTask，单条失败不影响其他任务，
+   * 最后通过 notification 汇总成功 / 失败数量与明细。
+   */
+  async confirmBatchDelete(): Promise<void> {
+    if (this.batchDeleteRunning || this.selectedTaskIds.size === 0) {
+      return;
+    }
+    this.batchDeleteRunning = true;
+
+    const targetIds = Array.from(this.selectedTaskIds);
+    const tasksById = new Map<string, GenerateTask>();
+    for (const t of this.generateTasks) {
+      if (t.task_id) {
+        tasksById.set(t.task_id, t);
+      }
+    }
+
+    const successIds: string[] = [];
+    const failedItems: { taskId: string; reason: string }[] = [];
+    const skippedItems: string[] = [];
+
+    for (const id of targetIds) {
+      const task = tasksById.get(id);
+      if (!task) {
+        skippedItems.push(id);
+        continue;
+      }
+      try {
+        await this.sendManagerService.deleteTask(id);
+        try {
+          await this.universalService.deleteGenerateTask(task);
+        } catch (dbErr) {
+          // DB 删除失败也归到 failed 里，但继续处理其它任务
+          failedItems.push({ taskId: id, reason: this.formatError(dbErr) });
+          continue;
+        }
+        successIds.push(id);
+      } catch (err) {
+        failedItems.push({ taskId: id, reason: this.formatError(err) });
+      }
+    }
+
+    // 从前端列表中移除成功删除的任务
+    if (successIds.length > 0) {
+      const successSet = new Set(successIds);
+      this.generateTasks = this.generateTasks.filter(t => !t.task_id || !successSet.has(t.task_id));
+    }
+
+    // 显示结果通知
+    this.showBatchDeleteResult(successIds.length, failedItems, skippedItems);
+
+    // 关闭对话框
+    this.batchDeleteRunning = false;
+    this.batchDeleteVisible = false;
+    this.selectedTaskIds = new Set<string>();
+  }
+
+  private formatError(err: unknown): string {
+    if (!err) {
+      return 'unknown error';
+    }
+    if (typeof err === 'string') {
+      return err;
+    }
+    if (err instanceof Error) {
+      return err.message || err.toString();
+    }
+    try {
+      return JSON.stringify(err);
+    } catch {
+      return String(err);
+    }
+  }
+
+  private showBatchDeleteResult(
+    successCount: number,
+    failedItems: { taskId: string; reason: string }[],
+    skippedItems: string[]
+  ): void {
+    const failCount = failedItems.length;
+    const skipCount = skippedItems.length;
+
+    let title: string;
+    let message: string;
+
+    if (failCount === 0 && skipCount === 0) {
+      title = this.localization.text('image.batchDeleteSuccessTitle');
+      message = this.localization.text('image.batchDeleteResult', {
+        success: successCount,
+        fail: 0,
+        skip: 0,
+        failedIds: '',
+        skippedIds: ''
+      });
+      this.notification.success(title, message);
+      return;
+    }
+
+    // 部分失败 / 跳过
+    title = this.localization.text('image.batchDeletePartialTitle');
+    const failedIds = failedItems.map(f => `${f.taskId} (${f.reason})`).join('\n');
+    const skippedIds = skippedItems.join('\n');
+    message = this.localization.text('image.batchDeleteResult', {
+      success: successCount,
+      fail: failCount,
+      skip: skipCount,
+      failedIds,
+      skippedIds
+    });
+    this.notification.warning(title, message, {
+      nzDuration: 8000
+    });
   }
 }

@@ -64,7 +64,15 @@
     "proxy": "プロキシ",
     "proxyTip": "HTTP 環境では画像へのアクセスが拒否される場合があります。プロキシモードを有効にしてください。",
     "modelSelector": "画像生成モデル選択",
-    "embeddingSelector": "Embeddingモデル選択"
+    "embeddingSelector": "Embeddingモデル選択",
+    "batchDelete": "一括削除",
+    "batchDeleteTitle": "タスクを一括削除",
+    "batchDeleteHint": "{{selected}} / {{total}} 件選択中",
+    "batchDeleteEmpty": "削除できるタスクがありません",
+    "batchDeleteConfirm": "削除",
+    "batchDeleteSuccessTitle": "一括削除が完了しました",
+    "batchDeletePartialTitle": "一括削除が一部失敗しました",
+    "batchDeleteResult": "成功 {{success}} 件、失敗 {{fail}} 件、スキップ {{skip}} 件。\n失敗内容：\n{{failedIds}}\nスキップ内容：\n{{skippedIds}}"
   },
   "video": {
     "running": "動画を生成中です...",

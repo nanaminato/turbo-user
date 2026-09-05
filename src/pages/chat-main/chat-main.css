@@ -39,14 +39,14 @@
   display: flex;
 }
 .composer-toolbar {
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
   padding: 6px;
   flex-wrap: wrap;
 }
 .composer-tools {
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   flex-wrap: wrap;
 }
@@ -96,7 +96,8 @@
 
 .model-row {
   display: flex;
-  justify-content: center;
+  align-items: flex-start;
+  flex: 0 0 auto;
 }
 
 @media (max-width: 900px) {

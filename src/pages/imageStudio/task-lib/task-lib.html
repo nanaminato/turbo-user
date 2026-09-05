@@ -8,12 +8,19 @@
       }
     </button>
   </header>
-  <div class="w-100 d-flex flex-row-reverse">
+  <div class="w-100 d-flex flex-row-reverse align-items-center">
     <button nz-button class="m-3 rounded-3" (click)="loadGenerateTasks()" >
       {{'universal.reload'|translate}}
     </button>
     <button nz-button class="m-3 rounded-3" (click)="stopAllTask()" >
       {{'image.stopAllTasks'|translate}}
+    </button>
+    <!-- 批量删除按钮 -->
+    <button nz-button class="m-3 rounded-3" nzDanger
+            (click)="openBatchDelete()"
+            [disabled]="generateTasks.length === 0">
+      <span nz-icon nzType="delete" nzTheme="outline"></span>
+      {{'image.batchDelete'|translate}}
     </button>
     <div class="m-3 rounded-3">
       <label class="me-1" [nz-tooltip]="'image.proxyTip' | translate">{{ 'image.proxy' | translate }}</label>
@@ -28,4 +35,58 @@
     }
   </nz-card>
 
+  <!-- 批量删除对话框：列出所有任务，可多选 -->
+  <nz-modal [(nzVisible)]="batchDeleteVisible"
+            [nzTitle]="'image.batchDeleteTitle' | translate"
+            [nzOkText]="'image.batchDeleteConfirm' | translate"
+            [nzCancelText]="'universal.cancel' | translate"
+            [nzOkDanger]="true"
+            [nzOkDisabled]="selectedTaskIds.size === 0 || batchDeleteRunning"
+            [nzMaskClosable]="false"
+            (nzOnCancel)="closeBatchDelete()"
+            (nzOnOk)="confirmBatchDelete()"
+            nzWidth="640px">
+    <ng-container *nzModalContent>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-secondary small">
+          {{'image.batchDeleteHint'|translate:{selected: selectedTaskIds.size, total: generateTasks.length} }}
+        </span>
+        <button nz-button nzSize="small" (click)="toggleSelectAll()">
+          {{ (isAllSelected() ? 'image.deselectAll' : 'image.selectAll') | translate }}
+        </button>
+      </div>
+      <nz-list nzBordered class="batch-delete-task-list" [nzLoading]="batchDeleteRunning">
+        @for (task of generateTasks; track task.task_id) {
+          <nz-list-item>
+            <div class="d-flex flex-row align-items-center w-100">
+              <label nz-checkbox
+                     class="me-3"
+                     [ngModel]="selectedTaskIds.has(task.task_id!)"
+                     (ngModelChange)="toggleTaskSelection(task.task_id!, $event)">
+              </label>
+              <div class="d-flex flex-column flex-grow-1 overflow-hidden">
+                <div class="d-flex flex-row flex-wrap">
+                  <nz-col class="me-3">
+                    <span class="text-secondary small">{{'storeHouse.task-id' | translate}}:</span>
+                    <span class="ms-1">{{task.task_id}}</span>
+                  </nz-col>
+                  <nz-col class="me-3">
+                    <span class="text-secondary small">{{'storeHouse.task-type' | translate}}:</span>
+                    <span class="ms-1">{{task.task_type}}</span>
+                  </nz-col>
+                  <nz-col class="me-3">
+                    <span class="text-secondary small">{{'storeHouse.date' | translate}}:</span>
+                    <span class="ms-1">{{task.date}}</span>
+                  </nz-col>
+                </div>
+              </div>
+            </div>
+          </nz-list-item>
+        }
+        @empty {
+          <nz-empty [nzNotFoundContent]="'image.batchDeleteEmpty'|translate"></nz-empty>
+        }
+      </nz-list>
+    </ng-container>
+  </nz-modal>
 </div>

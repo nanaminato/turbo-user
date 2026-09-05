@@ -4,7 +4,8 @@
      - 移除系统信息相关的模态（添加系统信息、管理系统上下文）
      - 保留编辑消息模态（用于编辑对话中的某条消息）
      - 保留菜单切换按钮、logo、对话列表与底部输入区
-     - 模型选择移到输入框上方 -->
+     - 模型选择移到选择文件的左边；
+       模型选择、清除按钮、插入标记在工具栏中向上对齐 -->
 @defer (on immediate) {
   <nz-modal [(nzVisible)]="isVisible" [nzTitle]="'chat-main.edit' | translate"
             (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
@@ -63,15 +64,15 @@
   <!--  对话页面下部分的组件， 包含输入框等-->
   <div class="composer-shell">
     <div class="center-input rounded-2">
-      <!-- 模型选择：移到输入框上方（按 ChatGPT 风格） -->
-      <div class="model-row d-flex justify-content-center px-2">
-        @defer (on immediate) {
-          <app-model-selector></app-model-selector>
-        } @placeholder (minimum 100ms){
-          <select></select>
-        }
-      </div>
-      <div class="composer-toolbar">
+      <div class="composer-toolbar align-items-start">
+        <!-- 模型选择：移到选择文件的左边 -->
+        <div class="model-row align-self-start">
+          @defer (on immediate) {
+            <app-model-selector></app-model-selector>
+          } @placeholder (minimum 100ms){
+            <select></select>
+          }
+        </div>
         <div class="select-box rounded-4">
           <nz-upload class="flex-grow-0 rounded-2"
                      [nzMultiple]="true"
@@ -83,7 +84,7 @@
             </button>
           </nz-upload>
         </div>
-        <div class="composer-tools">
+        <div class="composer-tools align-items-start">
           <button type="button" class="text-theme2 border-1 border-theme2 bg-theme2 rounded-2"
                   (click)="clearContext()"
                   nz-tooltip [nzTooltipTitle]="'chat-main.clearContext' | translate ">
