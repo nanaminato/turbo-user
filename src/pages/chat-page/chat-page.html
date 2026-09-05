@@ -1,6 +1,6 @@
 <div class="screen-content w-100 h-100">
   @if(visible()){
-    <div class="p-0 m-0 d-flex flex-column h-100 z-2 menu">
+    <aside class="app-sidebar p-0 m-0 d-flex flex-column h-100 z-2 menu" aria-label="Conversation navigation">
       <div class="bg-theme overflow-y-scroll scrollbar-y-none flex-grow-1">
         <!-- 历史记录标记 -->
         @defer (on immediate) {
@@ -38,11 +38,11 @@
           }
         </div>
       </div>
-    </div>
+    </aside>
   }@else{
     <div></div>
   }
-  <div style="flex: 1 1 auto; overflow: hidden;">
+  <main class="main-pane">
     <router-outlet id="main-content"></router-outlet>
-  </div>
+  </main>
 </div>

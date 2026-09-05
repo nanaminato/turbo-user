@@ -78,6 +78,7 @@ export class Dialogue {
     return "assets/svgs/chat-gpt_11zon.jpg";
   }
   isHover = signal(false);
+  actionsExpanded = signal(false);
 
   onMouseEnter() {
     this.isHover.update(() => true);
@@ -85,6 +86,14 @@ export class Dialogue {
 
   onMouseLeave() {
     this.isHover.update(() => false);
+  }
+
+  showActions() {
+    return this.isHover() || this.actionsExpanded() || this.isMiniView();
+  }
+
+  toggleActions() {
+    this.actionsExpanded.update(value => !value);
   }
 
   triggerEdit() {

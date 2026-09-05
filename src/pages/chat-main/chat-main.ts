@@ -108,6 +108,9 @@ export class ChatMainComponent implements OnDestroy{
     }
   }
   async askGPT() {
+    if (this.answering || (this.inputText.trim() === '' && this.fileList.length === 0)) {
+      return;
+    }
     if (this.chatHistoryModel === undefined) {
       this.chatHistoryModel = new ChatHistoryModel();
     }
@@ -125,6 +128,7 @@ export class ChatMainComponent implements OnDestroy{
     let parseStatus = await this.parseAllFile(userModel);//!!!!!
 
     if(!parseStatus){
+      this.answering = false;
       return;
     }
     // 如果当前的上下文指针为空，就设置上一条为当前上下文的指针，该指针指示最后一条将要包含到上下文中的对话的id
@@ -269,6 +273,15 @@ export class ChatMainComponent implements OnDestroy{
       return;
     } else {
       this.askGPT();
+    }
+  }
+
+  handlePromptKeydown(event: KeyboardEvent) {
+    // Keep Enter available for multi-line prompts. Ctrl/Cmd + Enter works on
+    // Windows, Linux, macOS and hardware keyboards connected to mobile.
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      this.typeControlGPT();
     }
   }
 
@@ -568,7 +581,7 @@ export class ChatMainComponent implements OnDestroy{
 
   enableTouch() {
     // 正在回复 | 没有在回复，内容不为空 |  模型为转录或者tts，且添加了文件
-    return this.answering || (!this.answering && this.inputText != '') ||
+    return this.answering || (!this.answering && this.inputText.trim() !== '') ||
       (this.fileList.length > 0);
   }
 

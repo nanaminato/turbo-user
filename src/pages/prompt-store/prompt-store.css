@@ -6,3 +6,23 @@
 .h-input{
   height: 40px;
 }
+
+@media (max-width: 600px) {
+  .prompt-actions {
+    justify-content: flex-start !important;
+  }
+  .prompt-filter,
+  .prompt-item {
+    align-items: stretch !important;
+    flex-direction: column !important;
+    gap: 10px;
+  }
+  .prompt-item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .prompt-item-actions button {
+    margin: 0 !important;
+  }
+}

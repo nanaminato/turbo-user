@@ -6,6 +6,30 @@
 .screen-content{
   display: flex;
   flex-direction: row;
-  //display: grid;
-  //grid-template-columns: auto 1fr;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.app-sidebar {
+  flex: 0 0 260px;
+  width: 260px;
+  min-width: 0;
+  border-right: 1px solid var(--ion-color-step-150, #e5e7eb);
+}
+.main-pane {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .app-sidebar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 20 !important;
+    width: min(84vw, 320px);
+    max-width: none;
+    box-shadow: 12px 0 28px rgba(0, 0, 0, .18);
+  }
 }

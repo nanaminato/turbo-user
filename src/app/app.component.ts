@@ -47,9 +47,7 @@ export class AppComponent implements OnInit{
     this.setMenu(window);
   }
   setMenu(obj: any){
-    this.sizeReportService.width = obj.innerWidth;
-    this.sizeReportService.height = obj.innerHeight;
-    this.sizeReportService.menuVisible = !this.sizeReportService.miniPhoneView();
+    this.sizeReportService.updateViewport(obj.innerWidth, obj.innerHeight);
   }
   @HostListener('window:resize',['$event'])
   onResize(event: any){

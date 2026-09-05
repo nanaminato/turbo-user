@@ -8,6 +8,7 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {Store} from "@ngrx/store";
 import {selectConfig} from "../../../systems/store/configuration/configuration.selectors";
 import {configurationActions} from "../../../systems/store/configuration/configuration.actions";
+import {TranslatePipe} from "@ngx-translate/core";
 
 
 @Component({
@@ -18,7 +19,8 @@ import {configurationActions} from "../../../systems/store/configuration/configu
     FormsModule,
     NzSelectModule,
     NzIconDirective,
-    NzTooltipDirective
+    NzTooltipDirective,
+    TranslatePipe
   ],
   standalone: true
 })
