@@ -1,7 +1,7 @@
 <nz-modal [(nzVisible)]="viewSourceVisible"
           (nzOnCancel)="viewSourceVisible = false"
           (nzOnOk)="viewSourceVisible = false"
-          [nzTitle]="'查看源结果'">
+          [nzTitle]="'mediaStudio.viewSourceResult' | translate">
   <ng-container *nzModalContent>
     <app-json-code-viewer [jsonCode]="result"></app-json-code-viewer>
   </ng-container>
@@ -20,7 +20,7 @@
      (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
   <div class="drop-message">
     <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
-    将文件拖放到此处或者点击此处从电脑中选择文件(只能选择一项，选择多项仅保留第一项)
+    {{ 'mediaStudio.dropSingleAudioFile' | translate }}
   </div>
   <input
          accept=".m4a,.ogg,.mp3,.mp4,.mpeg,.wav,.webm,audio/flac, audio/mp3, audio/mpeg, audio/mpga, audio/m4a, audio/ogg, audio/wav, audio/webm, video/mp4"
@@ -29,7 +29,7 @@
 </div>
 <div class="d-flex flex-column m-2">
   @if(fileList.length===0){
-    <div class="m-2">还没有选择音频文件哦</div>
+    <div class="m-2">{{ 'mediaStudio.noAudioFileSelected' | translate }}</div>
   }@else{
     @for(audio of fileList; track audio){
       <nz-row class="d-flex justify-content-start align-items-center">
@@ -42,10 +42,10 @@
 <nz-card>
   <nz-row class="align-items-center my-1 bg-theme2 text-theme2">
     <nz-col class="m-2">
-      <nz-col class="m-1">模型</nz-col>
+      <nz-col class="m-1">{{ 'mediaStudio.model' | translate }}</nz-col>
       <nz-col>
         <nz-select class="select big" [(ngModel)]="model">
-          <nz-option-group [nzLabel]="'语音转文字模型'">
+          <nz-option-group [nzLabel]="'mediaStudio.speechToTextModels' | translate">
             @for (selection of models; track selection) {
               <nz-option [nzLabel]="selection" [nzValue]="selection"></nz-option>
             }
@@ -54,17 +54,17 @@
       </nz-col>
     </nz-col>
     <nz-row class="m-2">
-      <nz-col class="m-1">温度</nz-col>
+      <nz-col class="m-1">{{ 'mediaStudio.temperature' | translate }}</nz-col>
       <nz-row>
         <nz-slider class="slider big" [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="temperature"></nz-slider>
         <nz-input-number [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="temperature"></nz-input-number>
       </nz-row>
     </nz-row>
     <nz-col class="m-2">
-      <nz-col class="m-1">响应格式</nz-col>
+      <nz-col class="m-1">{{ 'mediaStudio.responseFormat' | translate }}</nz-col>
       <nz-col>
         <nz-select class="select big" [(ngModel)]="response_format">
-          <nz-option-group [nzLabel]="'响应结果格式'">
+          <nz-option-group [nzLabel]="'mediaStudio.responseFormat' | translate">
             @for (selection of response_formats; track selection) {
               <nz-option [nzLabel]="selection" [nzValue]="selection"></nz-option>
             }
@@ -73,10 +73,10 @@
       </nz-col>
     </nz-col>
     <nz-col class="m-2">
-      <nz-col class="m-1">语言</nz-col>
+      <nz-col class="m-1">{{ 'mediaStudio.language' | translate }}</nz-col>
       <nz-col>
         <nz-select class="select big" [(ngModel)]="language">
-          <nz-option-group [nzLabel]="'语言'">
+          <nz-option-group [nzLabel]="'mediaStudio.language' | translate">
             @for (selection of languages; track selection) {
               <nz-option [nzLabel]="selection" [nzValue]="selection"></nz-option>
             }
@@ -87,10 +87,10 @@
   </nz-row>
 </nz-card>
 <div class="m-2">
-  <div>提示词</div>
+  <div>{{ 'mediaStudio.prompt' | translate }}</div>
   <div class="d-flex justify-content-center align-items-center p-2 mb-5">
     <textarea [(ngModel)]="prompt"
-              nz-input placeholder="请在这里输入一些提示词"
+              nz-input [placeholder]="'mediaStudio.promptPlaceholder' | translate"
               cdkTextareaAutosize
               cdkAutosizeMinRows="3"
               cdkAutosizeMaxRows="5"
@@ -98,24 +98,24 @@
   </div>
   <div class="d-flex justify-content-end">
     <div class="d-flex">
-      <button class="m-1" [disabled]="loading" (click)="transcription()" nz-button>转录</button>
-      <button class="m-1" [disabled]="loading" (click)="translate()" nz-button>转译</button>
+      <button class="m-1" [disabled]="loading" (click)="transcription()" nz-button>{{ 'banner.transcription' | translate }}</button>
+      <button class="m-1" [disabled]="loading" (click)="translate()" nz-button>{{ 'banner.translation' | translate }}</button>
     </div>
   </div>
   @if(loading){
     <div>
-      正在解析中...
+      {{ 'mediaStudio.parsing' | translate }}
     </div>
   }
   <div class="d-flex justify-content-center align-items-center p-2">
     <textarea [(ngModel)]="outputText"
-              nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。"
+              nz-input [placeholder]="'mediaStudio.outputPlaceholder' | translate"
               cdkTextareaAutosize
               cdkAutosizeMinRows="3"
               cdkAutosizeMaxRows="20"
     ></textarea>
   </div>
   <div class="justify-content-end d-flex mb-5">
-    <button nz-button (click)="viewSourceVisible = true">查看源结果</button>
+    <button nz-button (click)="viewSourceVisible = true">{{ 'mediaStudio.viewSourceResult' | translate }}</button>
   </div>
 </div>

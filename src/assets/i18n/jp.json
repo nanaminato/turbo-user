@@ -15,7 +15,16 @@
     "nsfw": "制限なし(NSFW)",
     "modelName": "モデル名",
     "strength": "強度",
-    "reset": "リセット"
+    "reset": "リセット",
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "or": "または",
+    "view": "表示",
+    "icon": "アイコン",
+    "image": "画像",
+    "none": "なし",
+    "unknown": "不明",
+    "mediaStudio": "メディアスタジオ"
   },
   "storeHouse": {
     "task-id": "タスクID",
@@ -95,7 +104,10 @@
     "validating": "検証中",
     "userTip": "ユーザー名は3〜20文字で入力してください",
     "passwordTip": "パスワードは6〜20文字で入力してください",
-    "notWith": "パスワードが一致しません"
+    "notWith": "パスワードが一致しません",
+    "nickname": "ニックネーム",
+    "roles": "ロール",
+    "verificationCode": "認証コード"
   },
   "settings": {
     "self": "設定",
@@ -174,7 +186,9 @@
     "samplingTemperature": "STT サンプリング温度 (temperature)",
     "temperatureSamplingBetweenZeroAndOne": "サンプリング温度（0〜1）。高い値（0.8など）は出力をよりランダムにし、低い値（0.2など）はより確実性を高めます。0に設定すると、対数確率を使用して自動的に調整されます",
     "resetDataBase": "ローカルデータベースをリセット",
-    "resetDataBaseConfirm": "ローカルデータベースをリセットしてもよろしいですか？オンラインに保存されていないデータは失われます。（データベースの異常を強制的に処理するために使用されます）"
+    "resetDataBaseConfirm": "ローカルデータベースをリセットしてもよろしいですか？オンラインに保存されていないデータは失われます。（データベースの異常を強制的に処理するために使用されます）",
+    "currentBackendServer": "現在使用中のバックエンドサーバー",
+    "fontPreview": "プレビューテキスト"
   },
   "prompts": {
     "presetManagement": "プリセット管理",
@@ -245,7 +259,46 @@
     "clearContext": "コンテキストをクリア",
     "clear": "クリア",
     "selectFile": "ファイルを選択",
-    "edit": "編集"
+    "edit": "編集",
+    "supportsVision": "画像認識対応",
+    "insertInlineCode": "インラインコード記号を挿入",
+    "insertCodeBlock": "コードブロック記号を挿入"
   },
+  "language": {
+    "chinese": "簡体中国語",
+    "english": "英語",
+    "japanese": "日本語"
+  },
+  "imageStudio": {
+    "model": "モデル", "prompt": "プロンプト", "quantity": "生成数", "size": "画像サイズ",
+    "resolution": "解像度", "quality": "品質", "background": "背景", "moderation": "モデレーション強度",
+    "style": "スタイル", "imageFormat": "画像形式", "responseFormat": "データ形式", "maskImage": "マスク画像 (mask_url)",
+    "maskUrlPlaceholder": "マスク画像の URL を入力", "referenceUrlPlaceholder": "参照画像の URL を入力", "selectLocalImage": "ローカル画像を選択",
+    "uploadLocalImage": "ローカル画像をアップロード", "addUrl": "URL を追加", "referenceImages": "参照画像 (image_urls): {{count}}/16",
+    "officialFallback": "公式サービスへのフォールバック"
+  },
+  "mediaStudio": {
+    "textToSpeech": "OpenAI テキスト読み上げ", "speechToText": "OpenAI 音声文字起こし", "fileExtractor": "ファイル内容抽出",
+    "editParsedFile": "解析済みファイル内容を編集", "model": "モデル", "textToSpeechModels": "テキスト読み上げモデル", "speechToTextModels": "音声文字起こしモデル",
+    "speed": "速度", "temperature": "温度", "responseFormat": "応答形式", "language": "言語", "prompt": "プロンプト",
+    "dropFiles": "ここにファイルをドロップするか、クリックしてコンピューターから選択してください", "dropSingleAudioFile": "ここに音声ファイルをドロップするか、クリックして選択してください（先頭の 1 件のみ使用されます）",
+    "file": "ファイル", "type": "種類", "size": "サイズ", "parsed": "解析済み", "unparsed": "未解析", "editContent": "内容を編集",
+    "parseContent": "内容を解析", "parseAllFiles": "すべてのファイルを解析", "importParsedContent": "解析済み内容を取り込む", "clearContent": "内容をクリア",
+    "generateAudio": "音声を生成", "ttsInputPlaceholder": "音声に変換するテキストを入力してください。", "processing": "処理中",
+    "audioPlaybackIcon": "音声再生アイコン", "noAudioFileSelected": "音声ファイルが選択されていません", "promptPlaceholder": "任意のプロンプトを入力してください",
+    "parsing": "解析中...", "outputPlaceholder": "文字起こしまたは翻訳の結果がここに表示されます", "viewSourceResult": "元の結果を表示",
+    "generationFailureSuggestion": "生成に失敗しました。詳細は「元の結果を表示」をクリックしてください。", "waiting": "{{seconds}} 秒待機中です。しばらくお待ちください"
+  },
+  "notifications": {
+    "resetSuccess": "リセットしました", "settingsResetSuccess": "設定をリセットしました", "applySuccess": "変更を適用しました", "settingsSaved": "ローカルデータベースに保存しました",
+    "databaseResetSuccess": "ローカルデータベースをリセットしました", "generationFailed": "生成に失敗しました", "imageGenerationFailed": "画像生成に失敗しました", "taskCreated": "タスク ID を取得しました",
+    "taskResultFailed": "タスク結果の取得に失敗しました", "taskResultSaved": "応答結果を保存しました", "imageReadFailed": "画像の読み込みに失敗しました", "imageRatioAdjusted": "画像の比率を自動調整しました",
+    "imageRatioAdjustedDescription": "4K モードでは {{sizes}} をサポートします。非対応の比率を {{size}} に変更しました。", "referenceImageLimit": "参照画像は最大 16 枚です",
+    "noFileSelected": "ファイルが選択されていません", "copySuccess": "内容をコピーしました", "requestInProgress": "現在のリクエストはまだ完了していません", "invalidVerificationCode": "認証コードが正しくありません",
+    "notSignedIn": "ログインしていません", "registrationSuccess": "登録が完了しました", "warning": "警告", "taskAlreadyRetrieved": "結果はすでに取得済みです。",
+    "taskResultRetrieved": "タスク結果を取得して保存しました", "confirmDeleteTask": "この項目を削除しますか？タスク ID：{{taskId}}", "promptsImported": "システムプロンプトをインポートしました",
+    "promptsReloaded": "システムプロンプトを再読み込みしました", "promptsImportFailed": "システムプロンプトのインポートに失敗しました", "validationSuccess": "検証に成功しました", "promptDeleteFailed": "システムプロンプトの削除に失敗しました"
+  },
+  "admin": { "controlCenter": "管理コンソール" },
   "help": "どのようなサポートが必要ですか？"
 }

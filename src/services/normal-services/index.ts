@@ -4,3 +4,5 @@ export {SizeReportService} from "./sizeReport.service";
 export {ModelFetchService} from "./modelFetch.service";
 export {ThemeSwitcherService} from "./themeSwitcher.service";
 export {DynamicConfigService} from './dynamicConfig.service';
+export {LocalizationService} from './localization.service';
+export type {AppLanguage, LanguageOption} from './localization.service';

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import {UserAuthGuardService} from '../services/guards/user-auth-guard.service';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/chat' },
@@ -6,6 +7,17 @@ export const routes: Routes = [
     path: 'chat',
     loadChildren: () =>
       import('../pages/chat.module').then(m => m.ChatModule),
+  },
+  {
+    path: 'accounts',
+    loadChildren: () =>
+      import('../pages/accounts/account.module').then(m => m.AccountModule),
+  },
+  {
+    path: 'admin',
+    canActivate: [UserAuthGuardService],
+    loadChildren: () =>
+      import('../admin/admin.routes').then(m => m.ADMIN_ROUTES),
   },
   {
     path: 'image-studio',

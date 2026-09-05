@@ -15,7 +15,16 @@
     "nsfw": "nsfw",
     "modelName": "Model Name",
     "strength": "Strength",
-    "reset": "reset"
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "or": "or",
+    "view": "View",
+    "icon": "Icon",
+    "image": "Image",
+    "none": "None",
+    "unknown": "Unknown",
+    "mediaStudio": "Media Studio"
   },
   "storeHouse": {
     "task-id": "task id",
@@ -83,7 +92,10 @@
     "copyrightStatement": "Copyright",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "self": "Account information"
+    "self": "Account information",
+    "nickname": "Nickname",
+    "roles": "Roles",
+    "verificationCode": "Verification code"
   },
   "settings": {
     "self": "Settings",
@@ -162,7 +174,9 @@
     "samplingTemperature": "Sampling Temperature",
     "temperatureSamplingBetweenZeroAndOne": "Temperature: Between 0 and 1",
     "resetDataBase": "Reset Local Database",
-    "resetDataBaseConfirm": "Are you sure you want to reset the local database? This will result in the loss of any data that has not been synced online. (Used to force-handle database exceptions)"
+    "resetDataBaseConfirm": "Are you sure you want to reset the local database? This will result in the loss of any data that has not been synced online. (Used to force-handle database exceptions)",
+    "currentBackendServer": "Current backend server",
+    "fontPreview": "Preview text"
   },
   "prompts": {
     "presetManagement": "Prompts Management",
@@ -233,7 +247,46 @@
     "clearContext": "Clear Context",
     "clear": "Clear",
     "selectFile": "Select File",
-    "edit": "Edit"
+    "edit": "Edit",
+    "supportsVision": "supports vision",
+    "insertInlineCode": "Insert inline code markers",
+    "insertCodeBlock": "Insert code block markers"
   },
+  "language": {
+    "chinese": "Simplified Chinese",
+    "english": "English",
+    "japanese": "Japanese"
+  },
+  "imageStudio": {
+    "model": "Model", "prompt": "Prompt", "quantity": "Number of images", "size": "Image size",
+    "resolution": "Resolution", "quality": "Quality", "background": "Background", "moderation": "Moderation",
+    "style": "Style", "imageFormat": "Image format", "responseFormat": "Response format", "maskImage": "Mask image (mask_url)",
+    "maskUrlPlaceholder": "Enter mask image URL", "referenceUrlPlaceholder": "Enter reference image URL", "selectLocalImage": "Select local image",
+    "uploadLocalImage": "Upload local image", "addUrl": "Add URL", "referenceImages": "Reference images (image_urls): {{count}}/16",
+    "officialFallback": "Official service fallback"
+  },
+  "mediaStudio": {
+    "textToSpeech": "OpenAI Text to Speech", "speechToText": "OpenAI Speech to Text", "fileExtractor": "File content extractor",
+    "editParsedFile": "Edit parsed file content", "model": "Model", "textToSpeechModels": "Text-to-speech models", "speechToTextModels": "Speech-to-text models",
+    "speed": "Speed", "temperature": "Temperature", "responseFormat": "Response format", "language": "Language", "prompt": "Prompt",
+    "dropFiles": "Drop files here or click to select files from your computer", "dropSingleAudioFile": "Drop an audio file here or click to select one (only the first file is kept)",
+    "file": "File", "type": "Type", "size": "Size", "parsed": "Parsed", "unparsed": "Not parsed", "editContent": "Edit content",
+    "parseContent": "Parse content", "parseAllFiles": "Parse all files", "importParsedContent": "Import parsed content", "clearContent": "Clear content",
+    "generateAudio": "Generate audio", "ttsInputPlaceholder": "Enter the text to convert to audio.", "processing": "Processing",
+    "audioPlaybackIcon": "Audio playback icon", "noAudioFileSelected": "No audio file selected", "promptPlaceholder": "Enter an optional prompt here",
+    "parsing": "Parsing...", "outputPlaceholder": "Transcription or translation results appear here", "viewSourceResult": "View source result",
+    "generationFailureSuggestion": "Generation failed. Click “View source result” for details.", "waiting": "Waiting for {{seconds}} seconds; please be patient"
+  },
+  "notifications": {
+    "resetSuccess": "Reset complete", "settingsResetSuccess": "Settings have been reset", "applySuccess": "Changes applied", "settingsSaved": "Saved to the local database",
+    "databaseResetSuccess": "Local database has been reset", "generationFailed": "Generation failed", "imageGenerationFailed": "Image generation failed", "taskCreated": "Task ID received",
+    "taskResultFailed": "Failed to retrieve task result", "taskResultSaved": "Response result saved", "imageReadFailed": "Failed to read image", "imageRatioAdjusted": "Image ratio adjusted automatically",
+    "imageRatioAdjustedDescription": "4K mode supports {{sizes}}; the unsupported ratio was changed to {{size}}.", "referenceImageLimit": "You can add at most 16 reference images",
+    "noFileSelected": "No file selected", "copySuccess": "Content copied", "requestInProgress": "The current request has not finished", "invalidVerificationCode": "Invalid verification code",
+    "notSignedIn": "You are not signed in", "registrationSuccess": "Registration successful", "warning": "Warning", "taskAlreadyRetrieved": "The result has already been retrieved.",
+    "taskResultRetrieved": "Task result retrieved and saved", "confirmDeleteTask": "Delete this item? Task ID: {{taskId}}", "promptsImported": "System prompts imported",
+    "promptsReloaded": "System prompts reloaded", "promptsImportFailed": "Failed to import system prompts", "validationSuccess": "Validation successful", "promptDeleteFailed": "Failed to delete system prompt"
+  },
+  "admin": { "controlCenter": "Admin console" },
   "help": "How can I help you today?"
 }

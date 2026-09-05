@@ -37,7 +37,7 @@ export class AuthEffects {
         tap(action => {
           this.messageService.success("登录成功")
           this.authService.restore(action.user, action.token);
-          this.router.navigate(user_routes.account_info);
+          this.router.navigate(['/chat']);
         })
       ),
     { dispatch: false }
@@ -61,7 +61,7 @@ export class AuthEffects {
         tap(() => {
           this.messageService.error("登录失败")
           this.authService.logout();
-          this.router.navigate(user_routes.account_info);
+          this.router.navigate(user_routes.sign_in);
         })
       ),
     { dispatch: false }

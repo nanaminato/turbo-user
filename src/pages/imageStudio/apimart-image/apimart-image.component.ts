@@ -19,7 +19,7 @@ import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzInputDirective, NzInputGroupComponent, NzInputWrapperComponent} from "ng-zorro-antd/input";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
-import {SizeReportService} from "../../../services/normal-services";
+import {LocalizationService, SizeReportService} from "../../../services/normal-services";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {ApimartService} from "../../../services/fetch_services/apimart.service";
@@ -177,12 +177,12 @@ export class APIMartImage implements OnInit,DoCheck{
       }
     }catch (e:any) {
       this.loading = false;
-      this.notification.error("生成失败", e.error)
+      this.notification.error(this.localization.text('notifications.generationFailed'), e.error)
       return;
     }
     if (asyncTask === undefined || asyncTask.code!==200) {
       this.loading = false;
-      this.notification.error("生成图片失败","");
+      this.notification.error(this.localization.text('notifications.imageGenerationFailed'), '');
       return;
     }
     let task_id = asyncTask!.data![0]!.task_id!;
@@ -193,7 +193,7 @@ export class APIMartImage implements OnInit,DoCheck{
       task_type: "apimart => image"
     };
     this.universalService.addOrUpdateGenerateTask(generateTask).then(t=>{
-      this.notification.info("获取到task_id","");
+      this.notification.info(this.localization.text('notifications.taskCreated'), '');
       this.sendService.sendTask(generateTask);
     });
     this.imageTaskService.registerTask(task_id);
@@ -220,7 +220,7 @@ export class APIMartImage implements OnInit,DoCheck{
       }catch (error: any){
         this.imageTaskService.unregisterTask(task_id);
         this.loading = false;
-        this.notification.info("获取任务结果失败","");
+        this.notification.info(this.localization.text('notifications.taskResultFailed'), '');
         return;
       }
     }
@@ -230,7 +230,7 @@ export class APIMartImage implements OnInit,DoCheck{
 
     generateTask.images = imageUrls;
     this.universalService.addOrUpdateGenerateTask(generateTask).then(() => {
-      this.notification.info("存储响应结果", "");
+      this.notification.info(this.localization.text('notifications.taskResultSaved'), '');
       this.sendService.updateTask(generateTask)
     });
 
@@ -265,6 +265,7 @@ export class APIMartImage implements OnInit,DoCheck{
     }
   }
   sizeReportService: SizeReportService = inject(SizeReportService);
+  private localization = inject(LocalizationService);
   menuVisible() {
     return this.sizeReportService.menuVisible;
   }
@@ -291,7 +292,7 @@ export class APIMartImage implements OnInit,DoCheck{
   addUrlToList(): void {
     if (!this.tempImageUrl) return;
     if (this.image_urls.length >= 16) {
-      this.msg.error('image_urls exceeds max 16');
+      this.msg.error(this.localization.text('notifications.referenceImageLimit'));
       return;
     }
     this.image_urls.push(this.tempImageUrl);
@@ -301,7 +302,7 @@ export class APIMartImage implements OnInit,DoCheck{
   // 处理本地上传
   beforeImageUpload = (file: NzUploadFile): boolean => {
     if (this.image_urls.length >= 16) {
-      this.msg.error('image_urls exceeds max 16');
+      this.msg.error(this.localization.text('notifications.referenceImageLimit'));
       return false;
     }
 
@@ -318,7 +319,7 @@ export class APIMartImage implements OnInit,DoCheck{
         this.mask_url = base64;
       }
     } catch (e) {
-      this.msg.error('图片读取失败');
+      this.msg.error(this.localization.text('notifications.imageReadFailed'));
     }
   }
   removeImage(index: number): void {
@@ -365,7 +366,10 @@ export class APIMartImage implements OnInit,DoCheck{
       }else{
         this.size = this.highResolutionAvailableSize[0];
         let sizes = this.highResolutionAvailableSize.join(", ")
-        this.notification.warning("图像的比例自动改变了",`4k模式下支持的比例为${sizes}, 由于之前的比例不被支持, 自动替换为${this.size}`)
+        this.notification.warning(
+          this.localization.text('notifications.imageRatioAdjusted'),
+          this.localization.text('notifications.imageRatioAdjustedDescription', {sizes, size: this.size})
+        )
       }
     }else{
       this.sizes = this.sizes_normal;

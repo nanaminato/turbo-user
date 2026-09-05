@@ -49,7 +49,7 @@
       <div class="py-2">
         <div class="d-flex justify-content-between m-1">
           <nz-row>
-            当前使用的后端服务器
+            {{ 'settings.currentBackendServer' | translate }}
           </nz-row>
           <nz-row>
             <input nz-input class="rounded-2" [ngModel]="apiUrl()"/>
@@ -128,7 +128,7 @@
       </div>
       <div class="d-flex align-items-center justify-content-center m-1">
         <div [style]="'font-size: '+config!.displayConfiguration.fontSize+'px;'">
-          示例文本 AaBbCc
+          {{ 'settings.fontPreview' | translate }} AaBbCc
         </div>
       </div>
       <div class="d-flex justify-content-between m-1">
@@ -151,7 +151,7 @@
             <nz-option-group [nzLabel]="'settings.language' | translate">
               @for (language_pair of displayLanguages; track language_pair) {
                 <nz-option
-                  [nzValue]="language_pair.value" [nzLabel]="language_pair.label"></nz-option>
+                  [nzValue]="language_pair.code" [nzLabel]="language_pair.labelKey | translate"></nz-option>
               }
             </nz-option-group>
           </nz-select>
