@@ -104,6 +104,8 @@
     "username": "用户名",
     "email": "邮箱",
     "password": "密码",
+    "showPassword": "显示密码",
+    "hidePassword": "隐藏密码",
     "confirmPassword": "确认密码",
     "pleaseUsername": "请输入你的用户名",
     "pleaseEmail": "请输入你的邮箱",

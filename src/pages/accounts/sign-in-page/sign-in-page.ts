@@ -56,6 +56,12 @@ export class SignInPage {
   @ViewChild("vCode")
   vCode: ElementRef |undefined;
   store = inject(Store);
+  passwordVisible = false;
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+  }
+
   submitForm(): void {
     if (this.validateForm.valid) {
       if(this.code?.toLowerCase()!==this.vCode?.nativeElement.value.toLowerCase()){

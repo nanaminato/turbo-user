@@ -99,6 +99,8 @@
     "copyrightStatement": "Copyright",
     "signIn": "Sign in",
     "signOut": "Sign out",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "self": "Account information",
     "nickname": "Nickname",
     "roles": "Roles",

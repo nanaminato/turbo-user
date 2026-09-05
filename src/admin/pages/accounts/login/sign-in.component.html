@@ -3,7 +3,7 @@
     <form novalidate [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <div class="form-group">
         <label>用户名</label>
-        <input class="form-control" name="username" formControlName="username">
+        <input class="form-control" name="username" formControlName="username" autocomplete="username">
         @if (validateForm.controls['username'].invalid && validateForm.controls['username'].dirty) {
           <li>
             用户名在3-20位之间
@@ -12,7 +12,15 @@
       </div>
       <div class="form-group">
         <label>密码</label>
-        <input class="form-control" type="password" name="password" formControlName="password">
+        <div class="password-control">
+          <input class="form-control" [type]="passwordVisible ? 'text' : 'password'" name="password"
+                 formControlName="password" autocomplete="current-password">
+          <button type="button" class="password-visibility-toggle" (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="(passwordVisible ? 'account.hidePassword' : 'account.showPassword') | translate"
+                  [attr.aria-pressed]="passwordVisible">
+            <span nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" nzTheme="outline"></span>
+          </button>
+        </div>
         @if (validateForm.controls['password'].invalid && validateForm.controls['password'].dirty) {
           <li>
             密码在6-20位之间

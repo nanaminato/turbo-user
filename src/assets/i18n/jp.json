@@ -103,6 +103,8 @@
     "username": "ユーザー名",
     "email": "メールアドレス",
     "password": "パスワード",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを隠す",
     "confirmPassword": "パスワードの確認",
     "pleaseUsername": "ユーザー名を入力してください",
     "pleaseEmail": "メールアドレスを入力してください",
