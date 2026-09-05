@@ -39,6 +39,19 @@ input.ng-dirty.ng-valid{
 .menu{
   max-width: 250px;
 }
+/**
+ * Compact (≤900px) menu becomes an overlay drawer instead of squeezing the
+ * content beside it. The items below are used by top-image / top-media.
+ */
+.menu-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 1040;
+}
 button.active {
   background-color: #1890ff; /* 你想要的激活色 */
   color: white;
@@ -93,6 +106,17 @@ button, [role="button"] {
 @media (max-width: 900px) {
   .menu {
     max-width: none;
+  }
+
+  .menu.menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    max-width: 80vw;
+    z-index: 1050;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
   }
 
   nz-modal-container .ant-modal {

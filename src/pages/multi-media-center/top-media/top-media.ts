@@ -36,4 +36,15 @@ export class TopMedia {
   visible() {
     return this.sizeReportService.menuVisible;
   }
+  isCompact() {
+    return this.sizeReportService.miniPhoneView();
+  }
+  hideMenu() {
+    this.sizeReportService.hideMenu();
+  }
+  closeMenuIfCompact() {
+    if (this.isCompact()) {
+      this.sizeReportService.hideMenu();
+    }
+  }
 }
