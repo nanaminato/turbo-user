@@ -1,4 +1,5 @@
 import {DisplayModel} from "./display.model";
+import {ThemeId} from '../../themes/theme';
 
 
 export interface Configuration{
@@ -24,7 +25,7 @@ export interface ChatStreamConfiguration{
 
 export interface DynamicConfig{
   systemInfo?: SystemInfoConfig;
-  theme?: string;
+  theme?: ThemeId;
   language?: string;
   languageIsSet?: boolean;
 }

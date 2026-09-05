@@ -1,5 +1,6 @@
 import {inject, Injectable} from "@angular/core";
 import {ThemeSwitcherService} from "./themeSwitcher.service";
+import {DEFAULT_THEME} from '../../themes/theme';
 import {Configuration, DynamicConfig} from "../../models";
 import {LocalizationService} from './localization.service';
 
@@ -16,7 +17,7 @@ export class DynamicConfigService{
     if(dynamic===undefined){
       return;
     }
-    this.themeSwitcherService.load(dynamic.theme);
+    dynamic.theme = this.themeSwitcherService.load(dynamic.theme);
     let lang: string | undefined;
     if(dynamic.languageIsSet){
       lang = dynamic.language;
@@ -38,7 +39,7 @@ export class DynamicConfigService{
   }
   public getDefaultDynamicConfig(): DynamicConfig{
     return {
-      theme: 'next-light',
+      theme: DEFAULT_THEME,
       language: 'zh',
       languageIsSet: false
     }

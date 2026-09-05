@@ -51,7 +51,8 @@
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/prismjs/themes/prism-okaidia.css",
-              "node_modules/katex/dist/katex.min.css"
+              "node_modules/katex/dist/katex.min.css",
+              "src/theme/theme.scss"
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",

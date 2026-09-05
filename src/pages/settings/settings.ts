@@ -25,7 +25,7 @@ import {ConfigurationService, DbService} from "../../services/db-services";
 import {ModelCenter} from "./model-center/model-center";
 import {details} from "../../models/enumerates/enum.type";
 import {ServiceProvider} from "../../roots";
-import {themes} from '../../themes/theme'
+import {themeOptions} from '../../themes/theme'
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 import {Store} from "@ngrx/store";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -43,10 +43,6 @@ import {NzMessageService} from "ng-zorro-antd/message";
     ConfigExport, ConfigImport,
     NzTooltipModule, TranslateModule, ModelCenter,
   ],
-  providers: [
-    ThemeSwitcherService,
-    DynamicConfigService
-  ]
 })
 export class Settings {
   dynamicConfig: DynamicConfig | undefined;
@@ -131,10 +127,10 @@ export class Settings {
     await this.configurationService.saveConfigToDb($event);
   }
 
-  protected readonly themes = themes;
+  protected readonly themeOptions = themeOptions;
 
   themeChange() {
-    this.themeSwitcherService.load(this.dynamicConfig!.theme);
+    this.dynamicConfig!.theme = this.themeSwitcherService.load(this.dynamicConfig!.theme);
     this.dynamicConfigService.setDynamicConfig(this.config!,this.dynamicConfig!);
   }
 

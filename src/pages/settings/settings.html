@@ -136,9 +136,9 @@
         <div>
           <nz-select class="select big" [(ngModel)]="dynamicConfig!.theme" (ngModelChange)="themeChange()">
             <nz-option-group [nzLabel]="'settings.theme' | translate">
-              @for (theme of themes; track theme) {
+              @for (theme of themeOptions; track theme.id) {
                 <nz-option
-                  [nzValue]="theme" [nzLabel]="theme"></nz-option>
+                  [nzValue]="theme.id" [nzLabel]="theme.labelKey | translate"></nz-option>
               }
             </nz-option-group>
           </nz-select>

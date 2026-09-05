@@ -1,4 +1,9 @@
 {
+  "themes": {
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム設定"
+  },
   "universal": {
     "save": "保存",
     "add": "追加",

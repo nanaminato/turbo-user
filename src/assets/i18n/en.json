@@ -1,4 +1,9 @@
 {
+  "themes": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "universal": {
     "save": "Save",
     "add": "Add",
