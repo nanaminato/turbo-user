@@ -1,5 +1,5 @@
 export const environment = {
-  assets: '/ai/assets/i18n/',
+  assets: '/assets/i18n/',
+  apiUrl: '/',
   production: true,
-  baseUrl: '/ai/'
 };

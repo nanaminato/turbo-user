@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, input, Input, isDevMode, Output} from '@angular/core';
+import {Component, EventEmitter, inject, input, Input, Output} from '@angular/core';
 import {GenerateTask} from "../../../../models/media";
 import {NzColDirective} from "ng-zorro-antd/grid";
 import {NzImageDirective, NzImageModule} from "ng-zorro-antd/image";
@@ -10,8 +10,8 @@ import {TranslateModule} from "@ngx-translate/core";
 import {ImagePresentPipe} from "../../../../pipes";
 import {ApimartService} from "../../../../services/fetch_services/apimart.service";
 import {SendManagerService} from "../../../../auth_module";
-import {environment} from "../../../../environments/environment";
 import {LocalizationService} from '../../../../services/normal-services';
+import {ServiceProvider} from '../../../../roots';
 
 @Component({
   selector: 'app-task-item',
@@ -34,6 +34,7 @@ export class TaskItem {
   private apiMartService: ApimartService = inject(ApimartService)
   private sendService: SendManagerService = inject(SendManagerService)
   private localization = inject(LocalizationService)
+  private provider = inject(ServiceProvider)
   @Input()
   index: number | undefined;
   @Output()
@@ -89,15 +90,7 @@ export class TaskItem {
     if (this.useProxy() && url&&url.startsWith("http")) {
       try {
         const urlObj = new URL(url);
-        let imageServerBaseUrl = window.location.origin;
-        if(isDevMode()) {
-          let plainUrl = environment.baseUrl;
-          if (plainUrl.endsWith("/")) {
-            plainUrl = plainUrl.substring(0, plainUrl.length - 1);
-          }
-
-          imageServerBaseUrl = `http://${plainUrl}`
-        }
+        const imageServerBaseUrl = new URL(this.provider.apiUrl, window.location.origin).origin;
         return `${imageServerBaseUrl}/api/image_proxy/get?url=${encodeURIComponent(url)}`;
 
       } catch (e) {
