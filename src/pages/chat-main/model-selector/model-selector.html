@@ -11,7 +11,7 @@
   </nz-select>
   @if(model !== undefined && model.vision){
     <div class="align-items-center d-flex justify-content-center">
-      <span nz-icon nz-tooltip [nzTooltipTitle]="model!.modelName+' 支持视觉'" nzType="eye" nzTheme="outline"></span>
+      <span nz-icon nz-tooltip [nzTooltipTitle]="model!.modelName + ' ' + ('chat-main.supportsVision' | translate)" nzType="eye" nzTheme="outline"></span>
     </div>
   }
 </div>

@@ -56,6 +56,8 @@
     "initial-image": "元画像",
     "sampler": "サンプラー",
     "loraSelector": "LoRAモデル選択",
+    "proxy": "プロキシ",
+    "proxyTip": "HTTP 環境では画像へのアクセスが拒否される場合があります。プロキシモードを有効にしてください。",
     "modelSelector": "画像生成モデル選択",
     "embeddingSelector": "Embeddingモデル選択"
   },
@@ -134,6 +136,7 @@
     "addOptionalModel": "オプションモデルを追加",
     "modelName": "モデル名",
     "modelValue": "モデル値",
+    "visionSupport": "画像認識対応",
     "connectionInfo": "接続情報",
     "backendServerAddress": "バックエンドサーバーアドレス",
     "standardBackendServerAddress": "標準準拠のバックエンドサーバーアドレス",
@@ -260,6 +263,10 @@
     "clear": "クリア",
     "selectFile": "ファイルを選択",
     "edit": "編集",
+    "untitledConversation": "不明な問題が発生しました",
+    "authorizationRequired": "VIP 権限のあるアカウントでログインしてください。（リクエストは未認証です）",
+    "responseInterrupted": "別のエラーが発生しました（リクエストの中断またはサービス停止）",
+    "responseStopped": "応答を停止しました",
     "supportsVision": "画像認識対応",
     "insertInlineCode": "インラインコード記号を挿入",
     "insertCodeBlock": "コードブロック記号を挿入"
@@ -297,7 +304,10 @@
     "noFileSelected": "ファイルが選択されていません", "copySuccess": "内容をコピーしました", "requestInProgress": "現在のリクエストはまだ完了していません", "invalidVerificationCode": "認証コードが正しくありません",
     "notSignedIn": "ログインしていません", "registrationSuccess": "登録が完了しました", "warning": "警告", "taskAlreadyRetrieved": "結果はすでに取得済みです。",
     "taskResultRetrieved": "タスク結果を取得して保存しました", "confirmDeleteTask": "この項目を削除しますか？タスク ID：{{taskId}}", "promptsImported": "システムプロンプトをインポートしました",
-    "promptsReloaded": "システムプロンプトを再読み込みしました", "promptsImportFailed": "システムプロンプトのインポートに失敗しました", "validationSuccess": "検証に成功しました", "promptDeleteFailed": "システムプロンプトの削除に失敗しました"
+    "promptsReloaded": "システムプロンプトを再読み込みしました", "promptsImportFailed": "システムプロンプトのインポートに失敗しました", "validationSuccess": "検証に成功しました", "promptDeleteFailed": "システムプロンプトの削除に失敗しました",
+    "themeApplied": "テーマを適用しました", "configImported": "設定をインポートしました", "configImportFailed": "設定のインポートに失敗しました", "loadSuccess": "読み込みました", "allTasksStopped": "すべてのタスクを停止しました",
+    "fileParseFailed": "ファイルの解析中に問題が発生しました", "itemNotFound": "リストに項目がありません", "operationNotAllowed": "許可されていない操作です", "systemPromptCannotRegenerate": "システムプロンプトは再生成できません。",
+    "contextMessageNotFound": "このメッセージより前にユーザーまたはシステムメッセージが見つかりません", "contextCleared": "コンテキストをクリアしました", "verificationCodeNetworkFailed": "認証コードの取得に失敗しました：ネットワークエラー", "verificationCodeFailed": "認証コードの取得に失敗しました"
   },
   "admin": { "controlCenter": "管理コンソール" },
   "help": "どのようなサポートが必要ですか？"

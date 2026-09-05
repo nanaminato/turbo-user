@@ -7,6 +7,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {TranslateModule} from "@ngx-translate/core";
 import {SystemPromptService} from "../../../services/db-services/system-prompt.service";
+import {LocalizationService} from '../../../services/normal-services';
 
 @Component({
   selector: 'app-import-prompts',
@@ -26,6 +27,7 @@ export class ImportPrompts {
   json: string = '';
   private notification: NzNotificationService = inject(NzNotificationService);
   private systemPromptService: SystemPromptService = inject(SystemPromptService);
+  private localization = inject(LocalizationService);
   @ViewChild("textAreaElement")
   textAreaElement: ElementRef | undefined;
   beforeUpload = (file: NzUploadFile): boolean => {
@@ -53,13 +55,13 @@ export class ImportPrompts {
           content: item.content
         });
       }
-      this.notification.success("系统预设导入成功","");
+      this.notification.success(this.localization.text('notifications.promptsImported'), '');
       this.systemPromptService.reLoad().then(()=>{
-        this.notification.success("系统预设信息重载成功","");
+        this.notification.success(this.localization.text('notifications.promptsReloaded'), '');
       });
 
     }catch (e: any){
-      this.notification.error("系统预设导入失败",e.toString());
+      this.notification.error(this.localization.text('notifications.promptsImportFailed'), e.toString());
     }
 
   }

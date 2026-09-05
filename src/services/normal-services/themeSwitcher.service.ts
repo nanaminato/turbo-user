@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {themes} from "../../themes/theme";
 import {environment} from "../../environments/environment";
+import {LocalizationService} from './localization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,11 @@ export class ThemeSwitcherService{
   theme: string = 'next-light'
   http = inject(HttpClient);
   message = inject(NzMessageService);
+  localization = inject(LocalizationService);
   public load(theme: string | undefined){
     let themePath = this.getThemePath(theme);
     this.updateThemeLink(themePath).then(r => {
-      this.message.success("应用主题成功");
+      this.message.success(this.localization.text('notifications.themeApplied'));
     });
   }
   public getThemePath(theme: string | undefined): string{

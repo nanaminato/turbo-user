@@ -11,6 +11,7 @@ import {ImagePresentPipe} from "../../../../pipes";
 import {ApimartService} from "../../../../services/fetch_services/apimart.service";
 import {SendManagerService} from "../../../../auth_module";
 import {environment} from "../../../../environments/environment";
+import {LocalizationService} from '../../../../services/normal-services';
 
 @Component({
   selector: 'app-task-item',
@@ -32,6 +33,7 @@ export class TaskItem {
   private universalService: UniversalService = inject(UniversalService)
   private apiMartService: ApimartService = inject(ApimartService)
   private sendService: SendManagerService = inject(SendManagerService)
+  private localization = inject(LocalizationService)
   @Input()
   index: number | undefined;
   @Output()
@@ -42,7 +44,7 @@ export class TaskItem {
     let images = task.images;
     let videos = task.videos;
     if((images&&images.length > 0) || (videos && videos.length > 0)) {
-      this.notification.warning("警告","已经取得到了结果，无需再次取得。")
+      this.notification.warning(this.localization.text('notifications.warning'), this.localization.text('notifications.taskAlreadyRetrieved'))
       return;
     }
     let task_id = task.task_id??"";
@@ -54,7 +56,7 @@ export class TaskItem {
           this.universalService.addOrUpdateGenerateTask(this.task!).then(
             c=>{
               this.sendService.updateTask(this.task!);
-              this.notification.info("获取结果成功，并保存到数据库中","")
+              this.notification.info(this.localization.text('notifications.taskResultRetrieved'), '')
             }
           );
         }else{

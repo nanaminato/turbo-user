@@ -15,7 +15,7 @@ import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {TranslateModule} from "@ngx-translate/core";
 import {SystemPromptItem} from "../../models";
-import {SizeReportService} from "../../services/normal-services";
+import {LocalizationService, SizeReportService} from "../../services/normal-services";
 import {SystemPromptService} from "../../services/db-services/system-prompt.service";
 import {Store} from "@ngrx/store";
 import {selectPrompt} from "../../systems/store/system-prompts/prompts.selectors";
@@ -48,6 +48,7 @@ export class PromptStore {
   sizeReportService: SizeReportService = inject(SizeReportService);
   systemInfoService: SystemPromptService = inject(SystemPromptService);
   notification: NzNotificationService = inject(NzNotificationService);
+  localization = inject(LocalizationService);
   store = inject(Store)
   constructor() {
     this.store.select(selectPrompt).subscribe((prompts: SystemPromptItem[] | undefined) => {
@@ -86,7 +87,7 @@ export class PromptStore {
       });
 
     }catch (e: any){
-      this.notification.error("删除系统预设信息失败",e.toString());
+      this.notification.error(this.localization.text('notifications.promptDeleteFailed'), e.toString());
     }
   }
 

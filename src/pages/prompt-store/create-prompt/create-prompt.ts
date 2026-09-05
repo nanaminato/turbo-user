@@ -6,6 +6,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {TranslateModule} from "@ngx-translate/core";
 import {SystemPromptService} from "../../../services/db-services/system-prompt.service";
+import {LocalizationService} from '../../../services/normal-services';
 
 @Component({
   selector: 'app-create-prompt',
@@ -24,6 +25,7 @@ export class CreatePrompt {
   private fb = inject(NonNullableFormBuilder)
   private systemPromptService: SystemPromptService = inject(SystemPromptService);
   private notification: NzNotificationService = inject(NzNotificationService);
+  private localization = inject(LocalizationService);
   @Output()
   close = new EventEmitter<boolean>();
   validateForm: FormGroup<{
@@ -36,7 +38,7 @@ export class CreatePrompt {
   submitForm(){
     if(this.validateForm.valid){
       let value = this.validateForm.value;
-      this.notification.success("验证成功","");
+      this.notification.success(this.localization.text('notifications.validationSuccess'), '');
       this.systemPromptService.addOrPutPrompts({
         id: 0,
         title: value.title,

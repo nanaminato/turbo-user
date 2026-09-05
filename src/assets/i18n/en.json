@@ -58,6 +58,8 @@
     "initial-image": "Initial Image",
     "sampler": "Sampler",
     "loraSelector": "Lora Selector",
+    "proxy": "Proxy",
+    "proxyTip": "Image access may be rejected over HTTP. Enable proxy mode to avoid this.",
     "modelSelector": "Model Selector",
     "embeddingSelector": "Embedding Selector"
   },
@@ -122,6 +124,7 @@
     "addOptionalModel":"Add Optional Model",
     "modelName": "Model Name",
     "modelValue": "Model Value",
+    "visionSupport": "Vision support",
     "connectionInfo": "Connection Info",
     "backendServerAddress": "Backend Server Address",
     "standardBackendServerAddress": "Standard Backend Server Address",
@@ -248,6 +251,10 @@
     "clear": "Clear",
     "selectFile": "Select File",
     "edit": "Edit",
+    "untitledConversation": "An unknown problem occurred",
+    "authorizationRequired": "Please sign in with an account that has VIP access. (Request unauthorized)",
+    "responseInterrupted": "Another error occurred (request interrupted or service unavailable)",
+    "responseStopped": "Response stopped",
     "supportsVision": "supports vision",
     "insertInlineCode": "Insert inline code markers",
     "insertCodeBlock": "Insert code block markers"
@@ -285,7 +292,10 @@
     "noFileSelected": "No file selected", "copySuccess": "Content copied", "requestInProgress": "The current request has not finished", "invalidVerificationCode": "Invalid verification code",
     "notSignedIn": "You are not signed in", "registrationSuccess": "Registration successful", "warning": "Warning", "taskAlreadyRetrieved": "The result has already been retrieved.",
     "taskResultRetrieved": "Task result retrieved and saved", "confirmDeleteTask": "Delete this item? Task ID: {{taskId}}", "promptsImported": "System prompts imported",
-    "promptsReloaded": "System prompts reloaded", "promptsImportFailed": "Failed to import system prompts", "validationSuccess": "Validation successful", "promptDeleteFailed": "Failed to delete system prompt"
+    "promptsReloaded": "System prompts reloaded", "promptsImportFailed": "Failed to import system prompts", "validationSuccess": "Validation successful", "promptDeleteFailed": "Failed to delete system prompt",
+    "themeApplied": "Theme applied", "configImported": "Configuration imported", "configImportFailed": "Failed to import configuration", "loadSuccess": "Loaded successfully", "allTasksStopped": "All tasks stopped",
+    "fileParseFailed": "A problem occurred while parsing the file", "itemNotFound": "Item not found in the list", "operationNotAllowed": "Operation not allowed", "systemPromptCannotRegenerate": "System prompts cannot be regenerated.",
+    "contextMessageNotFound": "No user or system message was found before this message", "contextCleared": "Context cleared", "verificationCodeNetworkFailed": "Failed to get verification code: network error", "verificationCodeFailed": "Failed to get verification code"
   },
   "admin": { "controlCenter": "Admin console" },
   "help": "How can I help you today?"

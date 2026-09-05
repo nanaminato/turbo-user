@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Output} from '@angular/core';
 import {ClipboardModule} from "ngx-clipboard";
 import {FormsModule} from "@angular/forms";
 import {NzButtonModule} from "ng-zorro-antd/button";
@@ -6,6 +6,7 @@ import {turboMask} from "../config-export/config-export";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
 import {Configuration} from "../../../models";
+import {LocalizationService} from '../../../services/normal-services';
 @Component({
   selector: 'app-config-import',
   templateUrl: './config-import.html',
@@ -19,6 +20,7 @@ import {Configuration} from "../../../models";
   ]
 })
 export class ConfigImport {
+  private localization = inject(LocalizationService);
   @Output()
   configInput = new EventEmitter<Configuration>();
   json: string = '';
@@ -45,9 +47,9 @@ export class ConfigImport {
     try {
       let config = JSON.parse(ujson);
       this.configInput.emit(config);
-      this.notification.success("导入配置成功", "");
+      this.notification.success(this.localization.text('notifications.configImported'), '');
     } catch (error) {
-      this.notification.success("导入配置失败", `${error}`);
+      this.notification.error(this.localization.text('notifications.configImportFailed'), `${error}`);
     }
   }
 

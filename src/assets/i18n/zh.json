@@ -58,7 +58,9 @@
     "loraSelector": "图像Lora模型选择器",
     "modelSelector": "图像生成模型选择器",
     "embeddingSelector": "图像嵌入模型选择器",
-    "stopAllTasks": "停止所有任务"
+    "stopAllTasks": "停止所有任务",
+    "proxy": "代理",
+    "proxyTip": "在 HTTP 环境下访问图片可能会被拒绝；启用代理模式可避免此问题。"
   },
   "video": {
     "running": "视频正在生成中...",
@@ -135,6 +137,7 @@
     "addOptionalModel":"添加可选模型",
     "modelName": "模型名",
     "modelValue": "模型值",
+    "visionSupport": "视觉支持",
     "connectionInfo": "连接信息",
     "backendServerAddress": "后端服务器地址",
     "standardBackendServerAddress": "符合标准的后端服务器地址",
@@ -262,6 +265,10 @@
     "clear": "清空",
     "selectFile": "选择文件",
     "edit": "编辑",
+    "untitledConversation": "发生了未知问题",
+    "authorizationRequired": "请使用具有 VIP 身份的账号登录。（请求未获授权）",
+    "responseInterrupted": "发生其他错误（请求中断或服务不可用）",
+    "responseStopped": "响应已终止",
     "supportsVision": "支持视觉",
     "insertInlineCode": "插入行内代码标记",
     "insertCodeBlock": "插入多行代码块标记"
@@ -299,7 +306,10 @@
     "noFileSelected": "还没有选择文件", "copySuccess": "复制内容成功", "requestInProgress": "当前请求还没有结束", "invalidVerificationCode": "验证码错误",
     "notSignedIn": "还没有登录哦", "registrationSuccess": "注册成功", "warning": "警告", "taskAlreadyRetrieved": "已经取得结果，无需再次获取。",
     "taskResultRetrieved": "获取结果成功，已保存到数据库", "confirmDeleteTask": "确定要删除该项目吗？任务 ID：{{taskId}}", "promptsImported": "系统预设导入成功",
-    "promptsReloaded": "系统预设信息重载成功", "promptsImportFailed": "系统预设导入失败", "validationSuccess": "验证成功", "promptDeleteFailed": "删除系统预设信息失败"
+    "promptsReloaded": "系统预设信息重载成功", "promptsImportFailed": "系统预设导入失败", "validationSuccess": "验证成功", "promptDeleteFailed": "删除系统预设信息失败",
+    "themeApplied": "主题已应用", "configImported": "配置导入成功", "configImportFailed": "配置导入失败", "loadSuccess": "加载成功", "allTasksStopped": "所有任务已停止",
+    "fileParseFailed": "解析文件时出现问题", "itemNotFound": "列表中不存在该项目", "operationNotAllowed": "不允许的操作", "systemPromptCannotRegenerate": "不能重新生成系统级提示词。",
+    "contextMessageNotFound": "在该消息之前找不到用户信息或系统信息", "contextCleared": "上下文已清除", "verificationCodeNetworkFailed": "获取验证码失败：网络错误", "verificationCodeFailed": "获取验证码失败"
   },
   "admin": { "controlCenter": "管理后台" },
   "help": "你需要什么帮助？"

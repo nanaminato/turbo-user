@@ -15,6 +15,7 @@ import {Router, RouterLink} from "@angular/router";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {user_routes} from "../../../roots/routes";
 import {RegisterService, VerificationService} from "../../../auth_module";
+import {LocalizationService} from '../../../services/normal-services';
 
 @Component({
   selector: 'app-register',
@@ -62,7 +63,7 @@ export class Register {
   submitForm(): void {
     if (this.validateForm.valid&&this.validateForm.value.confirm===this.validateForm.value.password) {
       if(this.code?.toLowerCase()!==this.vCode?.nativeElement.value.toLowerCase()){
-        this.message.error("验证码错误");
+        this.message.error(this.localization.text('notifications.invalidVerificationCode'));
         this.generateVerificationCode();
         return;
       }
@@ -72,7 +73,7 @@ export class Register {
         email: this.validateForm.value.email
       }).subscribe({
         next: (data: any)=>{
-          this.message.success("注册成功")
+          this.message.success(this.localization.text('notifications.registrationSuccess'))
           this.router.navigate(user_routes.sign_in)
         }
       })
@@ -90,6 +91,7 @@ export class Register {
 
   verificationService: VerificationService = inject(VerificationService);
   message: NzMessageService = inject(NzMessageService);
+  private localization = inject(LocalizationService);
   registerService: RegisterService = inject(RegisterService);
   router: Router = inject(Router);
   constructor(
