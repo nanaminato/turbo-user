@@ -9,7 +9,7 @@
   min-height: 0;
   min-height: 100dvh;
 }
-.header-content{
+.chat-messages{
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -17,22 +17,19 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.header-content > .flex-grow-1 {
+.chat-messages > .flex-grow-1 {
   min-height: 0;
+}
+.chat-topbar{
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
 }
 .center-input{
   width: min(900px, calc(100% - 24px));
   margin: 0 auto;
   border: 1px solid #ccc;
   box-sizing: border-box;
-}
-.m-px{
-  margin-top: 70px;
-}
-.fab-control{
-  position: fixed;
-  top: 28px;
-  right: 100px;
 }
 .composer-shell {
   padding: 8px 0 0;
@@ -97,12 +94,12 @@
   max-width: 300px;
 }
 
+.model-row {
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 900px) {
-  .fab-control {
-    top: auto;
-    right: max(12px, env(safe-area-inset-right));
-    bottom: calc(132px + env(safe-area-inset-bottom));
-  }
   .composer-shell {
     padding-bottom: env(safe-area-inset-bottom);
   }

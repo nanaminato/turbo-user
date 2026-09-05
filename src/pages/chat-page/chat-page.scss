@@ -10,6 +10,7 @@
   min-width: 0;
   height: 100%;
   overflow: hidden;
+  position: relative;
 }
 .app-sidebar {
   flex: 0 0 260px;
@@ -31,5 +32,9 @@
     width: min(84vw, 320px);
     max-width: none;
     box-shadow: 12px 0 28px rgba(0, 0, 0, .18);
+  }
+  /* the backdrop sits under the sidebar (z:20) but above the main pane */
+  .menu-backdrop {
+    z-index: 19;
   }
 }

@@ -45,10 +45,23 @@ export class ChatPage {
   visible(){
     return this.sizeReportService.menuVisible;
   }
+  isCompact() {
+    return this.sizeReportService.miniPhoneView();
+  }
+  hideMenu() {
+    this.sizeReportService.hideMenu();
+  }
+  closeMenuIfCompact() {
+    if (this.isCompact()) {
+      this.sizeReportService.hideMenu();
+    }
+  }
   openSettingPage() {
+    this.closeMenuIfCompact();
     this.router.navigate(user_routes.settings);
   }
   openPromptPage() {
+    this.closeMenuIfCompact();
     this.router.navigate(user_routes.prompts);
   }
 }

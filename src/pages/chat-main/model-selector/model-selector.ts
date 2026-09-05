@@ -3,12 +3,9 @@ import {FormsModule} from "@angular/forms";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {ConfigurationService} from "../../../services/db-services";
 import {Configuration, DisplayModel} from "../../../models";
-import {NzIconDirective} from "ng-zorro-antd/icon";
-import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {Store} from "@ngrx/store";
 import {selectConfig} from "../../../systems/store/configuration/configuration.selectors";
 import {configurationActions} from "../../../systems/store/configuration/configuration.actions";
-import {TranslatePipe} from "@ngx-translate/core";
 
 
 @Component({
@@ -18,9 +15,6 @@ import {TranslatePipe} from "@ngx-translate/core";
   imports: [
     FormsModule,
     NzSelectModule,
-    NzIconDirective,
-    NzTooltipDirective,
-    TranslatePipe
   ],
   standalone: true
 })

@@ -4,8 +4,6 @@ import {firstValueFrom, forkJoin, map, Observable, Subject, Subscription} from "
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {ModelEditor} from "./model-editor/model-editor";
-import {SystemWordChoice} from "./system-word-choice/system-word-choice";
-import {SystemPromptManager} from "./system-prompt-manager/system-prompt-manager";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzFormModule} from "ng-zorro-antd/form";
@@ -23,7 +21,6 @@ import {
   LocalizationService,
   ModelFetchService,
   SizeReportService,
-  SystemContext
 } from "../../services/normal-services";
 import {
   AssistantRole,
@@ -33,7 +30,6 @@ import {
   ChatPacket,
   Configuration,
   FileAdds,
-  SystemPromptItem,
   SystemRole,
   UserRole
 } from "../../models";
@@ -49,6 +45,7 @@ import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 import {Store} from "@ngrx/store";
 import {selectChatHistory} from "../../systems/store/chat-history/chat-history.selectors";
+import {chatActions} from "../../systems/store/system.actions";
 import {historyTitleActions} from "../../systems/store/history-title/history-title.actions";
 
 @Component({
@@ -59,8 +56,6 @@ import {historyTitleActions} from "../../systems/store/history-title/history-tit
   imports: [
     NzModalModule,
     ModelEditor,
-    SystemWordChoice,
-    SystemPromptManager,
     NzIconModule,
     NzButtonModule,
     NzFormModule,
@@ -565,13 +560,6 @@ export class ChatMainComponent implements OnDestroy{
     this.handleFinalization();
   }
 
-  expanded = false;
-  collapse() {
-    this.expanded = false;
-  }
-  expand() {
-    this.expanded = !this.expanded;
-  }
   showLogo() {
     return this.chatHistoryModel===undefined || this.chatHistoryModel.chatList?.chatModel?.length===0;
   }
@@ -640,68 +628,7 @@ export class ChatMainComponent implements OnDestroy{
 
 
   protected readonly RequestType = RequestType;
-  showChoice: boolean = false;
 
-  addSystemInfo() {
-    this.choiceVisible = true;
-  }
-
-  manageSystemContext() {
-    this.systemPromptManagerVisible = true;
-  }
-
-  choiceVisible: boolean = false;
-
-  handleSystemPromptChoice($event: SystemPromptItem | undefined) {
-    if($event!==undefined){
-      if (this.chatHistoryModel === undefined) {
-        this.chatHistoryModel = new ChatHistoryModel();
-      }
-      let model = new ChatModel(SystemRole,$event.content);
-      let systemContext: SystemContext = {
-        id: model.dataId!,
-        in: true
-      };
-      // 将之前的系统信息移除上下文
-      this.chatContext.systems!.push(systemContext);
-      this.chatModels.push(model);
-      /// make it stable for system ms!.
-      if(this.chatHistoryModel.title===undefined||this.chatHistoryModel.title===''){
-        this.chatHistoryModel.title = model.content;
-        this.chatHistoryService.putHistoryTitle({
-          dataId: this.chatHistoryModel.dataId!,
-          title: this.chatHistoryModel.title,
-          userId: this.auth.user?.id!
-        }).then(()=>{
-          this.sendManagerService.sendHistory({
-            dataId: this.chatHistoryModel!.dataId!,
-            title: this.chatHistoryModel!.title,
-            userId: this.auth.user?.id!
-          }).then((msg)=>{
-            this.sendManagerService.sendMessage(this.chatHistoryModel!.dataId!,model as ChatInterface)
-          })
-        })
-
-      }
-      this.syncHistorySession(); /// not check
-      this.awareContextChange();
-    }
-  }
-
-  handleChoiceClose() {
-    this.choiceVisible = false;
-    this.showChoice = false;
-  }
-
-  systemPromptManagerVisible: boolean = false;
-  handleManagerClose() {
-    this.systemPromptManagerVisible = false;
-    this.showChoice = false;
-  }
-
-  superMini() {
-    return this.sizeReportService.superMiniView();
-  }
   @ViewChild('promptBox', { static: true })
   promptBox: ElementRef | undefined;
   insertCodeFlags() {
@@ -728,5 +655,10 @@ export class ChatMainComponent implements OnDestroy{
 
   toggleMenu() {
     this.sizeReportService.toggleMenu()
+  }
+
+  newChat() {
+    this.sizeReportService.hideMenu();
+    this.store.dispatch(chatActions.startNewChat());
   }
 }
