@@ -186,7 +186,21 @@
     "resetDataBase": "Reset Local Database",
     "resetDataBaseConfirm": "Are you sure you want to reset the local database? This will result in the loss of any data that has not been synced online. (Used to force-handle database exceptions)",
     "currentBackendServer": "Current backend server",
-    "fontPreview": "Preview text"
+    "fontPreview": "Preview text",
+    "advancedChatParameters": "Advanced Chat Parameters (new OpenAI / multi-provider)",
+    "advancedChatParametersHint": "Only used when the target model supports them; the backend silently ignores them when not applicable.",
+    "reasoningEffort": "Reasoning Effort (reasoning_effort)",
+    "reasoningEffortHint": "For OpenAI reasoning models (o-series, gpt-5). Supports: none / minimal / low / medium / high / xhigh.",
+    "verbosity": "Verbosity (verbosity)",
+    "verbosityHint": "Only for GPT-5 models. Supports: low / medium / high.",
+    "thinkingBudget": "Thinking Budget (thinking_budget)",
+    "thinkingBudgetHint": "Only for Gemini 2.5 models. -1 means dynamic thinking, 0 means no thinking.",
+    "optionNotSet": "Not set",
+    "providerCatalog": "Supported Providers",
+    "providerCatalogHint": "Providers currently registered in the backend ProviderCatalog. Supplier keys (baseUrl + apiKey) and model bindings are managed via the admin console (admin → secrets).",
+    "providerId": "id =",
+    "providerSupportsChat": "supports chat",
+    "providerNotChat": "media/tasks only"
   },
   "prompts": {
     "presetManagement": "Prompts Management",

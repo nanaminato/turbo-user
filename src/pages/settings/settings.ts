@@ -23,7 +23,7 @@ import {DynamicConfigService, LocalizationService, SizeReportService, ThemeSwitc
 import {Configuration, DynamicConfig} from "../../models";
 import {ConfigurationService, DbService} from "../../services/db-services";
 import {ModelCenter} from "./model-center/model-center";
-import {details} from "../../models/enumerates/enum.type";
+import {details, providerCatalog, ProviderDefinition, reasoningEfforts, thinkingBudgetPresets, verbosityLevels} from "../../models/enumerates/enum.type";
 import {ServiceProvider} from "../../roots";
 import {themeOptions} from '../../themes/theme'
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
@@ -177,7 +177,7 @@ export class Settings {
       nzTitle: title,
       nzContent: content,
       nzOkText: okText,
-      nzOkDanger: true, // 使确认按钮显示为红色（危险操作）
+      nzOkDanger: true,
       nzCancelText: cancelText,
       nzOnOk: async () => this.handleReset()
     });
@@ -188,5 +188,44 @@ export class Settings {
     this.isResetting = false;
     await this.dbService.forceFactoryReset();
     this.message.success(this.localization.text('notifications.databaseResetSuccess'));
+  }
+
+  // —— 新版 OpenAI / 多供应商对话参数 ——
+  // 这些选项在 Settings 中以可选形式存在；存到 IndexedDB 后由 TurboService.fetchChat 透传。
+  // 后端的 OpenAiChatHandler 与 GoogleChatHandler 已兼容：
+  //  - reasoning_effort：OpenAI 推理模型 (o 系列、gpt-5 系列)
+  //  - verbosity：GPT-5 系列
+  //  - thinking_budget：Gemini 2.5 系列
+  // 当目标模型不支持时，后端会忽略对应字段而不会报错。
+  protected readonly reasoningEfforts = reasoningEfforts;
+  protected readonly verbosityLevels = verbosityLevels;
+  protected readonly thinkingBudgetPresets = thinkingBudgetPresets;
+  protected readonly providerCatalog: ReadonlyArray<ProviderDefinition> = providerCatalog;
+
+  protected updateReasoningEffort(value: string | null): void {
+    if (!this.config) return;
+    this.config.chatConfiguration.reasoning_effort = value ?? undefined;
+  }
+
+  protected updateVerbosity(value: string | null): void {
+    if (!this.config) return;
+    this.config.chatConfiguration.verbosity = value ?? undefined;
+  }
+
+  protected thinkingBudgetModel(): number | null {
+    const value = this.config?.chatConfiguration.thinking_budget;
+    if (value === undefined || value === null) return null;
+    return value;
+  }
+
+  protected updateThinkingBudget(value: number | null): void {
+    if (!this.config) return;
+    this.config.chatConfiguration.thinking_budget = value === null ? undefined : value;
+  }
+
+  protected thinkingBudgetLabel(preset: number): string {
+    if (preset === -1) return '-1 (dynamic)';
+    if (preset === 0) return '0 (off)';
+    return String(preset);
   }
 }

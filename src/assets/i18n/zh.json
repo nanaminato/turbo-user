@@ -199,8 +199,21 @@
     "resetDataBase": "重置本地数据库",
     "resetDataBaseConfirm": "确定要重置本地数据库吗, 这将会丢失没有联网存储的数据。(用来强制处理数据库异常)",
     "currentBackendServer": "当前使用的后端服务器",
-    "fontPreview": "示例文本"
-
+    "fontPreview": "示例文本",
+    "advancedChatParameters": "扩展对话参数（新版本 OpenAI / 多供应商）",
+    "advancedChatParametersHint": "仅当目标模型支持时被启用；不兼容时后端会自动忽略，不会报错。",
+    "reasoningEffort": "推理努力程度 (reasoning_effort)",
+    "reasoningEffortHint": "适用于 OpenAI 推理模型（o 系列、gpt-5 系列）。支持：none / minimal / low / medium / high / xhigh。",
+    "verbosity": "输出详细度 (verbosity)",
+    "verbosityHint": "仅适用于 GPT-5 系列。支持：low / medium / high。",
+    "thinkingBudget": "思考预算 (thinking_budget)",
+    "thinkingBudgetHint": "仅适用于 Gemini 2.5 系列。-1 表示动态思考，0 表示不思考。",
+    "optionNotSet": "不设置",
+    "providerCatalog": "支持的服务商",
+    "providerCatalogHint": "后端 ProviderCatalog 当前已注册的供应商。供应商的密钥（baseUrl + apiKey）和模型绑定请通过管理后台（admin → secrets）维护。",
+    "providerId": "ID =",
+    "providerSupportsChat": "支持对话",
+    "providerNotChat": "仅用于媒体/任务"
   },
   "prompts": {
     "presetManagement": "预设管理",

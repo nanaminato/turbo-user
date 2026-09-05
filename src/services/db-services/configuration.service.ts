@@ -22,7 +22,12 @@ export class ConfigurationService {
         temperature: 0.6,
         max_completion_tokens: 4000,
         presence_penalty: 0.6,
-        frequency_penalty: 0.6
+        frequency_penalty: 0.6,
+        // 新版 OpenAI 推理模型与多供应商相关字段：
+        // undefined 让后端保持现有行为（不动 reasoning_effort/verbosity/thinking_budget）。
+        reasoning_effort: undefined,
+        verbosity: undefined,
+        thinking_budget: undefined
       },
       displayConfiguration: {
         fontSize: "14"

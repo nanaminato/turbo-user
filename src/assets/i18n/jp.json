@@ -198,7 +198,21 @@
     "resetDataBase": "ローカルデータベースをリセット",
     "resetDataBaseConfirm": "ローカルデータベースをリセットしてもよろしいですか？オンラインに保存されていないデータは失われます。（データベースの異常を強制的に処理するために使用されます）",
     "currentBackendServer": "現在使用中のバックエンドサーバー",
-    "fontPreview": "プレビューテキスト"
+    "fontPreview": "プレビューテキスト",
+    "advancedChatParameters": "拡張チャットパラメータ（新バージョン OpenAI / マルチプロバイダー）",
+    "advancedChatParametersHint": "対象のモデルが対応している場合にのみ使用されます。非対応モデルへ送られてもバックエンドが無視するだけで、エラーにはなりません。",
+    "reasoningEffort": "推論の集中度 (reasoning_effort)",
+    "reasoningEffortHint": "OpenAI 推論モデル（o シリーズ、gpt-5 シリーズ）向け。対応値：none / minimal / low / medium / high / xhigh",
+    "verbosity": "出力の詳細度 (verbosity)",
+    "verbosityHint": "gpt-5 シリーズのみ。対応値：low / medium / high",
+    "thinkingBudget": "思考予算 (thinking_budget)",
+    "thinkingBudgetHint": "Gemini 2.5 シリーズのみ。-1 で動的思考、0 で思考オフを意味します。",
+    "optionNotSet": "未設定",
+    "providerCatalog": "対応プロバイダー",
+    "providerCatalogHint": "バックエンドの ProviderCatalog に登録されているプロバイダー一覧。サプライヤーキー（baseUrl + apiKey）とモデルバインドは管理画面（admin → secrets）で編集してください。",
+    "providerId": "ID =",
+    "providerSupportsChat": "チャット対応",
+    "providerNotChat": "メディア/タスク専用"
   },
   "prompts": {
     "presetManagement": "プリセット管理",

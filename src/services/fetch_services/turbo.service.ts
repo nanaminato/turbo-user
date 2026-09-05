@@ -44,7 +44,28 @@ export class TurboService {
       temperature: config?.chatConfiguration.temperature,
       top_p: config?.chatConfiguration.top_p
     };
+    // 透传新版 OpenAI（推理模型 / GPT-5）以及 Gemini 2.5 等扩展参数：
+    //   - undefined / null 等同于「不发送」，由后端依据模型供应商兼容性自行决定；
+    //   - reasoning_effort 适用于 o 系列、gpt-5 系列；
+    //   - verbosity 仅适用于 gpt-5 系列；
+    //   - thinking_budget 仅 Gemini 2.5 接受；
+    // 后端对应字段位于 NoModelChatBody，由 OpenAiChatHandler / GoogleChatHandler 内部过滤。
+    this.appendIfPresent(requestBody, 'reasoning_effort', config?.chatConfiguration.reasoning_effort);
+    this.appendIfPresent(requestBody, 'verbosity', config?.chatConfiguration.verbosity);
+    this.appendIfNumber(requestBody, 'thinking_budget', config?.chatConfiguration.thinking_budget);
     return this.fetchChatBase(url, requestBody);
+  }
+
+  private appendIfPresent(target: Record<string, unknown>, key: string, value: string | null | undefined): void {
+    if (value !== undefined && value !== null && value !== '') {
+      target[key] = value;
+    }
+  }
+
+  private appendIfNumber(target: Record<string, unknown>, key: string, value: number | null | undefined): void {
+    if (value !== undefined && value !== null && !Number.isNaN(value)) {
+      target[key] = value;
+    }
   }
 
 
