@@ -18,6 +18,8 @@ import {FileHandler} from "../../../services/handlers/fileHandler";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {SizeReportService} from "../../../services/normal-services";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import {TranslateModule} from '@ngx-translate/core';
+import {LocalizationService} from '../../../services/normal-services';
 
 @Component({
     selector: 'app-openai-speech-to-text',
@@ -41,6 +43,7 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
     NzModalModule,
     NzWaveDirective,
     CdkTextareaAutosize
+    ,TranslateModule
   ],
   providers: [
 
@@ -69,6 +72,7 @@ export class OpenaiSpeechToText {
   openaiService: OpenaiService = inject(OpenaiService);
   notification: NzNotificationService = inject(NzNotificationService);
   fileHandler: FileHandler = inject(FileHandler);
+  private localization = inject(LocalizationService);
   private sizeReportService = inject(SizeReportService);
   constructor() {
     this.menuAble.enableMedia()
@@ -127,7 +131,7 @@ export class OpenaiSpeechToText {
   loading: boolean = false;
   async pre(){
     if(this.fileList.length===0){
-      this.notification.error("还没有选择文件","")
+      this.notification.error(this.localization.text('notifications.noFileSelected'), '')
       return;
     }
     this.loading = true;
@@ -161,7 +165,9 @@ export class OpenaiSpeechToText {
   }
   result: any;
   viewSourceVisible: boolean = false;
-  suggestion = "生成失败，请通过点击'查看源结果'查看具体信息"
+  get suggestion() {
+    return this.localization.text('mediaStudio.generationFailureSuggestion');
+  }
   async transcription() {
     let file: TtsFile | undefined;
     let result = await this.pre();

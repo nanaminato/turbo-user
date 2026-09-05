@@ -43,4 +43,8 @@ export class AccountLabel {
       }
     );
   }
+
+  openAdmin() {
+    this.router.navigate(['/admin']);
+  }
 }

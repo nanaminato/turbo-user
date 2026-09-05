@@ -1,6 +1,6 @@
 <div class="screen-content w-100 h-100">
   @if(visible()){
-    <div class="p-0 m-0 d-flex flex-column h-100 z-2 menu">
+    <aside class="app-sidebar p-0 m-0 d-flex flex-column h-100 z-2 menu" aria-label="Conversation navigation">
       <div class="bg-theme overflow-y-scroll scrollbar-y-none flex-grow-1">
         <!-- 历史记录标记 -->
         @defer (on immediate) {
@@ -14,7 +14,7 @@
           <div class="w-100 d-flex flex-column">
             <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/chat"><img height="25" width="25" src="assets/icon/aichat_11zon.jpg">{{'universal.aiChat' | translate}}</button>
             <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/image-studio"><img height="25" width="25" src="assets/icon/aipainting_11zon.jpg">{{'universal.aiPainting' | translate}}</button>
-            <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/media-studio"><span nz-icon nzType="node-index" nzTheme="outline"></span>多媒体工作室</button>
+            <button nz-button class="rounded-2 bg-light text-dark mx-2 my-1 d-flex flex-row" routerLink="/media-studio"><span nz-icon nzType="node-index" nzTheme="outline"></span>{{ 'universal.mediaStudio' | translate }}</button>
           </div>
         </ng-template>
         <ng-container *ngTemplateOutlet="studios"></ng-container>
@@ -38,11 +38,11 @@
           }
         </div>
       </div>
-    </div>
+    </aside>
   }@else{
     <div></div>
   }
-  <div style="flex: 1 1 auto; overflow: hidden;">
+  <main class="main-pane">
     <router-outlet id="main-content"></router-outlet>
-  </div>
+  </main>
 </div>

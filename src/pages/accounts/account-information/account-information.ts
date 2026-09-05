@@ -7,13 +7,15 @@ import {AuthCallService} from "../../../auth_module/auth-call.service";
 import {Role} from "../../../models/accounts";
 import {Store} from "@ngrx/store";
 import {authActions} from "../../../systems/store/system.actions";
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-account-information',
   templateUrl: './account-information.html',
   styleUrl: './account-information.css',
   imports: [
-    NzCardComponent
+    NzCardComponent,
+    TranslateModule
   ],
   standalone: true
 })

@@ -1,51 +1,46 @@
-import {inject, Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {themes} from "../../themes/theme";
-import {environment} from "../../environments/environment";
+import {DOCUMENT} from '@angular/common';
+import {inject, Injectable} from '@angular/core';
+import {DEFAULT_THEME, getTheme, ThemeId} from '../../themes/theme';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ThemeSwitcherService{
-  theme: string = 'next-light'
-  http = inject(HttpClient);
-  message = inject(NzMessageService);
-  public load(theme: string | undefined){
-    let themePath = this.getThemePath(theme);
-    this.updateThemeLink(themePath).then(r => {
-      this.message.success("应用主题成功");
+export class ThemeSwitcherService {
+  private readonly document = inject(DOCUMENT);
+  private readonly systemColorScheme =
+    typeof window === 'undefined' ? undefined : window.matchMedia('(prefers-color-scheme: dark)');
+
+  private selectedTheme: ThemeId = DEFAULT_THEME;
+
+  constructor() {
+    this.systemColorScheme?.addEventListener('change', () => {
+      if (this.selectedTheme === 'system') {
+        this.applyTheme('system');
+      }
     });
   }
-  public getThemePath(theme: string | undefined): string{
-    let index = themes.findIndex(m=>m===theme);
-    if(index===-1){
-      return this.getThemePath('next-light');
-    }
-    return environment.baseUrl+`assets/css/theme-${theme}.css`;
+
+  /** Returns the normalized value that should be persisted in configuration. */
+  load(theme: string | undefined): ThemeId {
+    const selectedTheme = getTheme(theme).id;
+    this.selectedTheme = selectedTheme;
+    this.applyTheme(selectedTheme);
+    return selectedTheme;
   }
-  private updateThemeLink(themePath: string): Promise<void> {
-    let old = document.querySelector('style[theme]');
-    return new Promise((resolve, reject) => {
-      this.http.get(themePath, {responseType: 'text'})
-        .subscribe(
-          {
-            next: (styleContent: string) => {
-              if(old!=null){
-                document.head.removeChild(old!);
-              }
-              let styleElement = document.createElement('style');
-              styleElement!.setAttribute('type', 'text/css');
-              styleElement!.setAttribute("theme","")
-              styleElement!.appendChild(document.createTextNode(styleContent));
-              document.head.appendChild(styleElement);
-              resolve();
-            },
-            error: (error) => {
-              reject(error);
-            }
-          }
-        );
-    });
+
+  get currentTheme(): ThemeId {
+    return this.selectedTheme;
+  }
+
+  private applyTheme(selectedTheme: ThemeId): void {
+    const definition = getTheme(selectedTheme);
+    const resolvedTheme = definition.colorScheme === 'system'
+      ? (this.systemColorScheme?.matches ? 'next-dark' : 'next-light')
+      : definition.id;
+    const root = this.document.documentElement;
+
+    root.dataset['theme'] = resolvedTheme;
+    root.dataset['themePreference'] = selectedTheme;
+    root.style.colorScheme = resolvedTheme === 'next-dark' ? 'dark' : 'light';
   }
 }

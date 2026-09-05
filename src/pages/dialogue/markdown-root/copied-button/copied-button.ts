@@ -1,6 +1,7 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {TranslateModule} from "@ngx-translate/core";
+import {LocalizationService} from '../../../../services/normal-services';
 
 @Component({
   selector: 'app-copied-button',
@@ -12,15 +13,16 @@ import {TranslateModule} from "@ngx-translate/core";
   standalone: true
 })
 export class CopiedButton {
+  private localization = inject(LocalizationService);
   @ViewChild("buttonElement")
   buttonElement: ElementRef | undefined;
   onCopyToClipboard() {
     if(!this.buttonElement) return;
-    this.buttonElement.nativeElement.textContent = "复制成功";
+    this.buttonElement.nativeElement.textContent = this.localization.text('dialog.copySuccess');
 
     setTimeout(() =>
       {
-        this.buttonElement!.nativeElement.textContent = "复制代码";
+        this.buttonElement!.nativeElement.textContent = this.localization.text('dialog.copyCode');
         }
       , 2000);
   }

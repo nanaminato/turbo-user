@@ -10,7 +10,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzSkeletonModule} from "ng-zorro-antd/skeleton";
 import {TranslateModule} from "@ngx-translate/core";
 import {ChatModel, Configuration, SystemRole, UserRole} from "../../models";
-import {SizeReportService} from "../../services/normal-services";
+import {LocalizationService, SizeReportService} from "../../services/normal-services";
 import {TaskType, UserTask} from "../../models/operations";
 import {Store} from "@ngrx/store";
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
@@ -36,6 +36,7 @@ export class Dialogue {
   private sizeReportService: SizeReportService = inject(SizeReportService);
   private clipboard: ClipboardService = inject(ClipboardService);
   private notification: NzNotificationService = inject(NzNotificationService);
+  private localization = inject(LocalizationService);
   config: Configuration | null = null;
   store = inject(Store);
   constructor() {
@@ -77,6 +78,7 @@ export class Dialogue {
     return "assets/svgs/chat-gpt_11zon.jpg";
   }
   isHover = signal(false);
+  actionsExpanded = signal(false);
 
   onMouseEnter() {
     this.isHover.update(() => true);
@@ -84,6 +86,14 @@ export class Dialogue {
 
   onMouseLeave() {
     this.isHover.update(() => false);
+  }
+
+  showActions() {
+    return this.isHover() || this.actionsExpanded() || this.isMiniView();
+  }
+
+  toggleActions() {
+    this.actionsExpanded.update(value => !value);
   }
 
   triggerEdit() {
@@ -103,17 +113,17 @@ export class Dialogue {
 
   getHeadName(chatModel: ChatModel | undefined) {
     if(chatModel===undefined){
-      return "error";
+      return this.localization.text('universal.unknown');
     }
     if(chatModel.role===UserRole){
-      return "You";
+      return this.localization.text('dialog.you');
     }
     return chatModel.model;
   }
 
   copyAllContent() {
     this.clipboard.copy(this.chatModel?.content!);
-    this.notification.success("复制内容成功","");
+    this.notification.success(this.localization.text('notifications.copySuccess'), '');
   }
   @Output()
   reGenerateSignal = new EventEmitter<number>();
@@ -121,7 +131,7 @@ export class Dialogue {
     if(this.chatModel?.finish){
       this.reGenerateSignal.emit(this.chatModel.dataId);
     }else{
-      this.notification.error("当前请求还没有结束","");
+      this.notification.error(this.localization.text('notifications.requestInProgress'), '');
     }
   }
 }

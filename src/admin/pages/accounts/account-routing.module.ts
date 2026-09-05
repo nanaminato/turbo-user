@@ -1,0 +1,54 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import {AdminAuthGuard} from "../../guards";
+
+const routes: Routes = [
+  {
+    path: '', redirectTo:'account-info',pathMatch: "full"
+  },
+  {
+    path: 'account-management',
+    children: [
+      {
+        path: '',loadComponent: ()=>
+          import("./account-management/account-management.component")
+            .then(c=>c.AccountManagementComponent)
+      },
+      {
+        path: 'create', loadComponent: ()=>
+          import('./account-management/account-create/account-create.component')
+            .then(c=>c.AccountCreateComponent),
+        canActivate: [
+          AdminAuthGuard
+        ]
+      },
+      {
+        path: 'edit/:accountId', loadComponent:()=>
+          import('./account-management/account-edit/account-edit.component')
+            .then(c=>c.AccountEditComponent),
+        canActivate: [
+          AdminAuthGuard
+        ]
+      }
+    ]
+  },
+  {
+    path: 'account-info', loadComponent: ()=>
+      import('./account-info/account-info.component')
+        .then(c=>c.AccountInfoComponent),
+    canActivate: [
+      AdminAuthGuard
+    ]
+  },
+  {
+    path: 'roles', loadComponent: ()=>
+      import('./roles/roles.component')
+        .then(c=>c.RolesComponent)
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class AccountRoutingModule { }

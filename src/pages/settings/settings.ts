@@ -19,24 +19,16 @@ import {ConfigExport} from "./config-export/config-export";
 import {ConfigImport} from "./config-import/config-import";
 import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {DynamicConfigService, SizeReportService, ThemeSwitcherService} from "../../services/normal-services";
+import {DynamicConfigService, LocalizationService, SizeReportService, ThemeSwitcherService} from "../../services/normal-services";
 import {Configuration, DynamicConfig} from "../../models";
 import {ConfigurationService, DbService} from "../../services/db-services";
 import {ModelCenter} from "./model-center/model-center";
 import {details} from "../../models/enumerates/enum.type";
 import {ServiceProvider} from "../../roots";
-import {themes} from '../../themes/theme'
+import {themeOptions} from '../../themes/theme'
 import {selectConfig} from "../../systems/store/configuration/configuration.selectors";
 import {Store} from "@ngrx/store";
 import {NzMessageService} from "ng-zorro-antd/message";
-export const languages: string[] = [
-  'zh','en','jp'
-];
-export const displayLanguages: { value: string, label: string }[] = [
-  { value: 'zh', label: '简体中文' },
-  { value: 'en', label: 'English' },
-  { value: 'jp', label: '日本語' }
-];
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.html',
@@ -51,10 +43,6 @@ export const displayLanguages: { value: string, label: string }[] = [
     ConfigExport, ConfigImport,
     NzTooltipModule, TranslateModule, ModelCenter,
   ],
-  providers: [
-    ThemeSwitcherService,
-    DynamicConfigService
-  ]
 })
 export class Settings {
   dynamicConfig: DynamicConfig | undefined;
@@ -67,6 +55,7 @@ export class Settings {
               private notification: NzNotificationService,
               private renderer: Renderer2,
               private translate: TranslateService,
+              private localization: LocalizationService,
               private dynamicConfigService: DynamicConfigService,
               private serviceProvider: ServiceProvider,
               private modal: NzModalService,
@@ -92,8 +81,8 @@ export class Settings {
     this.notification
       .create(
         "success",
-        '重置成功',
-        '参数重置成功'
+        this.localization.text('notifications.resetSuccess'),
+        this.localization.text('notifications.settingsResetSuccess')
       );
   }
 
@@ -103,8 +92,8 @@ export class Settings {
     this.notification
       .create(
         "success",
-        '应用成功',
-        '保存到本地数据库成功'
+        this.localization.text('notifications.applySuccess'),
+        this.localization.text('notifications.settingsSaved')
       );
   }
 
@@ -138,20 +127,22 @@ export class Settings {
     await this.configurationService.saveConfigToDb($event);
   }
 
-  protected readonly themes = themes;
+  protected readonly themeOptions = themeOptions;
 
   themeChange() {
-    this.themeSwitcherService.load(this.dynamicConfig!.theme);
+    this.dynamicConfig!.theme = this.themeSwitcherService.load(this.dynamicConfig!.theme);
     this.dynamicConfigService.setDynamicConfig(this.config!,this.dynamicConfig!);
   }
 
   languageChange($event: string) {
-    this.translate.use(this.dynamicConfig!.language!);
+    this.dynamicConfig!.language = this.localization.use($event);
     this.dynamicConfig!.languageIsSet = true;
     this.dynamicConfigService.setDynamicConfig(this.config!,this.dynamicConfig!);
   }
 
-  protected readonly displayLanguages = displayLanguages;
+  protected get displayLanguages() {
+    return this.localization.languages;
+  }
   modelCenterVisible: boolean = false;
 
   private loadProperties() {
@@ -194,9 +185,8 @@ export class Settings {
 
   private async handleReset() {
     this.isResetting = true;
-    console.log('正在执行数据库重置...');
     this.isResetting = false;
     await this.dbService.forceFactoryReset();
-    this.message.success(this.translate.instant('universal.success'));
+    this.message.success(this.localization.text('notifications.databaseResetSuccess'));
   }
 }

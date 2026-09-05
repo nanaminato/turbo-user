@@ -2,17 +2,17 @@
   <div class="d-flex flex-row-reverse">
     <button class="btn btn-primary"
       (click)="logout()">
-      退出登录
+      {{ 'account.signOut' | translate }}
     </button>
   </div>
   <div class="m-1 fs-u">
-    用户名： {{user?.name}}
+    {{ 'account.username' | translate }}: {{user?.name}}
   </div>
   <div class="m-1 fs-u">
-    昵称： {{user?.nickname===undefined?"无":user?.nickname}}
+    {{ 'account.nickname' | translate }}: {{user?.nickname===undefined ? ('universal.none' | translate) : user?.nickname}}
   </div>
   <div class="m-1 fs-u">
-    身份:
+    {{ 'account.roles' | translate }}:
     @if(user!==undefined){
       @for(role of roles!;track role.roleId){
         {{role.name}}

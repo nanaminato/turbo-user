@@ -20,7 +20,7 @@
   <div class="d-flex flex-row-reverse">
     <button nz-button nz-popconfirm
             class="mx-2"
-            [nzPopconfirmTitle]="'确定要删除该项目吗? task_id='+task?.task_id"
+            [nzPopconfirmTitle]="'notifications.confirmDeleteTask' | translate:{ taskId: task?.task_id }"
             nzPopconfirmPlacement="bottom"
             (nzOnConfirm)="deleteItem(task!)">{{'universal.delete' | translate}}</button>
     <button nz-button (click)="recheck_task_status(task!)">{{'storeHouse.get-task-result' | translate}}</button>

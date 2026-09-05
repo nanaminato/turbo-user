@@ -18,6 +18,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {VerificationService} from "../../../auth_module";
 import {Store} from "@ngrx/store";
 import {authActions} from "../../../systems/store/system.actions";
+import {LocalizationService} from '../../../services/normal-services';
 
 @Component({
   standalone: true,
@@ -50,14 +51,21 @@ export class SignInPage {
   });
   verificationService: VerificationService = inject(VerificationService);
   message: NzMessageService = inject(NzMessageService);
+  private localization = inject(LocalizationService);
   router: Router = inject(Router);
   @ViewChild("vCode")
   vCode: ElementRef |undefined;
   store = inject(Store);
+  passwordVisible = false;
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+  }
+
   submitForm(): void {
     if (this.validateForm.valid) {
       if(this.code?.toLowerCase()!==this.vCode?.nativeElement.value.toLowerCase()){
-        this.message.error("验证码错误");
+        this.message.error(this.localization.text('notifications.invalidVerificationCode'));
         this.generateVerificationCode();
         return;
       }

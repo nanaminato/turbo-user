@@ -3,6 +3,7 @@ import {inject, Injectable} from "@angular/core";
 import {Bs64Handler} from "./bs64Handler";
 import {ParseService} from "../fetch_services";
 import {NzNotificationService} from "ng-zorro-antd/notification";
+import {LocalizationService} from '../normal-services';
 @Injectable({
   providedIn: "root"
 })
@@ -10,6 +11,7 @@ export class FileHandler{
   base64Handler: Bs64Handler = inject(Bs64Handler);
   parseService = inject(ParseService);
   notification = inject(NzNotificationService);
+  localization = inject(LocalizationService);
   async reparse(ttsFile: TtsFile) {
     if (ttsFile.fileData === undefined) {
       await this.waitReadFile(ttsFile);
@@ -37,7 +39,7 @@ export class FileHandler{
           file.parsed = true;
         },
         error: err => {
-          this.notification.error("解析文件出现了问题","")
+          this.notification.error(this.localization.text('notifications.fileParseFailed'), '')
         }
       })
     }));

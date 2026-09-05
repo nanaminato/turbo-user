@@ -6,25 +6,72 @@
 .chat-main{
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  min-height: 100dvh;
 }
 .header-content{
   display: flex;
   flex-direction: column;
-  height: 200px;
+  min-height: 0;
   flex-grow: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.header-content > .flex-grow-1 {
+  min-height: 0;
 }
 .center-input{
-  margin: auto;
-  width: 80%;
+  width: min(900px, calc(100% - 24px));
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 .m-px{
   margin-top: 70px;
 }
 .fab-control{
   position: fixed;
-  max-height: 50px;
   top: 28px;
   right: 100px;
+}
+.composer-shell {
+  padding: 8px 0 0;
+  flex: 0 0 auto;
+}
+.composer-toolbar, .composer-tools, .prompt-row, .notice-row {
+  display: flex;
+}
+.composer-toolbar {
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px;
+  flex-wrap: wrap;
+}
+.composer-tools {
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.composer-tools button {
+  width: 36px;
+  height: 32px;
+  padding: 0;
+}
+.prompt-row {
+  align-items: stretch;
+  gap: 8px;
+  border: 1px solid #ccc;
+}
+.prompt-row .ask-box {
+  min-width: 0;
+}
+.send-button {
+  min-width: 40px;
+  min-height: 40px;
+}
+.notice-row {
+  flex: 0 0 auto;
 }
 .center{
   margin:  4px auto;
@@ -48,5 +95,36 @@
 
 .select-box{
   max-width: 300px;
+}
 
+@media (max-width: 900px) {
+  .fab-control {
+    top: auto;
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(132px + env(safe-area-inset-bottom));
+  }
+  .composer-shell {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .center-input {
+    width: calc(100% - 16px);
+  }
+  .composer-toolbar {
+    justify-content: flex-start;
+  }
+  .select-box {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .composer-toolbar {
+    gap: 4px;
+  }
+  .composer-tools button {
+    width: 32px;
+  }
+  .prompt-row {
+    margin: 4px !important;
+  }
 }

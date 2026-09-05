@@ -1,41 +1,38 @@
-## 项目介绍
-本项目继承于turboUI
-构建 
+# Turbo AI 用户端
+
+Turbo AI 用户端是一个 Angular 单页应用，用于访问 Turbo AI Server 提供的聊天、图像生成和音频处理能力。它面向日常使用者，也为部署和二次开发提供清晰的配置说明。
+
+## 你想做什么？
+
+| 目标 | 从这里开始 |
+| --- | --- |
+| 使用聊天、图像或音频工具 | [用户指南](docs/user-guide.md) |
+| 在本机运行或参与开发 | [开发指南](docs/development.md) |
+| 配置后端、账户、模型与密钥 | [Turbo AI Server 文档](https://github.com/nanaminato/turbo-ai-server/tree/main/docs) |
+
+## 功能概览
+
+- 流式 AI 聊天，支持会话历史、系统提示词、Markdown、代码与文件上下文。
+- 图像工作室，可使用后端已启用的 OpenAI 或 APIMart 图像模型。
+- 多媒体工作室，提供文本转语音、语音转写、语音翻译与文件文本提取。
+- 本地保存显示偏好、常用模型与会话设置；账户登录后可使用服务端提供的同步能力。
+- 支持中文、英文和日文，以及响应式页面与离线资源缓存。
+
+## 快速开始
+
+已部署的站点无需安装任何软件：使用管理员提供的地址注册或登录，选择可用模型后即可开始对话。若页面提示没有可用模型或无权调用功能，请联系管理员完成账户角色、模型和供应商密钥配置。
+
+开发环境请先准备一个可访问的 Turbo AI Server，再执行：
+
 ```bash
-ng build --base-href /ai/
+npm ci
+npm start
 ```
-![img.png](img.png)  
-以下3个项目为turboai项目的完整部分。
-- project 1 turbo-user (turboai-user)
-- project 2 turboai-admin
-- project 3 open-turboai-server  
-其中`open-turboai-server`承担后端服务器的角色，使用.net 8.0开发，提供restful api服务。
-主要的功能是： 权限认证，账号的管理，密钥和模型的管理，消息的同步（对话），
-同时为 ai对话，ai绘图，tts，stt等提供接口服务。  
-`turbo-user`主要是用户所使用的用户端，用户可以使用
-ai对话，ai绘图，tts和stt服务。  
-`turboai-admin`为管理端，和用户端一样使用angular17开发。主要的功能是
-模型管理，密钥管理，账户管理等。  
-管理员可以轻松的添加密钥，本系统支持多种密钥，并
-依据与密钥关联的模型为用户提供服务。
-语音 <-> 文字 openai
-- ai 对话  
-支持文件（部分文件类型，如word，pdf，txt，*.code）
-![img_2.png](img_2.png)
-- ai 绘图  
-OpenAI `gpt-image-2` 生成  
-来自于apimart.ai的`gpt-image-2`, `gpt-image-2-official`
-![img_3.png](img_3.png)
 
-图像生成会保留生成记录(本地)，（以链接形式生成的结果会在一定时间失效，如果生成的结果满意请尽快下载）
-![img_9.png](img_9.png)
-- 多媒体（tts，stt）  
-tts支持从文件中提取文字
-![img_10.png](img_10.png)
+默认开发地址与后端地址配置见 [开发指南](docs/development.md)。
 
-### turboai-admin
-#### 模型管理
-![img_6.png](img_6.png)
-#### 密钥管理
-![img_7.png](img_7.png)
-![img_8.png](img_8.png)
+## 维护原则
+
+- 本仓库不保存供应商 API 密钥、数据库密码或生产令牌。
+- 生产环境将前端部署到后端站点根目录，使用同源根路径 `/` 调用 API。
+- 文档中的接口、角色和服务端配置以 Turbo AI Server 的 Swagger 与服务端文档为准。

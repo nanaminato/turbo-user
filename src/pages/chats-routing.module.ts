@@ -17,11 +17,6 @@ const routes: Routes = [
           .then(m=>m.Settings),
       },
       {
-        path: "accounts",
-        loadChildren: ()=>import("./accounts/account.module")
-          .then(m=>m.AccountModule)
-      },
-      {
         path: "prompts",
         loadComponent: ()=>import("./prompt-store/prompt-store")
           .then(m=>m.PromptStore),

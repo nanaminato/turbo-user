@@ -48,7 +48,7 @@
       <div class="form-group m-2">
         <nz-row>
           <nz-col class="my-2">
-            <label class="me-2"><img [src]="codeUrl" width="200" height="50" alt="验证码" (click)="generateVerificationCode()"> </label>
+            <label class="me-2"><img [src]="codeUrl" width="200" height="50" [alt]="'account.verificationCode' | translate" (click)="generateVerificationCode()"> </label>
           </nz-col>
           <nz-col class="d-flex justify-content-center align-items-center my-2">
             <input type="text" #vCode style="height: 40px">

@@ -1,7 +1,7 @@
 <nz-modal [(nzVisible)]="ttsEditModelVisible"
           (nzOnCancel)="ttsEditModelVisible = false"
           (nzOnOk)="ttsEditModelVisible = false"
-          [nzTitle]="'编辑解析文件内容'">
+          [nzTitle]="'mediaStudio.editParsedFile' | translate">
   <ng-container *nzModalContent>
     <app-tts-file-editor [ttsFile]="editTtsFile">
     </app-tts-file-editor>
@@ -17,7 +17,7 @@
   </button>
 </header>
 <div class="border rounded-2 d-flex justify-content-end">
-  <button nz-button (click)="reparseAll()" class="m-2">解析所有文件</button>
+  <button nz-button (click)="reparseAll()" class="m-2">{{ 'mediaStudio.parseAllFiles' | translate }}</button>
 </div>
 <div class="m-1 border-black">
   <div class="file-drop border d-flex justify-content-center align-items-center" style="height: 150px;"
@@ -25,7 +25,7 @@
        (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
     <div class="drop-message">
       <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
-      将文件拖放到此处或者点击此处从电脑中选择文件
+      {{ 'mediaStudio.dropFiles' | translate }}
     </div>
     <input multiple type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput>
   </div>
@@ -35,23 +35,23 @@
         <div class="d-flex flex-column">
           <nz-row>
             <nz-col class="mx-2">
-              <img width="40" height="40" nz-image [nzSrc]="getIcon(ttsFile.file!.name!)" [nzFallback]="'assets/svgs/file.svg'" alt="图标">
+              <img width="40" height="40" nz-image [nzSrc]="getIcon(ttsFile.file!.name!)" [nzFallback]="'assets/svgs/file.svg'" [alt]="'universal.icon' | translate">
             </nz-col>
             <nz-col>
               <nz-row>
                 <nz-col class="mx-2">
-                  <div>文件: </div>
+                  <div>{{ 'mediaStudio.file' | translate }}: </div>
                 </nz-col>
                 <nz-col class="mx-2">
-                  <div>类型: {{ttsFile.file!.type}}</div>
+                  <div>{{ 'mediaStudio.type' | translate }}: {{ttsFile.file!.type}}</div>
                 </nz-col>
                 <nz-col class="mx-2">
-                  <div>大小: {{ttsFile.file!.size}}</div>
+                  <div>{{ 'mediaStudio.size' | translate }}: {{ttsFile.file!.size}}</div>
                 </nz-col>
                 <nz-col>
                   <span
                     [class.parsed]="ttsFile.parsed === true"
-                    class="rounded-2 border">{{ttsFile.parsed === true?'已解析':'未解析'}}</span>
+                    class="rounded-2 border">{{ (ttsFile.parsed === true ? 'mediaStudio.parsed' : 'mediaStudio.unparsed') | translate }}</span>
                 </nz-col>
               </nz-row>
               <nz-row>
@@ -67,17 +67,17 @@
             <button nz-button class="m-1"
                     (click)="edit(ttsFile)">
               <span nz-icon nzType="edit" nzTheme="outline"></span>
-              编辑内容
+              {{ 'mediaStudio.editContent' | translate }}
             </button>
             <button nz-button class="m-1"
                     (click)="reparse(ttsFile)">
               <span nz-icon nzType="monitor" nzTheme="outline"></span>
-              解析内容
+              {{ 'mediaStudio.parseContent' | translate }}
             </button>
             <button nz-button class="m-1"
                     (click)="removeFile($index)">
               <span nz-icon nzType="delete" nzTheme="outline"></span>
-              删除
+              {{ 'universal.delete' | translate }}
             </button>
           </nz-row>
         </div>

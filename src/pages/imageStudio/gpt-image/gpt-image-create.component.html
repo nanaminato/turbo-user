@@ -11,14 +11,14 @@
         </button>
       </div>
       <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
-        <div>模型</div>
+        <div>{{ 'imageStudio.model' | translate }}</div>
         <nz-select class="w-100" [(ngModel)]="model" (ngModelChange)="modelChange($event)">
           <nz-option [nzValue]="'dall-e-3'" [nzLabel]="'dall-e-3'"></nz-option>
           <nz-option [nzValue]="'dall-e-2'" [nzLabel]="'dall-e-2'"></nz-option>
           <nz-option [nzValue]="'gpt-image-1.5'" [nzLabel]="'gpt-image-1.5'"></nz-option>
           <nz-option [nzValue]="'gpt-image-2'" [nzLabel]="'gpt-image-2'"></nz-option>
         </nz-select>
-        <div>提示词</div>
+        <div>{{ 'imageStudio.prompt' | translate }}</div>
         <textarea
           nz-input
           class="fs-6 w-100"
@@ -27,32 +27,32 @@
           cdkAutosizeMinRows="2"
           cdkAutosizeMaxRows="10"
         ></textarea>
-        <div>生成数量</div>
+        <div>{{ 'imageStudio.quantity' | translate }}</div>
         <div class="d-flex flex-row">
           <nz-slider class="normal me-2" [nzMin]="1" [nzMax]="image_num_max" [nzStep]="1" [(ngModel)]="image_num"></nz-slider>
           <nz-input-number [nzMin]="1" [nzMax]="image_num_max" [nzStep]="1" [(ngModel)]="image_num"></nz-input-number>
         </div>
         @if(this.model.startsWith("gpt")){
-          <div>背景</div>
+          <div>{{ 'imageStudio.background' | translate }}</div>
           <nz-select class="w-100" [(ngModel)]="background">
             @for(background of backgrounds; track background){
               <nz-option [nzValue]="background" [nzLabel]="background"></nz-option>
             }
           </nz-select>
-          <div>审核强度</div>
+          <div>{{ 'imageStudio.moderation' | translate }}</div>
           <nz-select class="w-100" [(ngModel)]="moderation">
             @for(moderation of moderations; track moderation){
               <nz-option [nzValue]="moderation" [nzLabel]="moderation"></nz-option>
             }
           </nz-select>
         }
-        <div>生成大小</div>
+        <div>{{ 'imageStudio.size' | translate }}</div>
         <nz-select class="w-100" [(ngModel)]="size">
           @for(size of sizes;track size){
             <nz-option [nzValue]="size" [nzLabel]="size"></nz-option>
           }
         </nz-select>
-        <div>质量</div>
+        <div>{{ 'imageStudio.quality' | translate }}</div>
         <nz-select class="w-100" [(ngModel)]="quality">
           @for(quality of qualities;track quality){
             <nz-option [nzValue]="quality" [nzLabel]="quality"></nz-option>
@@ -60,21 +60,21 @@
         </nz-select>
 
         @if(this.model.startsWith("dall-e-3")){
-          <div>风格</div>
+          <div>{{ 'imageStudio.style' | translate }}</div>
           <nz-select class="w-100" [(ngModel)]="style">
             @for(style of styles;track style){
               <nz-option [nzValue]="style" [nzLabel]="style"></nz-option>
             }
           </nz-select>
         }
-        <div>图片格式</div>
+        <div>{{ 'imageStudio.imageFormat' | translate }}</div>
         <nz-select class="w-100" [(ngModel)]="output_format">
           @for(output_format of output_formats;track output_format){
             <nz-option [nzValue]="output_format" [nzLabel]="output_format"></nz-option>
           }
         </nz-select>
         @if(this.model.startsWith("dall")){
-          <div>数据格式</div>
+          <div>{{ 'imageStudio.responseFormat' | translate }}</div>
           <nz-select class="w-100" [(ngModel)]="response_format">
             @for(response_format of image_response_formats;track response_format){
               <nz-option [nzValue]="response_format" [nzLabel]="response_format"></nz-option>

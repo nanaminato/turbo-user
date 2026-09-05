@@ -9,7 +9,7 @@ import {NzNotificationService} from "ng-zorro-antd/notification";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
-import {SizeReportService} from "../../../services/normal-services";
+import {LocalizationService, SizeReportService} from "../../../services/normal-services";
 import {ImageTaskService} from "../../../services/fetch_services";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {FormsModule} from "@angular/forms";
@@ -41,12 +41,13 @@ export class TaskLib implements OnInit {
   private notification: NzNotificationService = inject(NzNotificationService);
   private requestService: RequestManagerService = inject(RequestManagerService);
   private taskService: ImageTaskService = inject(ImageTaskService);
+  private localization = inject(LocalizationService);
 
   loadGenerateTasks(){
     this.universalService.getAllGenerateTaskOfUser(this.authService.user!.id).then(tasks=>{
       this.generateTasks.length = 0;
       this.generateTasks.push(...(tasks as GenerateTask[]));
-      this.notification.success("加载成功","");
+      this.notification.success(this.localization.text('notifications.loadSuccess'), '');
       let taskIds = [];
       if(tasks){
         for(let i = 0; i < tasks.length; i++){
@@ -92,7 +93,7 @@ export class TaskLib implements OnInit {
 
   protected stopAllTask() {
     this.taskService.stopAllTasks();
-    this.notification.success("已停止所有Task","");
+    this.notification.success(this.localization.text('notifications.allTasksStopped'), '');
   }
   imageProxyKey: string = "imageProxy";
   protected useProxy: boolean = false;

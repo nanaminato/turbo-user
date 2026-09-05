@@ -7,6 +7,7 @@ import {NzButtonModule} from "ng-zorro-antd/button";
 import {TranslateModule} from "@ngx-translate/core";
 import {SystemPromptService} from "../../../services/db-services/system-prompt.service";
 import {SystemPromptItem} from "../../../models";
+import {LocalizationService} from '../../../services/normal-services';
 
 @Component({
   selector: 'app-look-update-prompt',
@@ -25,6 +26,7 @@ export class LookUpdatePrompt {
   fb = inject(NonNullableFormBuilder)
   systemPromptService: SystemPromptService = inject(SystemPromptService);
   notification: NzNotificationService = inject(NzNotificationService);
+  localization = inject(LocalizationService);
   @Output()
   close = new EventEmitter<boolean>();
   _prompt: SystemPromptItem | undefined;
@@ -51,7 +53,7 @@ export class LookUpdatePrompt {
       let value = this.validateForm.value;
       this._prompt!.title = value.title;
       this._prompt!.content = value.content!;
-      this.notification.success("验证成功","");
+      this.notification.success(this.localization.text('notifications.validationSuccess'), '');
       this.systemPromptService.addOrPutPrompts({
         id: this._prompt?.id,
         title: value.title,

@@ -2,6 +2,7 @@ import {ServiceProvider} from "../roots";
 import {HttpClient} from "@angular/common/http";
 import {inject, Injectable} from "@angular/core";
 import {Role} from "../models/accounts";
+import type {AuthTokenResponse} from "./auth.service";
 
 @Injectable(
   {
@@ -12,8 +13,16 @@ export class AuthCallService {
   http = inject(HttpClient);
   provider = inject(ServiceProvider);
 
-  login(body: any) {
-    return this.http.post<any>(`${this.provider.apiUrl}api/auth/login`, body);
+  login(body: { username: string; password: string; deviceName: string }) {
+    return this.http.post<AuthTokenResponse>(`${this.provider.apiUrl}api/auth/login`, body);
+  }
+
+  refresh(body: { refreshToken: string; deviceName: string }) {
+    return this.http.post<AuthTokenResponse>(`${this.provider.apiUrl}api/auth/refresh`, body);
+  }
+
+  logout(body: { refreshToken: string }) {
+    return this.http.post(`${this.provider.apiUrl}api/auth/logout`, body);
   }
 
   register(body: any) {

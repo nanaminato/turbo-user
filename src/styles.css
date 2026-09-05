@@ -63,6 +63,7 @@ html, body {
   height: 100% !important;
   width: 100% !important;
   overflow: hidden; /* 如果你不希望整个页面滚动，只让内部组件滚动 */
+  overscroll-behavior: none;
 }
 /**
 强制基础样式兜底
@@ -70,4 +71,32 @@ html, body {
 app-root {
   display: block;
   height: 100%;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button, [role="button"] {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ion-color-primary, #1677ff);
+  outline-offset: 2px;
+}
+
+.ant-modal {
+  max-width: calc(100vw - 24px);
+}
+
+@media (max-width: 900px) {
+  .menu {
+    max-width: none;
+  }
+
+  nz-modal-container .ant-modal {
+    margin: 12px auto;
+    top: 0;
+  }
 }

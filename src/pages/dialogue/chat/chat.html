@@ -6,18 +6,18 @@
         <div class="d-flex flex-column">
           <nz-row>
             <nz-col class="mx-2">
-              <img width="40" height="40" nz-image [nzSrc]="getIcon(file.fileType!,file.fileName!)" [nzFallback]="'assets/svgs/file.svg'" alt="图标">
+              <img width="40" height="40" nz-image [nzSrc]="getIcon(file.fileType!,file.fileName!)" [nzFallback]="'assets/svgs/file.svg'" [alt]="'universal.icon' | translate">
             </nz-col>
             <nz-col>
               <nz-row>
                 <nz-col class="mx-2">
-                  <div>文件: </div>
+                  <div>{{ 'mediaStudio.file' | translate }}: </div>
                 </nz-col>
                 <nz-col class="mx-2">
-                  <div>类型: {{file.fileType}}</div>
+                  <div>{{ 'mediaStudio.type' | translate }}: {{file.fileType}}</div>
                 </nz-col>
                 <nz-col class="mx-2">
-                  <div>大小: {{file.fileSize}}</div>
+                  <div>{{ 'mediaStudio.size' | translate }}: {{file.fileSize}}</div>
                 </nz-col>
               </nz-row>
               <nz-row>
@@ -32,7 +32,7 @@
     }@else{
       <img nz-image class="show"
            [nzFallback]="fallback"
-           [nzSrc]="file.fileContent!" alt="图片"/>
+           [nzSrc]="file.fileContent!" [alt]="'universal.image' | translate"/>
     }
   }
 </div>

@@ -1,7 +1,7 @@
 <nz-modal [(nzVisible)]="ttsEditModelVisible"
           (nzOnCancel)="ttsEditModelVisible = false"
           (nzOnOk)="ttsEditModelVisible = false"
-          [nzTitle]="'编辑解析文件内容'">
+          [nzTitle]="'mediaStudio.editParsedFile' | translate">
   <ng-container *nzModalContent>
     <app-tts-file-editor [ttsFile]="editTtsFile">
     </app-tts-file-editor>
@@ -19,10 +19,10 @@
 <nz-card>
   <nz-row class="align-items-center my-1 bg-theme2 text-theme2">
     <nz-col class="m-2">
-      <nz-col class="m-1">模型</nz-col>
+      <nz-col class="m-1">{{ 'mediaStudio.model' | translate }}</nz-col>
       <nz-col>
         <nz-select class="select big" [(ngModel)]="model">
-          <nz-option-group [nzLabel]="'文字转语音模型'">
+          <nz-option-group [nzLabel]="'mediaStudio.textToSpeechModels' | translate">
             @for (selection of models; track selection) {
               <nz-option [nzLabel]="selection" [nzValue]="selection"></nz-option>
             }
@@ -67,7 +67,7 @@
       </nz-col>
     </nz-col>
     <nz-row class="m-2">
-      <nz-col class="m-1">速度</nz-col>
+      <nz-col class="m-1">{{ 'mediaStudio.speed' | translate }}</nz-col>
       <nz-row>
         <nz-slider class="slider big" [nzMin]="0.25" [nzMax]="4" [nzStep]="0.25" [(ngModel)]="speed"></nz-slider>
         <nz-input-number [nzMin]="0.25" [nzMax]="4" [nzStep]="0.25" [(ngModel)]="speed"></nz-input-number>
@@ -81,7 +81,7 @@
        (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
     <div class="drop-message">
       <span nz-icon nzType="cloud-upload" nzTheme="outline"></span>
-      将文件拖放到此处或者点击此处从电脑中选择文件
+      {{ 'mediaStudio.dropFiles' | translate }}
     </div>
     <input multiple
            accept=".pdf,application/pdf,.txt,text/plain,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -93,23 +93,23 @@
         <div class="d-flex flex-column">
           <nz-row>
             <nz-col class="mx-2">
-              <img width="40" height="40" nz-image [nzSrc]="getIcon(ttsFile.file!.name!)" [nzFallback]="'assets/svgs/file.svg'" alt="图标">
+              <img width="40" height="40" nz-image [nzSrc]="getIcon(ttsFile.file!.name!)" [nzFallback]="'assets/svgs/file.svg'" [alt]="'universal.icon' | translate">
             </nz-col>
             <nz-col>
               <nz-row>
                 <nz-col class="mx-2">
-                  <div>文件: </div>
+                  <div>{{ 'mediaStudio.file' | translate }}: </div>
                 </nz-col>
                 <nz-col class="mx-2">
-                  <div>类型: {{ttsFile.file!.type}}</div>
+                  <div>{{ 'mediaStudio.type' | translate }}: {{ttsFile.file!.type}}</div>
                 </nz-col>
                 <nz-col class="mx-2">
-                  <div>大小: {{ttsFile.file!.size}}</div>
+                  <div>{{ 'mediaStudio.size' | translate }}: {{ttsFile.file!.size}}</div>
                 </nz-col>
                 <nz-col>
                   <span
                     [class.parsed]="ttsFile.parsed === true"
-                    class="rounded-2 border">{{ttsFile.parsed === true?'已解析':'未解析'}}</span>
+                    class="rounded-2 border">{{ (ttsFile.parsed === true ? 'mediaStudio.parsed' : 'mediaStudio.unparsed') | translate }}</span>
                 </nz-col>
               </nz-row>
               <nz-row>
@@ -125,17 +125,17 @@
             <button nz-button class="m-1"
                     (click)="edit(ttsFile)">
               <span nz-icon nzType="edit" nzTheme="outline"></span>
-              编辑内容
+              {{ 'mediaStudio.editContent' | translate }}
             </button>
             <button nz-button class="m-1"
                     (click)="reparse(ttsFile)">
               <span nz-icon nzType="monitor" nzTheme="outline"></span>
-              解析内容
+              {{ 'mediaStudio.parseContent' | translate }}
             </button>
             <button nz-button class="m-1"
                     (click)="removeFile($index)">
               <span nz-icon nzType="delete" nzTheme="outline"></span>
-              删除
+              {{ 'universal.delete' | translate }}
             </button>
           </nz-row>
         </div>
@@ -145,21 +145,21 @@
 </div>
 <div class="border rounded-2">
   <div class="d-flex">
-    <button nz-button (click)="reparseAll()" class="m-2">解析所有文件</button>
-    <button nz-button (click)="putAllContent()" class="m-2">导入上面文件内容</button>
-    <button nz-button (click)="inputText = ''" class="m-2">清空内容</button>
-    <button nz-button (click)="generate()" class="m-2">生成音频</button>
+    <button nz-button (click)="reparseAll()" class="m-2">{{ 'mediaStudio.parseAllFiles' | translate }}</button>
+    <button nz-button (click)="putAllContent()" class="m-2">{{ 'mediaStudio.importParsedContent' | translate }}</button>
+    <button nz-button (click)="inputText = ''" class="m-2">{{ 'mediaStudio.clearContent' | translate }}</button>
+    <button nz-button (click)="generate()" class="m-2">{{ 'mediaStudio.generateAudio' | translate }}</button>
   </div>
   <div class="d-flex justify-content-center align-items-center p-2">
     <textarea [(ngModel)]="inputText"
-      nz-input placeholder="请在这里输入你想要生成的音频所使用的文本。"
+      nz-input [placeholder]="'mediaStudio.ttsInputPlaceholder' | translate"
       cdkTextareaAutosize cdkAutosizeMinRows="3"
       cdkAutosizeMaxRows="10"
     ></textarea>
   </div>
   @if(loading){
     <div class="d-flex align-items-center flex-row m-5">
-      正在处理中
+      {{ 'mediaStudio.processing' | translate }}
       <div class="mx-3">
         <nz-spin nzSize="large" nzSimple></nz-spin>
       </div>
@@ -169,7 +169,7 @@
     <nz-card class="rounded-4">
       <div class="d-flex flex-row align-items-center">
         <div class="music-player mx-2">
-          <img #musicIcon class="mx-2 music-icon" [class.playing]="isAudioPlaying" src="assets/svgs/audio_play.svg" width="50" height="50" alt="播放旋转的图片"/>
+          <img #musicIcon class="mx-2 music-icon" [class.playing]="isAudioPlaying" src="assets/svgs/audio_play.svg" width="50" height="50" [alt]="'mediaStudio.audioPlaybackIcon' | translate"/>
         </div>
         <audio #player class="mx-1" controls [src]="audioSrc" (play)="onAudioPlay()" (pause)="onAudioPause()"></audio>
       </div>

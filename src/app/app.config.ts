@@ -18,7 +18,6 @@ import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AuthEffects} from "../systems/store/auth/auth.effects";
 import {HistoryTitleEffect} from "../systems/store/history-title/history-title.effects";
 import {ConfigurationEffects} from "../systems/store/configuration/configuration.effects";
-import {ProviderEffects} from "../systems/store/provider/provider.effects";
 import {SystemPromptsEffects} from "../systems/store/system-prompts/prompts.effects";
 import {SystemEffects} from "../systems/store/system.effects";
 import {configurationReducer} from "../systems/store/configuration/configuration.reducer";
@@ -67,7 +66,7 @@ export const appConfig: ApplicationConfig = {
           strictActionImmutability: false,
         }
       }),
-    provideEffects(AuthEffects, ConfigurationEffects, HistoryTitleEffect, ProviderEffects,
+    provideEffects(AuthEffects, ConfigurationEffects, HistoryTitleEffect,
       SystemPromptsEffects, SystemEffects, ChatHistoryEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states

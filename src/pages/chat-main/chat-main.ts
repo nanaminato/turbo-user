@@ -20,6 +20,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {
   ChatContext,
   ContextMemoryService,
+  LocalizationService,
   ModelFetchService,
   SizeReportService,
   SystemContext
@@ -78,6 +79,7 @@ import {historyTitleActions} from "../../systems/store/history-title/history-tit
   ]
 })
 export class ChatMainComponent implements OnDestroy{
+  private localization = inject(LocalizationService);
 
   async parseAllFile(userModel: ChatModel): Promise<boolean> {
     if (!userModel.fileList || userModel.fileList.length === 0) return true;
@@ -106,6 +108,9 @@ export class ChatMainComponent implements OnDestroy{
     }
   }
   async askGPT() {
+    if (this.answering || (this.inputText.trim() === '' && this.fileList.length === 0)) {
+      return;
+    }
     if (this.chatHistoryModel === undefined) {
       this.chatHistoryModel = new ChatHistoryModel();
     }
@@ -123,6 +128,7 @@ export class ChatMainComponent implements OnDestroy{
     let parseStatus = await this.parseAllFile(userModel);//!!!!!
 
     if(!parseStatus){
+      this.answering = false;
       return;
     }
     // 如果当前的上下文指针为空，就设置上一条为当前上下文的指针，该指针指示最后一条将要包含到上下文中的对话的id
@@ -157,7 +163,7 @@ export class ChatMainComponent implements OnDestroy{
         if(this.chatFileList.length>=1){
           this.chatHistoryModel.title = this.chatFileList[0].fileName.substring(0,25);
         }else{
-          this.chatHistoryModel.title = "哪里出现了问题";
+          this.chatHistoryModel.title = this.localization.text('chat-main.untitledConversation');
         }
       }else{
         this.chatHistoryModel.title = this.inputText.substring(0,25);
@@ -193,9 +199,9 @@ export class ChatMainComponent implements OnDestroy{
       error: (error: ResponseError) => {
         if(error.type===ErrorType.NotAuthorize){
           model.content = '';
-          model.content += `请获取具备vip身份的账号，并且登录。（未经授权的请求）`;
+          model.content += this.localization.text('chat-main.authorizationRequired');
         }else{
-          model.content += '其他错误（中断，或者无服务）';
+          model.content += this.localization.text('chat-main.responseInterrupted');
         }
 
         model.finish = true;
@@ -220,7 +226,7 @@ export class ChatMainComponent implements OnDestroy{
     this.chatFileList = []
     for(let model of this.chatModels){
       if(model.content===undefined||model.content.length===0){
-        model.content = '终止响应';
+        model.content = this.localization.text('chat-main.responseStopped');
       }
       model.finish = true;
     }
@@ -267,6 +273,15 @@ export class ChatMainComponent implements OnDestroy{
       return;
     } else {
       this.askGPT();
+    }
+  }
+
+  handlePromptKeydown(event: KeyboardEvent) {
+    // Keep Enter available for multi-line prompts. Ctrl/Cmd + Enter works on
+    // Windows, Linux, macOS and hardware keyboards connected to mobile.
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      this.typeControlGPT();
     }
   }
 
@@ -327,11 +342,11 @@ export class ChatMainComponent implements OnDestroy{
     // tackle since model
     let reModel = this.chatModels.find(m=>m.dataId===$event);
     if(reModel===undefined){
-      this.notification.error("列表中不存在","");
+      this.notification.error(this.localization.text('notifications.itemNotFound'), '');
       return;
     }
     if(reModel.role===SystemRole){
-      this.notification.error("不允许的操作","不要重新生成 系统级prompt。");
+      this.notification.error(this.localization.text('notifications.operationNotAllowed'), this.localization.text('notifications.systemPromptCannotRegenerate'));
       return;
     }
     let parseStatus = await this.parseAllFile(reModel);//!!!!!
@@ -357,7 +372,7 @@ export class ChatMainComponent implements OnDestroy{
     // 向上查找 用户model，作为 聊天的完成对象
     let endPointerModel = this.findLatestTrueRequest($event);
     if(endPointerModel===undefined){
-      this.notification.error("在该消息之前找不到用户信息或者系统信息","");
+      this.notification.error(this.localization.text('notifications.contextMessageNotFound'), '');
       return;
     }
     // 添加用户请求
@@ -386,7 +401,7 @@ export class ChatMainComponent implements OnDestroy{
 
   clearContext() {
     this.chatContext.pointer = undefined;
-    this.notification.success("清空上下文", "清除成功");
+    this.notification.success(this.localization.text('chat-main.clearContext'), this.localization.text('notifications.contextCleared'));
     this.awareContextChange();
   }
 
@@ -566,7 +581,7 @@ export class ChatMainComponent implements OnDestroy{
 
   enableTouch() {
     // 正在回复 | 没有在回复，内容不为空 |  模型为转录或者tts，且添加了文件
-    return this.answering || (!this.answering && this.inputText != '') ||
+    return this.answering || (!this.answering && this.inputText.trim() !== '') ||
       (this.fileList.length > 0);
   }
 

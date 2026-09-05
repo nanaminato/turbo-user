@@ -1,0 +1,29 @@
+<nz-card class="super-b overflow-y-scroll h-100 w-100">
+
+  <div class="d-flex flex-row-reverse">
+    <button class="btn btn-primary"
+            (click)="logout()">
+      退出登录
+    </button>
+  </div>
+  <div class="d-flex justify-content-between mx-1 my-3">
+    <div>当前连接的服务器是</div>
+    <div>
+      <input nz-input class="rounded"  [ngModel]="apiUrl()" />
+    </div>
+  </div>
+  <div class="m-1 fs-u">
+    用户名： {{user?.name}}
+  </div>
+  <div class="m-1 fs-u">
+    昵称： {{user?.nickname===undefined?"无":user?.nickname}}
+  </div>
+  <div class="m-1 fs-u">
+    身份：
+    @if(user!==undefined){
+      @for(role of user!.roles;track role.roleId){
+        {{role.name}}
+      }
+    }
+  </div>
+</nz-card>

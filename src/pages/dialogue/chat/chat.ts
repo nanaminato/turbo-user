@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {MarkdownRoot} from "../markdown-root/markdown-root";
@@ -6,6 +6,8 @@ import {ChatModel} from "../../../models";
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzImageDirective} from "ng-zorro-antd/image";
+import {TranslateModule} from '@ngx-translate/core';
+import {LocalizationService} from '../../../services/normal-services';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.html',
@@ -17,11 +19,13 @@ import {NzImageDirective} from "ng-zorro-antd/image";
     NzCardComponent,
     NzColDirective,
     NzImageDirective,
-    NzRowDirective
+    NzRowDirective,
+    TranslateModule
   ],
   standalone: true
 })
 export class Chat {
+  private localization = inject(LocalizationService);
   private _chatModel: ChatModel | undefined;
   time: number = 0;
   pending: boolean = true;
@@ -71,7 +75,7 @@ export class Chat {
   }
 
   getPendingText() {
-    return `Already waiting ${this.time/10}s, please wait patiently`;
+    return this.localization.text('mediaStudio.waiting', {seconds: this.time / 10});
   }
 
   fallback =

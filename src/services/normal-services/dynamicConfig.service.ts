@@ -1,7 +1,8 @@
 import {inject, Injectable} from "@angular/core";
-import {TranslateService} from "@ngx-translate/core";
 import {ThemeSwitcherService} from "./themeSwitcher.service";
+import {DEFAULT_THEME} from '../../themes/theme';
 import {Configuration, DynamicConfig} from "../../models";
+import {LocalizationService} from './localization.service';
 
 // @Injectable({
 //   providedIn: "root",
@@ -10,24 +11,21 @@ import {Configuration, DynamicConfig} from "../../models";
   providedIn: 'root'
 })
 export class DynamicConfigService{
-  translate = inject(TranslateService);
+  localization = inject(LocalizationService);
   themeSwitcherService = inject(ThemeSwitcherService);
   initDynamic(dynamic: DynamicConfig | undefined){
     if(dynamic===undefined){
       return;
     }
-    this.themeSwitcherService.load(dynamic.theme);
-    this.translate.addLangs(['en', 'zh','jp']);
-    this.translate.setFallbackLang('zh');
-
+    dynamic.theme = this.themeSwitcherService.load(dynamic.theme);
     let lang: string | undefined;
     if(dynamic.languageIsSet){
       lang = dynamic.language;
     }else{
-      lang = this.translate.getBrowserLang()!;
+      lang = navigator.language;
       dynamic.language = lang;
     }
-    this.translate.use(lang!.match(/en|zh|jp/) ? lang! : 'zh');
+    dynamic.language = this.localization.use(lang);
   }
   public getDynamicConfig(configuration: Configuration): DynamicConfig | undefined{
     let dynamic = configuration.dynamic;
@@ -41,7 +39,7 @@ export class DynamicConfigService{
   }
   public getDefaultDynamicConfig(): DynamicConfig{
     return {
-      theme: 'next-light',
+      theme: DEFAULT_THEME,
       language: 'zh',
       languageIsSet: false
     }

@@ -14,7 +14,7 @@ import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {OpenaiService} from "../../../services/fetch_services";
 import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
-import {SizeReportService} from "../../../services/normal-services";
+import {LocalizationService, SizeReportService} from "../../../services/normal-services";
 import {NzWaveDirective} from "ng-zorro-antd/core/wave";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
 import {GenerateTask} from "../../../models/media";
@@ -122,12 +122,12 @@ export class GptImageCreate implements OnInit,DoCheck{
 
     }catch (e:any){
       this.loading = false;
-      this.notification.error("生成失败",e.error)
+      this.notification.error(this.localization.text('notifications.generationFailed'), e.error)
       return;
     }
     if(result===null||result.data===null ||result.data.length===0){
       this.loading = false;
-      this.notification.error("生成失败","")
+      this.notification.error(this.localization.text('notifications.generationFailed'), '')
       return;
     }
     this.loading = false;
@@ -171,6 +171,7 @@ export class GptImageCreate implements OnInit,DoCheck{
     }
   }
   sizeReportService: SizeReportService = inject(SizeReportService);
+  private localization = inject(LocalizationService);
   menuVisible() {
     return this.sizeReportService.menuVisible;
   }
