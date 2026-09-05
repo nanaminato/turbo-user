@@ -20,8 +20,9 @@ export class AuthEffects {
         this.authService.login(action.username, action.password).pipe(
           map(response =>
             authActions.loginSuccess({
-              user: { name: action.username, id: response.id, password: action.password },
-              token: response.token
+              user: { name: action.username, id: response.id },
+              token: response.accessToken ?? response.token,
+              refreshToken: response.refreshToken
             })
           ),
           catchError(error => of(authActions.loginFailure({ error })))
@@ -36,7 +37,7 @@ export class AuthEffects {
         ofType(authActions.loginSuccess),
         tap(action => {
           this.messageService.success("登录成功")
-          this.authService.restore(action.user, action.token);
+          this.authService.restore(action.user, action.token, action.refreshToken);
           this.router.navigate(['/chat']);
         })
       ),

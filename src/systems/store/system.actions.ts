@@ -8,7 +8,7 @@ export const authActions = createActionGroup({
   events: {
     'Login': props<{ username: string; password: string }>(),
     'logout': emptyProps,
-    'Login Success': props<{ user: User; token: string }>(),
+    'Login Success': props<{ user: User; token: string; refreshToken: string }>(),
     'Login Failure':props<{ error: any }>()
     // 以后可以加 Logout、LoginSuccess 之类的动作
   }

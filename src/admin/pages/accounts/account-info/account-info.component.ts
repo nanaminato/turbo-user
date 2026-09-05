@@ -63,7 +63,9 @@ export class AccountInfoComponent {
         .subscribe({
           next: roles => {
             this.authService.user!.roles = roles;
-            this.authService.restore(this.authService.user!, this.authService.token!);
+            if (this.authService.token && this.authService.refreshToken) {
+              this.authService.restore(this.authService.user!, this.authService.token, this.authService.refreshToken);
+            }
           }
         })
     }

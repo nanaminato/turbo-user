@@ -1,5 +1,5 @@
 import {inject, Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {Observable, take} from "rxjs";
 import {ConfigurationService} from "../db-services";
 import {AuthService} from "../../auth_module";
 import {ServiceProvider} from "../../roots";
@@ -13,7 +13,9 @@ import {selectConfig} from "../../systems/store/configuration/configuration.sele
 })
 export class TurboService {
   provider = inject(ServiceProvider);
-  baseUrl: string = `${this.provider.apiUrl}api/ai`;
+  get baseUrl(): string {
+    return `${this.provider.apiUrl ?? ''}api/ai`;
+  }
   authService = inject(AuthService);
   store = inject(Store);
   config: Configuration | null = null;
@@ -48,14 +50,23 @@ export class TurboService {
 
   fetchChatBase(url: string, requestBody: any): Observable<string> {
     return new Observable<string>(observer => {
-      fetch(url, {
+      const abortController = new AbortController();
+      const execute = (hasRetriedAfterRefresh: boolean) => fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.authService.token}`
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
+        signal: abortController.signal
       }).then(response => {
+        if (response.status === 401 && !hasRetriedAfterRefresh && this.authService.refreshToken) {
+          this.authService.refreshAccessToken().pipe(take(1)).subscribe({
+            next: () => execute(true),
+            error: () => observer.error({ type: ErrorType.NotAuthorize })
+          });
+          return;
+        }
         let error: ResponseError | undefined;
         if (!response.ok) {
           switch (response.status){
@@ -100,8 +111,12 @@ export class TurboService {
 
         return pump();
       }).catch(error => {
+        if (abortController.signal.aborted) return;
         observer.error(error);
       });
+
+      execute(false);
+      return () => abortController.abort();
     });
   }
 }

@@ -64,7 +64,8 @@ export class SignInPageComponent {
       this.authService.login(username!,password!)
         .subscribe({
           next: response => {
-            this.authService.restore({name: username!, id: response.id,password: password!}, response.token);
+            this.authService.restore({name: username!, id: response.id}, response.accessToken ?? response.token,
+              response.refreshToken);
             this.router.navigate(['/chat'])
           }
         });
