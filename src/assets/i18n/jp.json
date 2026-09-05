@@ -72,7 +72,9 @@
     "batchDeleteConfirm": "削除",
     "batchDeleteSuccessTitle": "一括削除が完了しました",
     "batchDeletePartialTitle": "一括削除が一部失敗しました",
-    "batchDeleteResult": "成功 {{success}} 件、失敗 {{fail}} 件、スキップ {{skip}} 件。\n失敗内容：\n{{failedIds}}\nスキップ内容：\n{{skippedIds}}"
+    "batchDeleteResult": "成功 {{success}} 件、失敗 {{fail}} 件、スキップ {{skip}} 件。\n失敗内容：\n{{failedIds}}\nスキップ内容：\n{{skippedIds}}",
+    "selectAll": "すべて選択",
+    "deselectAll": "すべて選択解除"
   },
   "video": {
     "running": "動画を生成中です...",
@@ -165,6 +167,8 @@
     "defaultDialogueProperties": "対話のデフォルトプロパティ",
     "maxTokensPerInteraction": "最大レスポンス制限 (max_completion_tokens)",
     "maxTokenUsagePerInteraction": "1回のやり取りで使用する最大トークン数",
+    "maxTokensUnlimited": "無制限",
+    "maxTokensUnlimitedHint": "有効にすると max_completion_tokens パラメータは送信されません。モデルの上限が小さい場合（例：5000 未満のみ対応）は、上限を超える値を渡してエラーになるのを防ぐため推奨です。",
     "randomnessTemperature": "ランダム性 (temperature)",
     "higherValueMoreRandomness": "値が大きいほど、回答がランダムになります",
     "nucleusSamplingTopP": "核サンプリング (top_p)",

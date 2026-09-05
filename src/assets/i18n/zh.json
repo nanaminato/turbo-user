@@ -73,7 +73,9 @@
     "batchDeleteConfirm": "确认删除",
     "batchDeleteSuccessTitle": "批量删除完成",
     "batchDeletePartialTitle": "批量删除部分失败",
-    "batchDeleteResult": "成功 {{success}} 个，失败 {{fail}} 个，跳过 {{skip}} 个。\n失败明细：\n{{failedIds}}\n跳过明细：\n{{skippedIds}}"
+    "batchDeleteResult": "成功 {{success}} 个，失败 {{fail}} 个，跳过 {{skip}} 个。\n失败明细：\n{{failedIds}}\n跳过明细：\n{{skippedIds}}",
+    "selectAll": "全选",
+    "deselectAll": "取消全选"
   },
   "video": {
     "running": "视频正在生成中...",
@@ -166,6 +168,8 @@
     "defaultDialogueProperties": "对话默认属性",
     "maxTokensPerInteraction": "单次回复限制 (max_completion_tokens)",
     "maxTokenUsagePerInteraction": "单次交互所用的最大 Token 数",
+    "maxTokensUnlimited": "无限制",
+    "maxTokensUnlimitedHint": "开启后不会向模型发送 max_completion_tokens 参数。推荐在所用模型对单次回复上限更敏感（例如某些模型仅支持 5000 以下）时开启，避免参数被错误传递导致请求失败。",
     "randomnessTemperature": "随机性 (temperature)",
     "higherValueMoreRandomness": "值越大，回复越随机",
     "nucleusSamplingTopP": "核采样 (top_p)",

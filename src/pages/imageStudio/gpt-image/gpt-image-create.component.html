@@ -1,6 +1,6 @@
 <div class="bg-theme text-theme w-100 h-100 d-flex flex-row">
-  <div class="w-100 d-flex flex-row">
-    <div class="h-100 flex-grow-0 flex-shrink-0 d-flex flex-column" style="width: 316px;">
+  <div class="studio-layout">
+    <div class="params-panel">
       <div class="px-3">
         <button nz-button class="mx-2">
           @if(menuVisible()){
@@ -10,7 +10,7 @@
           }
         </button>
       </div>
-      <div class="overflow-y-scroll z-0 flex-grow-1 px-3">
+      <div class="params-scroll">
         <div>{{ 'imageStudio.model' | translate }}</div>
         <nz-select class="w-100" [(ngModel)]="model" (ngModelChange)="modelChange($event)">
           <nz-option [nzValue]="'dall-e-3'" [nzLabel]="'dall-e-3'"></nz-option>
@@ -81,12 +81,13 @@
             }
           </nz-select>
         }
-      </div>
-      <div class="sticky-bottom d-flex justify-content-center w-100 mb-3">
-        <button nz-button class="w-100" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>
+
+        <div class="generate-bar">
+          <button nz-button class="w-100" (click)="generateImages()">{{ 'universal.generate'|translate }}</button>
+        </div>
       </div>
     </div>
-    <div class="h-100 d-flex flex-grow-1 overflow-y-scroll overflow-x-scroll">
+    <div class="gallery-panel">
       <app-gallery class="w-100" #gallery [loading]="loading" [images]="images"></app-gallery>
     </div>
   </div>

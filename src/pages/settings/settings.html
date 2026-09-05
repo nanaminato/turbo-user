@@ -207,16 +207,30 @@
         </div>
         <nz-row>
           <nz-col>
-            <nz-slider class="slider big" [(ngModel)]="config!.chatConfiguration.max_completion_tokens"
-                       [nzStep]="1" [nzMin]="0" [nzMax]="32000"></nz-slider>
+            <nz-slider class="slider"
+                       [ngModel]="maxTokensSliderValue()"
+                       (ngModelChange)="updateMaxTokensSlider($event)"
+                       [nzDisabled]="isMaxTokensUnlimited()"
+                       [nzStep]="100" [nzMin]="1" [nzMax]="32000"></nz-slider>
           </nz-col>
           <nz-col>
             <nz-input-number
-              [nzMin]="0"
+              [nzMin]="1"
               [nzMax]="32000"
+              [nzDisabled]="isMaxTokensUnlimited()"
               [ngStyle]="{ marginLeft: '16px' }"
-              [(ngModel)]="config!.chatConfiguration.max_completion_tokens"
+              [ngModel]="maxTokensSliderValue()"
+              (ngModelChange)="updateMaxTokensSlider($event)"
             ></nz-input-number>
+          </nz-col>
+          <nz-col [ngStyle]="{ marginLeft: '16px' }"
+                  nz-tooltip
+                  [nzTooltipTitle]="'settings.maxTokensUnlimitedHint' | translate">
+            <span class="me-1">{{ 'settings.maxTokensUnlimited' | translate }}</span>
+            <nz-switch
+              [ngModel]="isMaxTokensUnlimited()"
+              (ngModelChange)="setMaxTokensUnlimited($event)">
+            </nz-switch>
           </nz-col>
         </nz-row>
       </div>

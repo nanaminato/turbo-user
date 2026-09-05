@@ -28,22 +28,23 @@ export class TurboService {
     const messages: Message[] | VisionMessage[] = mp.messages;
     let config = this.config!;
     let url = this.baseUrl + "/chat";
-    let requestBody: any;
-    let tokens: number | undefined | null = config?.chatConfiguration.max_completion_tokens;
-    if(tokens===0){
-      tokens = null;
-    }
-    requestBody = {
+    let requestBody: any = {
       messages: messages,
       model: model === undefined ? config?.model.modelValue : model,
       vision: config?.model.vision,
       frequency_penalty: config?.chatConfiguration.frequency_penalty,
-      max_completion_tokens: tokens ,
       presence_penalty: config?.chatConfiguration.presence_penalty,
       stream: true,
       temperature: config?.chatConfiguration.temperature,
       top_p: config?.chatConfiguration.top_p
     };
+    // max_completion_tokens:
+    //   - undefined / null  → 不发送该字段，由后端使用模型默认值（适用于「无限制」模式，
+    //                         也避免对上限更低的模型传了过大的值导致失败，例如模型只支持 5000
+    //                         以下却传了 10000）。
+    //   - 0                 → 也按「不发送」处理，保持对历史配置（曾以 0 表示无限制）的兼容。
+    //   - 其他正数          → 透传给后端。
+    this.appendIfNumber(requestBody, 'max_completion_tokens', this.resolveMaxCompletionTokens(config?.chatConfiguration.max_completion_tokens));
     // 透传新版 OpenAI（推理模型 / GPT-5）以及 Gemini 2.5 等扩展参数：
     //   - undefined / null 等同于「不发送」，由后端依据模型供应商兼容性自行决定；
     //   - reasoning_effort 适用于 o 系列、gpt-5 系列；
@@ -66,6 +67,18 @@ export class TurboService {
     if (value !== undefined && value !== null && !Number.isNaN(value)) {
       target[key] = value;
     }
+  }
+
+  /**
+   * 把用户配置的 `max_completion_tokens` 归一化为「真正要发给后端的值」：
+   *   - undefined / null / 0 → undefined（交给 appendIfNumber 跳过，不发送该字段）
+   *   - 其他正数              → 原样返回
+   * 这样在「无限制」模式下绝对不会有错误的限制值被送到后端。
+   */
+  private resolveMaxCompletionTokens(value: number | null | undefined): number | undefined {
+    if (value === undefined || value === null) return undefined;
+    if (!Number.isFinite(value) || value <= 0) return undefined;
+    return value;
   }
 
 

@@ -12,3 +12,13 @@
   width: 70%;
   max-width: 100vh;
 }
+
+@media (max-width: 1199.98px) {
+  .image-wrapper {
+    width: 100%;
+  }
+  .full-width {
+    width: 100%;
+    max-width: none;
+  }
+}

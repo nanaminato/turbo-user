@@ -74,7 +74,9 @@
     "batchDeleteConfirm": "Delete",
     "batchDeleteSuccessTitle": "Batch delete completed",
     "batchDeletePartialTitle": "Batch delete partially failed",
-    "batchDeleteResult": "Success: {{success}}, Failed: {{fail}}, Skipped: {{skip}}.\nFailed items:\n{{failedIds}}\nSkipped items:\n{{skippedIds}}"
+    "batchDeleteResult": "Success: {{success}}, Failed: {{fail}}, Skipped: {{skip}}.\nFailed items:\n{{failedIds}}\nSkipped items:\n{{skippedIds}}",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all"
   },
 
   "video": {
@@ -153,6 +155,8 @@
     "defaultDialogueProperties": "Default Dialogue Properties",
     "maxTokensPerInteraction": "Max Tokens per Interaction",
     "maxTokenUsagePerInteraction": "Max Token Usage per Interaction",
+    "maxTokensUnlimited": "Unlimited",
+    "maxTokensUnlimitedHint": "When enabled, the max_completion_tokens parameter is NOT sent to the model. Recommended when the target model has a stricter upper limit (e.g. some models only accept values below 5000), to avoid sending a value the model can't satisfy.",
     "randomnessTemperature": "Randomness (temperature)",
     "higherValueMoreRandomness": "Higher value = more randomness",
     "nucleusSamplingTopP": "Nucleus Sampling (top_p)",
