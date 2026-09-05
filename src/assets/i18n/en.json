@@ -258,7 +258,8 @@
     "deleteContent": "Delete Content",
     "copyContent": "Copy Content",
     "copyCode": "Copy Code",
-    "copySuccess": "Copy Successful"
+    "copySuccess": "Copy Successful",
+    "you": "You"
   },
   "banner": {
     "fidelity": "Fidelity",

@@ -270,7 +270,8 @@
     "deleteContent": "この内容を削除",
     "copyContent": "内容をコピー",
     "copyCode": "コードをコピー",
-    "copySuccess": "コピーに成功しました"
+    "copySuccess": "コピーに成功しました",
+    "you": "あなた"
   },
   "banner": {
     "fidelity": "忠実度",

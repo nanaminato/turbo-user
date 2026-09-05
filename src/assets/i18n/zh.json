@@ -271,7 +271,8 @@
     "deleteContent": "删除该条内容",
     "copyContent": "复制内容",
     "copyCode": "复制代码",
-    "copySuccess": "复制成功"
+    "copySuccess": "复制成功",
+    "you": "你"
   },
   "banner": {
     "fidelity": "保真度",

@@ -100,6 +100,16 @@
   flex: 0 0 auto;
 }
 
+@media (min-width: 1200px) {
+  .composer-toolbar {
+    justify-content: flex-start;
+  }
+  .select-box {
+    margin-left: 12px;
+    margin-right: auto;
+  }
+}
+
 @media (max-width: 900px) {
   .composer-shell {
     padding-bottom: env(safe-area-inset-bottom);

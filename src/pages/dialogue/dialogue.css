@@ -24,16 +24,22 @@
 .dialogue-identity {
   min-width: 0;
   overflow: hidden;
+  flex: 1 1 auto;
+  gap: 4px;
 }
-.dialogue-identity > div {
+.dialogue-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 .dialogue-actions, .dialogue-secondary-actions {
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 4px;
+}
+.dialogue-actions button {
+  flex: 0 0 auto;
 }
 @media screen and (max-width: 900px) {
   .chat-box {
